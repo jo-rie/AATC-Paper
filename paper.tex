@@ -1,0 +1,158 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc} % für Umlaute
+\usepackage{fontenc}
+
+% Set page size and margins
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%%%% ---- Useful packages
+
+%%% --- Figures and Graphics
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+%%% --- Colors
+\usepackage{color}
+\usepackage[dvpinames]{xcolor}
+
+%%% --- Tabulars
+\usepackage{booktabs}
+
+%%% --- Mathematics
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{bm} % bold mathematics
+\usepackage{bbm} % for blackboard 1
+\usepackage[linesnumbered,lined,algo2e,figure,boxed]{algorithm2e}
+\usepackage[short]{optidef} % for aligning linear programs
+
+%%% --- Other
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+%\usepackage[hidelinks]{hyperref}
+\usepackage[style=authoryear,backend=bibtex]{biblatex}
+%\addbibresource{library.bib}
+\usepackage{csquotes}
+\usepackage[shortcuts]{extdash} % For Hyphens in English
+%\usepackage{acro}
+% \DeclareAcronym{pdf}{short=PDF, long={probability distribution function}}
+
+%%% --- Commenting, Todonotes
+\usepackage{comment, todonotes}
+\newcommand{\ar}{$\rightarrow$}
+\presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
+\newcommand{\hl}[1]{\textcolor{Aquamarine}{#1}}
+
+%%%% ---- Own Commands
+%%% --- Theorem Settings
+\theoremstyle{plain}% Theorem-like structures provided by amsthm.sty
+\newtheorem{theorem}{Theorem}
+\newtheorem{exa}{Example}
+\newtheorem{rem}{Remark}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+%%% --- Math Commands
+
+\newcommand{\lag}[1][l]{\Delta_{#1}}
+\DeclarePairedDelimiter{\abs}\lvert\rvert
+
+%%% --- Other Commands
+\renewcommand{\arraystretch}{1.2}
+
+
+
+
+
+\title{Trending in Nowcasting}
+\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%Your abstract.
+%\end{abstract}
+
+\input{sections/01-introduction.tex}
+
+\section{Notation}
+\begin{itemize}
+  \item Sei $T = \{1, 2, \dots\}$ die Zeitindexmenge, wobei für jeden Zeitpunkt $t \in T$ eine Realisierung vorliegt (die ggf. im Nachhinein veröffentlicht wird).
+  \item Sei $(Y_t)_{t \in T}$ die Zeitreihe der Realisierungen, dabei steht $t$ für den Zeitpunkt, auf den sich der Wert bezieht, nicht den Veröffentlichungszeitpunkt.
+  \item Sei $K = \{1, 2, \dots\}$ die Menge der Nowcaster.
+	\begin{itemize}
+	  \item Sei $X_{t \lvert \tau}^k (k \in K, t \in T, \tau \in T_t^k)$ der Nowcast von $k$ bezüglich des Zeitpunktes $t$, der am Zeitpunkt $\tau$ \textbf{veröffentlicht} wird (oder: berechnet / dessen Informationen sich auf Zeitpunkt $\tau$ beziehen).
+	  \item Sei $g: \mathbb{R}^{\lvert T_t^k \lvert} \rightarrow \mathbb{R}$ eine Aggregationsfunktion, die alle Nowcasts bezüglich eines Zeitpunkts zu einem Nowcast zusammenfasst ($X_t^k \coloneqq g((X_{t \lvert \tau}^k)_{\tau \in T_t^k})$). Falls jeweils nur ein Nowcast veröffentlich wird, wähle $g(x) = x$.
+	  \item Sei $(X_t^k)_{t \in T}$ die Zeitreihe der aggregierten Nowcasts.
+	\end{itemize}
+  \item Sei $\lag[l]$ der lag-$l$-Operator, der für eine Zeitreihe $(Z_t)_{t \in T}$ definiert wird durch 
+		\begin{equation}
+			\lag[l]Z_t = Z_{t+l} - Z_t \quad (t \in T)
+		\end{equation} 
+  \item Der Anteil an konkordanten Punkten für Realisierungen $y = (y_1, y_2, \dots, y_n)$ und $(x_1, x_2, \dots, x_n)$ bezüglich des Lag $l$ ergibt sich dann durch
+	\begin{equation}
+  		k (x, y; l, \epsilon) = \frac{\sum_{t}^{n-l} k^s (\lag y_t, \lag x_t; l, \epsilon)}{\sum_{t}^{n-l} k^\epsilon (\lag y_t, \lag x_t)}
+	\end{equation}
+	wobei $k^s$ die Indikatorfunktion für die Konkordanz zweier Werte außerhalb der exclusion area ist \todo{stimmt Konkordanz hier?}
+	\begin{equation}
+  		k^s (x, y; \epsilon) \coloneqq \begin{cases}
+  			1 &, \text{falls}\ xy > 0\ \text{und}\ k^\epsilon(x, y; \epsilon) = 1\\
+  			0 &, \text{sonst}
+  		\end{cases}
+	\end{equation}
+	und $k^\epsilon$ die Indikatorfunktion für Punkte außerhalb der exclusion area ist
+	\begin{equation}
+  		k^\epsilon (x, y; \epsilon) \coloneqq \begin{cases}
+  			1 &, \text{falls} \ \abs{x} > \epsilon \text{oder} \ \abs{y} > \epsilon \\
+  			0 &, \text{sonst}
+  		\end{cases}
+	\end{equation}
+\end{itemize}
+
+		
+\section{Statistische Modellierung}
+
+\begin{itemize}
+  \item Sei $l$ der zeitliche Abstand, mit dem Realisationen verfügbar werden
+  \item $Y_{t + l} = Y_t + \lag Y_t$
+  \item Die Nowcast schätzen (fehlerbehaftet) $\lag Y_t$ mithilfe von Daten, die zum Zeitpunkt $\tau \in T_t^k$ verfügbar sind, und dem neuesten, bekannten Wert $Y_t$:
+	\begin{equation}
+  		X_{t+l \lvert \tau}^k = Y_t + (\widehat{\lag Y_t})_{t \lvert \tau \in T_t^k}^k,
+	\end{equation}
+	\todo{Stimmt das so?}
+	\todo{Ist festes $l$ zu starke Annahme?}
+	und damit 
+		\begin{equation}
+  			\lag Y_t = (\widehat{\lag Y_t})_{t \lvert \tau \in T_t^k}^k + \varepsilon.
+		\end{equation}
+
+
+\end{itemize}
+
+\section{Trending}
+
+\begin{itemize}
+  \item \enquote{Schwaches} Trending für lag $l$:
+   \begin{equation}
+  	P(\lag Y_t \widehat{(\lag Y_t)^k} > 0 \:\lvert\: \abs{\lag Y_t} > \epsilon) > P(\lag Y_t \widehat{(\lag Y_t)^k} < 0 \:\lvert\: \abs{\lag Y_t} > \epsilon)
+   \end{equation}
+
+\end{itemize}
+
+
+
+
+%\printbibliography
+
+
+\end{document}
