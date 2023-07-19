@@ -69,9 +69,16 @@
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
 
-
-
-
+%%% --- ToDo List
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
 
 \title{Trending in Nowcasting}
 \author{Oliver Grothe, Bolin Liu, Jonas Rieger}
@@ -82,6 +89,18 @@
 %\begin{abstract}
 %Your abstract.
 %\end{abstract}
+
+\section{ToDos}
+
+
+\begin{todolist}
+\item[\done] Vorlage erstellen (Jonas)
+\item[\done] Schätzer einarbeiten (Jonas)
+\item[\done] Alternativvorschlag Notation (Bolin)
+\item[\done] Aufschreiben der Diskussionsergebnisse (Bolin): Grundproblems, Anforderungen und Beispielmaß
+\item Eigenschaften des Beispiel-Maßes untersuchen/ angeben (Jonas, Bolin ) 
+\end{todolist}
+
 
 \input{sections/01-introduction.tex}
 
@@ -103,7 +122,7 @@
 	\begin{equation}
   		k (x, y; l, \epsilon) = \frac{\sum_{t}^{n-l} k^s (\lag y_t, \lag x_t; l, \epsilon)}{\sum_{t}^{n-l} k^\epsilon (\lag y_t, \lag x_t)}
 	\end{equation}
-	wobei $k^s$ die Indikatorfunktion für die Konkordanz zweier Werte außerhalb der exclusion area ist \todo{stimmt Konkordanz hier?}
+	wobei $k^s$ die Indikatorfunktion für die Konkordanz zweier Werte außerhalb der exclusion area ist
 	\begin{equation}
   		k^s (x, y; \epsilon) \coloneqq \begin{cases}
   			1 &, \text{falls}\ xy > 0\ \text{und}\ k^\epsilon(x, y; \epsilon) = 1\\
@@ -119,40 +138,84 @@
 	\end{equation}
 \end{itemize}
 
-		
-\section{Statistische Modellierung}
+\section{Trending-Problem}
+\subsection{Grundproblem}
+Gegeben sind zwei Zeitreihen $(x_t)$ und $(y_t)$, $t\in \{t_0,...,t_N\}$. Dabei kann $(x_t)$ die zeitliche Entwicklung einer Zielgröße und $(y_t)$ die zeitlichen Schätzungen eines Nowcasters darstellen. Uns interessiert, ob die Entwicklungen der beiden Zeitreihen den gleichen Trend aufweisen bzw. ob der Nowcaster die Entwicklung der zu schätzenden Größe mit dem richtigen Trend schätzen kann. Es sollte ein Maß konstruiert werden, das beschreibt, wie gut zwei Zeitreihen den gleichen Trend aufweisen.
+\subsection{Anforderungen an einem Maß/ Intuitionen}
 
+Zwei Zeitreihen weisen den gleichen Trend auf, wenn für zwei beliebige Zeitpunkte $t$ und $\tau$ gilt: $(x_t-x_\tau)(y_t-y_\tau)>0$ oder $x_t=x_\tau \land y_t = y_\tau$.
+
+\todo{Kann man theoretisch nicht einfach mit Rang-korrelations-koeffizient Trending überprüfen?}
+\subsection{Ein einfaches Maß}
+Sei $\Delta_{t,\tau}^{x}:=x_\tau-x_t$.
+\begin{equation}
+  		R_{t,\tau}^{x,y} \coloneqq 
+        \begin{cases}
+  		    \frac{\Delta_{t,\tau}^{x}\Delta_{t,\tau}^{y}}   {\vert\Delta_{t,\tau}^{x}\vert\vert\Delta_{t,\tau}^{y}\vert } &, \text{falls} \Delta_{t,\tau}^{x}\neq 0 \land \Delta_{t,\tau}^{y}\neq0\\
+           1 &, \text{falls} \Delta_{t,\tau}^{x}=\Delta_{t,\tau}^{y}=0\\
+            -1 &, \text{sonst} 
+  	\end{cases}
+	\end{equation}
+Beispiel-Maß: $S(\bold{x},\bold{y})=\sum_{k=1}^{k^*}\frac{w_k}{N+1-k}\sum_{j=0}^{N-k}R_{t_j,t_{j+k}}^{x,y},$
+wobei $w_k, k=1,...,k^*$ eine Gewichtung für das Trending-Verhalten in verschiedenen Zeitdistanzen darstellt. Dabei erfüllt $w_k$ die folgenden Anforderungen:
+
+\begin{itemize}
+    \item $w_k$ ist streng monoton fallend in $k$. Hintergrund: je klein der betrachtete Zeitabstand ist, desto größer ist hier der Einfluss des Rauschens
+    \item $\sum_{k=1}^{k^*}w_k=1$
+\end{itemize}
+
+\subsection{Eigenschaften des vorgeschlagenen Maßes}
+\begin{itemize}
+    \item Seien $(x_n)$ und $(y_n)$ zwei Realisierungen eines Random Walk -Modells.\\
+    Hypothese: $S((x_n),(y_n))=0$. \\
+    Intuition:  Zwei Random Walks $(x_n)$ und $(y_n)$ zeigen kein gemeinsames Tendenzverhalten auf. 
+\end{itemize}
+ 
+ \subsection{Alternative Notation}
+
+\begin{itemize}
+	\item Seien $x_1, x_2, \dots, x_N$ die (aggregierten) Nowcasts; $y_1, x_2, \dots, y_N$ die realisierten Werte
+	\item Gewichteter Anteil an konkordanten Differenzen: 
+	\begin{equation}
+		\sum_{l = 1}^{l^*} \omega_l \sum_{t=1}^{N - l} \frac{\lag x_i \lag y_i}{\abs{\lag x_i} \abs{\lag{y_i}}}, 
+	\end{equation}
+	wobei $\infty / \infty \coloneqq 1$ und $\infty / - \infty \coloneqq -1$.
+	\item Evtl. geschicktere Lokalisierung (0: \enquote{perfekte} Gegenläufigkeit, 1: \enquote{Perfektes} Trending bis Lag $l^*$):
+	\begin{equation}
+		\sum_{l = 1}^{l^*} \omega_l \sum_{t=1}^{N - l} \frac{1}{2 (N-l)} \left( \frac{\lag x_i \lag y_i}{\abs{\lag x_i} \abs{\lag{y_i}}} + (N-l) \right)
+	\end{equation}
+\end{itemize}
+
+
+
+\section{Statistische Modellierung}
+\subsection{Modellierung}
 \begin{itemize}
   \item Sei $l$ der zeitliche Abstand, mit dem Realisationen verfügbar werden
   \item $Y_{t + l} = Y_t + \lag Y_t$
   \item Die Nowcast schätzen (fehlerbehaftet) $\lag Y_t$ mithilfe von Daten, die zum Zeitpunkt $\tau \in T_t^k$ verfügbar sind, und dem neuesten, bekannten Wert $Y_t$:
 	\begin{equation}
-  		X_{t+l \lvert \tau}^k = Y_t + (\widehat{\lag Y_t})_{t \lvert \tau \in T_t^k}^k,
+  		X_{t \lvert \tau}^k = Y_{\tau - l} + (\widehat{\lag[t-\tau+l] Y_t})_{t \lvert \tau}^k,
 	\end{equation}
-	\todo{Stimmt das so?}
-	\todo{Ist festes $l$ zu starke Annahme?}
-	und damit 
+	wobei
 		\begin{equation}
-  			\lag Y_t = (\widehat{\lag Y_t})_{t \lvert \tau \in T_t^k}^k + \varepsilon.
+  			\lag[t-\tau+l] Y_t =  (\widehat{\lag[t-\tau+l] Y_t})_{t \lvert \tau}^k + \varepsilon.
 		\end{equation}
 
 
 \end{itemize}
-
-\section{Trending}
+\subsection{Weitere Ideen zu Trending}
 
 \begin{itemize}
-  \item \enquote{Schwaches} Trending für lag $l$:
-   \begin{equation}
-  	P(\lag Y_t \widehat{(\lag Y_t)^k} > 0 \:\lvert\: \abs{\lag Y_t} > \epsilon) > P(\lag Y_t \widehat{(\lag Y_t)^k} < 0 \:\lvert\: \abs{\lag Y_t} > \epsilon)
-   \end{equation}
-
+  \item \enquote{Schwaches} Trending für lag $l$: Wahrscheinlichkeit, in die gleiche Richtung zu zeigen ist größer als Wahrscheinlichkeit in die falsche Richtung zu zeigen (für lag $l$)
+  \item \enquote{Downwards}-Trending: Trends in die negative Richtung werden erkannt, in die positive Richtung nicht
+  \item \enquote{Upwards}-Trending: Trends in die positive Richtung werden erkannt, in die negative nicht
+  \item Nicht einfach nur 0-1-Kodierung für gleiches Vorzeichen von $\lag x$ und $\lag y$, sondern Gewichtung des $\mathbb{R}^2$, sodass zum Beispiel Punkte nahe der Achsen weniger Gewicht bekommen als solche nahe der Winkelhalbierenden
+  \item PCA auf $\lag x$ und $\lag y$, Bestrafung der zweiten Komponente (Abweichung von Gerade): Bestrafung würde aber mehr umfassen, als lediglich den Trend, sondern würde Abweichung von Linearität betreffen
+  \item Falls wir Exclusion Area wollen und $\lag Y_t$ heteroskedastisch: relative Werte betrachten?
 \end{itemize}
-
-
-
 
 %\printbibliography
 
 
-\end{document}
+\end{document} 
