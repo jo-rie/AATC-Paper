@@ -100,10 +100,12 @@
 \maketitle
 
 \begin{abstract}
-Existing and new measures for the capability of capturing the trend of nowcasts are presented, evaluated and compared on synthetic and real-world data.
+Existing and new measures for the capability of capturing the trend of nowcasts are presented, evaluated, and compared on synthetic and real-world data.
 \end{abstract}
 
 \section{Introduction}
+
+Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
 
 \begin{itemize}
 	\item Trending is an important feature of nowcasts to be identify changes in the situation before the actual quantity can be measured
@@ -117,7 +119,7 @@ Notation
 \begin{itemize}
   \item Let $y_1, \ldots, y_T$ be the values of the nowcasted quantity.
   \item Let $x_t^k$ be the $k$-th nowcast for time $t = 1, \ldots, T$ (possibly after some aggregation if several raw nowcasts apply).
-  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change occurred between time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. 
+  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. 
   \item Then, $\xdiff_t^k$ can be seen as point forecast of $\ydiff_t$. 
 \end{itemize}
 
@@ -153,7 +155,7 @@ Trend: Issuing the right \enquote{direction} of change between two time steps
 %\end{tabular}
 %\end{table}
 
-Non-probabilistic measures:
+Non-probabilistic measures: Summation anpassen; sodass rolling windows einfacher; untere Summationsgrenze $T - l$ ($l$ rolling window Größe); statt tilde besser delta; Nochmal anschauen, was unbeobachtbar und was beobachtbar ist; "verrauschtes" echtes kann auch daher kommen, dass ich nicht unbedingt $x - y_{t-1}$ rechnen kann
 
 \begin{itemize}
   \item Accuracy: \begin{equation}
@@ -182,7 +184,7 @@ Resulting measures:
   \item Scoring rules for probabilities
 
 \begin{itemize}
-  \item Quadratic/Brier Score for $k$ possible outcomes: \begin{equation}
+  \item Quadratic/Brier Score for $k$ possible outcomes \hl{Erst mal rauslassen; wäre anderes setting: probabilistischer Nowcast}: \begin{equation}
   S((p_1, \dots, p_k), i) = 2 p_i - \sum_{l=1}^k p_i^2 - 1;
 \end{equation}
 for dichotomous outcomes ($p_1 = \hat{P}(\ydiff_t > 0)$: probability for $\ydiff_t > 0$):
@@ -271,16 +273,15 @@ where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the di
 
 \hl{Add results}
 
-\subsection{Effect of increasing sample size?}
-
 \subsection{Simulation: Bootstrap}
 
 Question: How well does bootstrap approach perform?
 
 \begin{itemize}
-  \item 
+  \item Auf jeden Fall
 \end{itemize}
 
+\subsection{Effect of increasing sample size?}
 
 \section{Application on disease and economic data}
 
