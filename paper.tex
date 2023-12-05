@@ -107,6 +107,7 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 
 \begin{itemize}
 	\item Trending is an important feature of nowcasts to be identify changes in the situation before the actual quantity can be measured
+	\item What scores are currently used?
 	\item Examples: Covid, BIP, Medicine, ... 
 \end{itemize}
 
@@ -127,7 +128,14 @@ Trend: Issuing the right \enquote{direction} of change between two time steps
 
 \begin{itemize}
   \item Translate into mathematical notation
-  \item Illustrative Example: Two nowcasts of quantity of interest, where one jumps up and down and one points in right direction with the same rmse
+  \item Illustrative Example: Two nowcasts of quantity of interest, where one jumps up and down and one points in right direction with the same rmse; small subset of Simulation~\ref{sec:simulation_rmse_mae}; Plot time series \& time series of differences
+\end{itemize}
+
+\subsection{Graphical methods}
+
+\begin{itemize}
+  \item 4Q-Plot
+  \item Andere Medizin-Plots mit Verweis auf Grothe-Paper
 \end{itemize}
 
 
@@ -192,10 +200,10 @@ for dichotomous outcomes ($p_1 = \hat{P}(\ydiff_t > 0)$: probability for $\ydiff
 \item  Replace indicators in the above formulations by the corresponding probabilities:
 \begin{align}
 		\mprob_{\text{acc}} &= \frac{\sum_{t=2}^T \Prob{ \ydifft_t > 0, \xdifft_t > 0} + \sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{T-1}  \\
-   \mprob_{\text{py}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=2}^T \Prob{\ydifft_t > 0}} = \sum_{t=2}^T \frac{\Prob{\ydifft_t > 0, \xdifft_t > 0}}{\Prob{\ydifft_t > 0}} = \sum_{t=2}^T \Prob{\xdifft_t > 0 | \ydifft_t > 0} \\
-    \mprob_{\text{px}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=2}^T \Prob{\xdifft_t > 0}} = \sum_{t=2}^T \Prob{\ydifft_t > 0 | \xdifft_t > 0} \\
-    \mprob_{\text{ny}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=2}^T \Prob{\ydifft_t < 0}} = \sum_{t=2}^T \Prob{\xdifft_t < 0 | \ydifft_t < 0} \\
-    \mprob_{\text{px}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=2}^T \Prob{\xdifft_t < 0}} = \sum_{t=2}^T \Prob{\ydifft_t < 0 | \xdifft_t < 0}
+   \mprob_{\text{py}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=2}^T \Prob{\ydifft_t > 0}} \\
+    \mprob_{\text{px}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=2}^T \Prob{\xdifft_t > 0}} \\
+    \mprob_{\text{ny}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=2}^T \Prob{\ydifft_t < 0}} \\
+    \mprob_{\text{px}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=2}^T \Prob{\xdifft_t < 0}} 
 \end{align}
 \item Simple error model:
   \begin{align}
@@ -211,7 +219,13 @@ for dichotomous outcomes ($p_1 = \hat{P}(\ydiff_t > 0)$: probability for $\ydiff
 \end{itemize}
 
 
-\subsection{Confidence intervals for the measures}
+\subsection{Confidence intervals and missing data}
+
+\begin{itemize}
+  \item Bootstrapping: Describe approach (Simple bootstrap or multiplier?)
+  \item Missing data
+\end{itemize}
+
 
 \section{Simulation studies}
 
@@ -257,7 +271,27 @@ where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the di
 
 \hl{Add results}
 
+\subsection{Effect of increasing sample size?}
+
+\subsection{Simulation: Bootstrap}
+
+Question: How well does bootstrap approach perform?
+
+\begin{itemize}
+  \item 
+\end{itemize}
+
+
 \section{Application on disease and economic data}
+
+\subsection{Nowcasts for the COVID infections in Germany}
+
+\begin{itemize}
+  \item Describe QoI and Nowcasts; which nowcasts do we consider? Which data is available when?
+  \item Plot data
+\end{itemize}
+
+\subsection{Nowcasting of GDP}
 
 \section{Conclusion}
 
