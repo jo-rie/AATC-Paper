@@ -78,6 +78,8 @@
 \newcommand{\Xdiff}{\overset{\triangle}{X}}
 \newcommand{\Prob}[1]{P(#1)}
 \newcommand{\mprob}{\tilde{m}}
+\newcommand{\Ber}{\text{Ber}}
+\newcommand{\SBer}{\text{SBer}}
 
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
@@ -228,10 +230,13 @@ Resulting measures:
 \end{itemize}
 
 
+\hl{How to determine $\sigma$?}
+
 \subsection{Confidence intervals and missing data}
 
 \begin{itemize}
-  \item Bootstrapping: Describe approach (Simple bootstrap or multiplier?)
+  \item Bootstrapping: Compare percentile and BCa approach?
+  \item Bootstrapping: What is the \enquote{true} value?
   \item Missing data
 \end{itemize}
 
@@ -273,7 +278,15 @@ where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the di
 
 \begin{figure}
   \centering
-  \includegraphics{plots/simulation_same_rmse_mae/4q_plot.pdf}
+  \begin{subfigure}{.32\textwidth}
+  	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_1}
+  \end{subfigure}
+  \begin{subfigure}{.32\textwidth}
+  	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_2}
+  \end{subfigure}
+    \begin{subfigure}{.32\textwidth}
+  	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_3}
+  \end{subfigure}
   \caption{4Q-Plot for Simulation~\ref{sec:simulation_rmse_mae} with $T = 100$, $\sigma_y=0.1$, $a = 10$, $p_2 = 0.8$, and $p_3 = (0.8, 0.4)$.}
   \label{fig:simulation_rmse_mae_4q}
 \end{figure}
@@ -282,11 +295,26 @@ where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the di
 
 \subsection{Simulation: Bootstrap}
 
-Question: How well does bootstrap approach perform?
+Simulation setup:
 
 \begin{itemize}
-  \item Auf jeden Fall
+  \item $T = 10,000$
+  \item $\ydiff_t \sim N(0, 1)$ 
+  \item $\xdiff_t^{1, k} = b_t  \ydiff_t, b_t \sim \SBer(k)$ (symmetric Bernoulli)
+  \item \hl{(or both + random (non-systematic) noise?)}
 \end{itemize}
+
+Analysis:
+\begin{itemize}
+\item Do for $l = 1, \dots, 1,00$:
+\begin{itemize}
+  \item Sample $\ydiff, \xdiff$
+  \item Compute bootstrap confidence intervals $(b_{low}, b_{up})_l$ using $B = 10,000$
+\end{itemize}
+  \item Visualize all intervals with real value (confidence interval should cover real value in $\alpha$ cases)
+\end{itemize}
+
+
 
 \subsection{Effect of increasing sample size?}
 
