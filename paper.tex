@@ -70,12 +70,12 @@
 \DeclareMathOperator{\sign}{sign}
 \newcommand{\tmax}{\bar{t}}
 \newcommand{\ind}[1]{\mathbbm{1}\{#1\}}
-\newcommand{\ydiff}{\tilde{y}}
-\newcommand{\ydifft}{\tilde{y}^*}
-\newcommand{\xdiff}{\tilde{x}}
-\newcommand{\xdifft}{\tilde{x}^*}
-\newcommand{\Ydiff}{\tilde{Y}}
-\newcommand{\Xdiff}{\tilde{X}}
+\newcommand{\ydiff}{\overset{\triangle}{y}}
+\newcommand{\ydifft}{\overset{\triangle}{y}^*}
+\newcommand{\xdiff}{\overset{\triangle}{x}}
+\newcommand{\xdifft}{\overset{\triangle}{y}^*}
+\newcommand{\Ydiff}{\overset{\triangle}{Y}}
+\newcommand{\Xdiff}{\overset{\triangle}{X}}
 \newcommand{\Prob}[1]{P(#1)}
 \newcommand{\mprob}{\tilde{m}}
 
@@ -103,15 +103,22 @@
 Existing and new measures for the capability of capturing the trend of nowcasts are presented, evaluated, and compared on synthetic and real-world data.
 \end{abstract}
 
-\section{Introduction}
+\subsection*{Offene Punkte}
 
-Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
+\begin{itemize}
+    \item was ist mit dem Trendinghorizont, also welche Zeitinkremente sind zu nehmen. Da würde sich irgendwie ein Plot Maß gegen Inkrement anbieten. Dann würden sich für unterschiedliche Inkremente unterschiedliche Trendingcapabilities ergeben (gabe es nicht so einen schonmal bei irgendeinem Treffen?)
+    \item Wahl des Rauschens; haben wir da irgendeine Methode aus den Daten das Sigma zu bekommen?
+    \item Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
+\end{itemize}
+
+\section{Introduction}
 
 \begin{itemize}
 	\item Trending is an important feature of nowcasts to be identify changes in the situation before the actual quantity can be measured
 	\item What scores are currently used?
 	\item Examples: Covid, BIP, Medicine, ... 
 \end{itemize}
+
 
 \section{Trend measures for nowcasts}
 
@@ -181,17 +188,17 @@ maybe use \enquote{positive} measure instead, i.e.,
 
 Resulting measures:
 \begin{itemize}
-  \item Scoring rules for probabilities
+  % \item Scoring rules for probabilities
 
-\begin{itemize}
-  \item Quadratic/Brier Score for $k$ possible outcomes \hl{Erst mal rauslassen; wäre anderes setting: probabilistischer Nowcast}: \begin{equation}
-  S((p_1, \dots, p_k), i) = 2 p_i - \sum_{l=1}^k p_i^2 - 1;
-\end{equation}
-for dichotomous outcomes ($p_1 = \hat{P}(\ydiff_t > 0)$: probability for $\ydiff_t > 0$):
-\begin{equation}
-  S(p_1, \ydiff_t) = p_1 \ind{\ydiff_t > 0} + (1 - p_1) (1 - \ind{\ydiff_t > 0}) + p_1^2 + (1-p_1)^2 - 1
-\end{equation}
-\end{itemize}
+% \begin{itemize}
+%   \item Quadratic/Brier Score for $k$ possible outcomes \hl{Erst mal rauslassen; wäre anderes setting: probabilistischer Nowcast}: \begin{equation}
+%   S((p_1, \dots, p_k), i) = 2 p_i - \sum_{l=1}^k p_i^2 - 1;
+% \end{equation}
+% for dichotomous outcomes ($p_1 = \hat{P}(\ydiff_t > 0)$: probability for $\ydiff_t > 0$):
+% \begin{equation}
+%   S(p_1, \ydiff_t) = p_1 \ind{\ydiff_t > 0} + (1 - p_1) (1 - \ind{\ydiff_t > 0}) + p_1^2 + (1-p_1)^2 - 1
+% \end{equation}
+% \end{itemize}
 \item Probabilistic versions of non-probabilistic measures:
 \begin{itemize}
   \item Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects:
