@@ -26,7 +26,7 @@
 \usepackage{tabularx}
 
 %%% --- Mathematics
-\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools, mathabx}
 \usepackage{bm} % bold mathematics
 \usepackage{bbm} % for blackboard 1
 \usepackage[linesnumbered,lined,algo2e,figure,boxed]{algorithm2e}
@@ -43,10 +43,21 @@
 % \DeclareAcronym{pdf}{short=PDF, long={probability distribution function}}
 
 %%% --- Commenting, Todonotes
-\usepackage{comment, todonotes, soul}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage{comment, soul}
 \newcommand{\ar}{$\rightarrow$}
 \presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
 %\newcommand{\hl}[1]{\textcolor{Aquamarine}{#1}}
+
+\usepackage{xargs} % Use optional arguements in commands
+\newcommandx{\unsure}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\missing}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\change}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+\usepackage{marginnote}
+\let\marginpar\marginnote
 
 %%%% ---- Own Commands
 %%% --- Theorem Settings
@@ -70,12 +81,12 @@
 \DeclareMathOperator{\sign}{sign}
 \newcommand{\tmax}{\bar{t}}
 \newcommand{\ind}[1]{\mathbbm{1}\{#1\}}
-\newcommand{\ydiff}{\overset{\triangle}{y}}
-\newcommand{\ydifft}{\overset{\triangle}{y}^*}
-\newcommand{\xdiff}{\overset{\triangle}{x}}
-\newcommand{\xdifft}{\overset{\triangle}{y}^*}
-\newcommand{\Ydiff}{\overset{\triangle}{Y}}
-\newcommand{\Xdiff}{\overset{\triangle}{X}}
+\newcommand{\ydiff}{\overset{\smalltriangleup}{y}}
+\newcommand{\ydifft}{\overset{\smalltriangleup}{y}^*}
+\newcommand{\xdiff}{\overset{\smalltriangleup}{x}}
+\newcommand{\xdifft}{\overset{\smalltriangleup}{x}^*}
+\newcommand{\Ydiff}{\overset{\smalltriangleup}{Y}}
+\newcommand{\Xdiff}{\overset{\smalltriangleup}{X}}
 \newcommand{\Prob}[1]{P(#1)}
 \newcommand{\mprob}{\tilde{m}}
 \newcommand{\Ber}{\text{Ber}}
@@ -110,7 +121,15 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 \begin{itemize}
     \item was ist mit dem Trendinghorizont, also welche Zeitinkremente sind zu nehmen. Da würde sich irgendwie ein Plot Maß gegen Inkrement anbieten. Dann würden sich für unterschiedliche Inkremente unterschiedliche Trendingcapabilities ergeben (gabe es nicht so einen schonmal bei irgendeinem Treffen?)
     \item Wahl des Rauschens; haben wir da irgendeine Methode aus den Daten das Sigma zu bekommen?
+    \item Was ist mit anderen Verteilungen?
     \item Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
+\end{itemize}
+
+\listoftodos
+
+Für nächstes Treffen:
+\begin{itemize}
+    \item Wie wird $\sigma$ geschätzt? Literaturrecherche, wo sonst noch \enquote{beliebig} festgelegt wird?
 \end{itemize}
 
 \section{Introduction}
@@ -132,6 +151,7 @@ Notation
   \item Then, $\xdiff_t^k$ can be seen as point forecast of $\ydiff_t$. 
 \end{itemize}
 
+\todo[inline]{$\xdiff_t^k = x_t - y_{t-1}$ oder $x_{t-1}$? Evtl. mit Bezug zu Verzögerung des Bekanntwerdens von $y_{t-1}$.}
 
 \subsection{What is the trend of a nowcast?}
 
@@ -143,6 +163,8 @@ Trend: Issuing the right \enquote{direction} of change between two time steps
 \end{itemize}
 
 \subsection{Graphical methods}
+
+Bolin
 
 \begin{itemize}
   \item 4Q-Plot
@@ -164,7 +186,7 @@ Trend: Issuing the right \enquote{direction} of change between two time steps
 %\end{tabular}
 %\end{table}
 
-Non-probabilistic measures: Summation anpassen; sodass rolling windows einfacher; untere Summationsgrenze $T - l$ ($l$ rolling window Größe); statt tilde besser delta; Nochmal anschauen, was unbeobachtbar und was beobachtbar ist; "verrauschtes" echtes kann auch daher kommen, dass ich nicht unbedingt $x - y_{t-1}$ rechnen kann
+Non-probabilistic measures: Summation anpassen; sodass rolling windows einfacher; untere Summationsgrenze $T - l$ ($l$ rolling window Größe); Nochmal anschauen, was unbeobachtbar und was beobachtbar ist; "verrauschtes" echtes kann auch daher kommen, dass ich nicht unbedingt $x - y_{t-1}$ rechnen kann
 
 \begin{itemize}
   \item Accuracy: \begin{equation}
@@ -229,10 +251,11 @@ Resulting measures:
 \end{itemize}
 \end{itemize}
 
-
-\hl{How to determine $\sigma$?}
+\todo[inline]{Annahmen an $\varepsilon$: white noise; wie kommt man auf den Wert? Ideen: Expertenwissen, Anteil an Gesamtvarianz der Zeitreihen (z.B. 10 \%), \textbf{Literaturrecherche zu wie das sonst so gemacht werden könnte}}
 
 \subsection{Confidence intervals and missing data}
+
+Bolin
 
 \begin{itemize}
   \item Bootstrapping: Compare percentile and BCa approach?
@@ -267,7 +290,7 @@ The nowcasts are characterised by
 		(| e^x_t | + 2) \ydiff_t &, \text{if}\ (q^{3, \text{up}}_t = 1 \land e^x_t < 0) \land \ydiff_t < 0
 	\end{cases}
 \end{align}
-where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the direction of nowcast 2 is corrected and for nowcast 3 with $q^{3, \text{up}}_t \sim \text{Ber}(p_3^{\text{up}})$, $q^{3, \text{down}}_t \sim \text{Ber}(p_3^{\text{down}})$ the probabilities of direction correction depend on the direction of change.
+where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the direction of nowcast 2 is corrected and for nowcast 3 with $q^{3, \text{up}}_t \sim \text{Ber}(p_3^{\text{up}})$, $q^{3, \text{down}}_t \sim \text{Ber}(p_3^{\text{down}})$ the probabilities of direction correction depend on the direction of change. $e^x_t \sim N(0, 1)$
 
 \begin{figure}
   \centering
@@ -291,7 +314,7 @@ where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the di
   \label{fig:simulation_rmse_mae_4q}
 \end{figure}
 
-\hl{Add results}
+\todo[inline]{Add results}
 
 \subsection{Simulation: Bootstrap}
 
@@ -301,12 +324,12 @@ Simulation setup:
   \item $T = 10,000$
   \item $\ydiff_t \sim N(0, 1)$ 
   \item $\xdiff_t^{1, k} = b_t  \ydiff_t, b_t \sim \SBer(k)$ (symmetric Bernoulli)
-  \item \hl{(or both + random (non-systematic) noise?)}
 \end{itemize}
+\unsure[inline]{(or both + random (non-systematic) noise?)}
 
 Analysis:
 \begin{itemize}
-\item Do for $l = 1, \dots, 1,00$:
+\item Do for $l = 1, \dots, 100$:
 \begin{itemize}
   \item Sample $\ydiff, \xdiff$
   \item Compute bootstrap confidence intervals $(b_{low}, b_{up})_l$ using $B = 10,000$
