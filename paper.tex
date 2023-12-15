@@ -36,14 +36,14 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 %\usepackage[hidelinks]{hyperref}
 \usepackage[style=authoryear,backend=bibtex]{biblatex}
-%\addbibresource{library.bib}
+\addbibresource{library.bib}
 \usepackage{csquotes}
 \usepackage[shortcuts]{extdash} % For Hyphens in English
 %\usepackage{acro}
 % \DeclareAcronym{pdf}{short=PDF, long={probability distribution function}}
 
 %%% --- Commenting, Todonotes
-\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage[colorinlistoftodos,prependcaption]{todonotes}
 \usepackage{comment, soul}
 \newcommand{\ar}{$\rightarrow$}
 \presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
@@ -81,12 +81,12 @@
 \DeclareMathOperator{\sign}{sign}
 \newcommand{\tmax}{\bar{t}}
 \newcommand{\ind}[1]{\mathbbm{1}\{#1\}}
-\newcommand{\ydiff}{\overset{\smalltriangleup}{y}}
-\newcommand{\ydifft}{\overset{\smalltriangleup}{y}^*}
-\newcommand{\xdiff}{\overset{\smalltriangleup}{x}}
-\newcommand{\xdifft}{\overset{\smalltriangleup}{x}^*}
-\newcommand{\Ydiff}{\overset{\smalltriangleup}{Y}}
-\newcommand{\Xdiff}{\overset{\smalltriangleup}{X}}
+\newcommand{\ydiff}{D y}
+\newcommand{\ydifft}{Dy^\star}
+\newcommand{\xdiff}{Dx}
+\newcommand{\xdifft}{Dx^\star}
+\newcommand{\Ydiff}{DY}
+\newcommand{\Xdiff}{DX}
 \newcommand{\Prob}[1]{P(#1)}
 \newcommand{\mprob}{\tilde{m}}
 \newcommand{\Ber}{\text{Ber}}
@@ -129,7 +129,10 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 
 Für nächstes Treffen:
 \begin{itemize}
-    \item Wie wird $\sigma$ geschätzt? Literaturrecherche, wo sonst noch \enquote{beliebig} festgelegt wird?
+    \item Formale Fragestellung
+    \item Wie wird $\sigma$ geschätzt? Filter vs. Empirie
+    \item Kondidenzinterval 
+    
 \end{itemize}
 
 \section{Introduction}
@@ -147,11 +150,9 @@ Notation
 \begin{itemize}
   \item Let $y_1, \ldots, y_T$ be the values of the nowcasted quantity.
   \item Let $x_t^k$ be the $k$-th nowcast for time $t = 1, \ldots, T$ (possibly after some aggregation if several raw nowcasts apply).
-  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. 
-  \item Then, $\xdiff_t^k$ can be seen as point forecast of $\ydiff_t$. 
+  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. If $y_{t-1}$ is not available at time $t$, it can be reasonable to use an update nowcasts for time $t-1$.
+  \item Then, $\xdiff_t^k$ can be seen as point forecast of nowcaster $k$ for $\ydiff_t$. 
 \end{itemize}
-
-\todo[inline]{$\xdiff_t^k = x_t - y_{t-1}$ oder $x_{t-1}$? Evtl. mit Bezug zu Verzögerung des Bekanntwerdens von $y_{t-1}$.}
 
 \subsection{What is the trend of a nowcast?}
 
@@ -164,7 +165,6 @@ Trend: Issuing the right \enquote{direction} of change between two time steps
 
 \subsection{Graphical methods}
 
-Bolin
 
 \begin{itemize}
   \item 4Q-Plot
@@ -186,29 +186,29 @@ Bolin
 %\end{tabular}
 %\end{table}
 
-Non-probabilistic measures: Summation anpassen; sodass rolling windows einfacher; untere Summationsgrenze $T - l$ ($l$ rolling window Größe); Nochmal anschauen, was unbeobachtbar und was beobachtbar ist; "verrauschtes" echtes kann auch daher kommen, dass ich nicht unbedingt $x - y_{t-1}$ rechnen kann
-
 \begin{itemize}
   \item Accuracy: \begin{equation}
-  	m_{\text{acc}} = \frac{\sum_{t=2}^T \ind{\ydiff_t > 0, \xdiff_t > 0} + \sum_{t=2}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{T-1}
+  	m_{\text{acc}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0} + \sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{T-1}
 \end{equation}
 	\item Capability of detecting a positive trend (probability of detection)
 	\begin{equation}
-  		m_{\text{py}} = \frac{\sum_{t=2}^T \ind{\ydiff_t > 0, \xdiff_t > 0}}{\sum_{t=2}^T \ind{\ydiff_t > 0}}
+  		m_{\text{py}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0}}{\sum_{t=T-w}^T \ind{\ydiff_t > 0}}
 	\end{equation}
 	\item False alarm rate \hl{Name does not fit} \begin{equation}
-  m_{\text{far}} = \frac{\sum_{t=2}^T \ind{\ydiff_t < 0, \xdiff_t > 0}}{\sum_{t=2}^T \ind{\xdiff_t > 0}}
+  m_{\text{far}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t > 0}}{\sum_{t=T-w}^T \ind{\xdiff_t > 0}}
 \end{equation}
 maybe use \enquote{positive} measure instead, i.e.,
 \begin{equation}
-  m_{\text{px}} = \frac{\sum_{t=2}^T \ind{\ydiff_t > 0, \xdiff_t > 0}}{\sum_{t=2}^T \ind{\xdiff_t > 0}}  
+  m_{\text{px}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0}}{\sum_{t=T-w}^T \ind{\xdiff_t > 0}}  
 \end{equation}
 	\item same measures for negative direction:
 	\begin{align}
-		m_{\text{ny}} &=  \frac{\sum_{t=2}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=2}^T \ind{\ydiff_t < 0}} \\
-		m_{\text{nx}} &=  \frac{\sum_{t=2}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=2}^T \ind{\xdiff_t < 0}}
+		m_{\text{ny}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\ydiff_t < 0}} \\
+		m_{\text{nx}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\xdiff_t < 0}}
 	\end{align}
+ \item Bezug auf Consusionsmatrix 
 \end{itemize}
+
 
 Resulting measures:
 \begin{itemize}
@@ -223,21 +223,30 @@ Resulting measures:
 %   S(p_1, \ydiff_t) = p_1 \ind{\ydiff_t > 0} + (1 - p_1) (1 - \ind{\ydiff_t > 0}) + p_1^2 + (1-p_1)^2 - 1
 % \end{equation}
 % \end{itemize}
-\item Probabilistic versions of non-probabilistic measures:
+\item Probabilistic versions of non-probabilistic measures; small sample characteristic of $m_{acc}$ can be driven by random effects near the axis; therefore probabilistic \enquote{correction}:
 \begin{itemize}
-  \item Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects:
-  	\begin{align}
+  \item Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects or for effects on inaccurate representation of $y_{t-1}$ in the computation of $Dx_t$:
+  	\begin{align}\label{additive error decomposition}
   		\ydiff_t &= \ydifft + \varepsilon_t^y \\
   		\xdiff_t &= \xdifft + \varepsilon_t^x
 	\end{align}
+ \item \hl{Wouldn't it be more natural to model the original time series with a noise term?} (Qualitatively, it would yield the same results)
+ \begin{align}
+     y_t &= y_t^\star + \epsilon_t^y \\
+     x_t &= x_t^\star + \epsilon_t^x \\
+     \ydiff_t &= y_t^\star + \epsilon_t^y - (y_{t-1}^\star + \epsilon_{t-1}^y) = y_t^\star - y_{t-1}^\star + \underbrace{\epsilon_t^y - \epsilon_{t-1}^y}_{\sim N(0, \sqrt{2} \sigma_y)} \\
+     \xdiff_t &= x_t^\star + \epsilon_t^x - (x_{t-1}^\star + \epsilon_{t-1}^x) = x_t^\star - x_{t-1}^\star + \underbrace{\epsilon_t^x - \epsilon_{t-1}^x}_{\sim N(0, \sqrt{2} \sigma_x)}
+ \end{align}
+ Advantage of the approach: For different lags, no new standard deviation has to be estimated.\\
+ Disadvantage: Theoretically, there is serial correlation of the errors.
 \item  Replace indicators in the above formulations by the corresponding probabilities:
 \begin{align}
-		\mprob_{\text{acc}} &= \frac{\sum_{t=2}^T \Prob{ \ydifft_t > 0, \xdifft_t > 0} + \sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{T-1}  \\
-   \mprob_{\text{py}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=2}^T \Prob{\ydifft_t > 0}} \\
-    \mprob_{\text{px}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=2}^T \Prob{\xdifft_t > 0}} \\
-    \mprob_{\text{ny}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=2}^T \Prob{\ydifft_t < 0}} \\
-    \mprob_{\text{px}} &= \frac{\sum_{t=2}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=2}^T \Prob{\xdifft_t < 0}} 
-\end{align}
+		\mprob_{\text{acc}} &= \frac{\sum_{t=T-w}^T \Prob{ \ydifft_t > 0, \xdifft_t > 0} + \sum_{t=T-w}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{T-1}  \\
+   \mprob_{\text{py}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=T-w}^T \Prob{\ydifft_t > 0}} \\
+    \mprob_{\text{px}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=T-w}^T \Prob{\xdifft_t > 0}} \\
+    \mprob_{\text{ny}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=T-w}^T \Prob{\ydifft_t < 0}} \\
+    \mprob_{\text{px}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=T-w}^T \Prob{\xdifft_t < 0}} 
+\end{align} 
 \item Simple error model:
   \begin{align}
 	  \varepsilon_Y \sim N(0, \sigma_Y) \\
@@ -245,17 +254,35 @@ Resulting measures:
   \end{align}
   yields, e.g.,
   	\begin{equation}
-  		\mprob_{\text{acc}} = \frac{\sum_{t=2}^T  \big( 1 - \Phi_{\ydiff_t, \sigma_y}(0) - \Phi_{\xdiff_t, \sigma_x} (0) + 2 \Phi_{(\ydiff_t, \xdiff_t); (\sigma_y, \sigma_x)}( 0, 0) \big) }{T-1}, 
+  		\mprob_{\text{acc}} = \frac{1}{T-1} \sum_{t=T-w}^T  \big( 1 - \Phi_{\ydiff_t, \sigma_y}(0) - \Phi_{\xdiff_t, \sigma_x} (0) + 2 \Phi_{\xdiff_t,\sigma_x}( 0)\Phi_{\ydiff_t,\sigma_y}( 0) \big), 
 	\end{equation}
 	where $\Phi$ denotes a (possibly multivariate) normal distribution
 \end{itemize}
+\item For $\sigma_x \sigma_y \rightarrow 0$, the probabilistic measures approach the count-based ones
+\item For $\sigma_x \sigma_y \rightarrow \infty$, the probabilistic measures approach 0.5 as all probabilities are approximately 0.5
+\item Lag-$l$-measures can easily be obtained by using the $D^l$-difference, i.e., $D^l y_t = y_t - y_{t-l}$
 \end{itemize}
 
-\todo[inline]{Annahmen an $\varepsilon$: white noise; wie kommt man auf den Wert? Ideen: Expertenwissen, Anteil an Gesamtvarianz der Zeitreihen (z.B. 10 \%), \textbf{Literaturrecherche zu wie das sonst so gemacht werden könnte}}
+
+
+\subsection{Estimating the standard deviation of white noise}
+
+First, sometimes variance can be determined heuristically directly from domain knowledge. 
+However, to determine the standard deviation of white noise using only the time series data, one can basically follow two approaches, time domain approach or frequency domain approach. For the first approach, a model assumption (e.g. ARIMA models) is specified and the residual analysis technique is applied [\cite{chitturi1974distribution}]. 
+In the frequency domain approach, the time series are first decomposed using spectral methods such as (discrete) Fourier transformation [\cite{sauer1992noise}] or wavelet transformation [\cite{heil1989continuous,donoho1994ideal,jansen2012noise}]. After reconstructing the time series, the residuals can be formed in order to determine the standard deviation of white noise. For the use of wavelet, it is particularly convenient that the standard deviation of the white noise can be estimated by the standard deviation of the detail coefficients of the last level, e.g., if the wavelet family db1 is used.
+
+For the noisy signal in the form of \ref{eq: simulation},  there are the following results (cf. pic \ref{fig:estimation std})
+
+\begin{figure}
+  \centering
+\includegraphics[scale=0.5]{plots/std_estimate.png}
+  \caption{Estimation of std with different methods.}
+  \label{fig:estimation std}
+\end{figure}
+
 
 \subsection{Confidence intervals and missing data}
 
-Bolin
 
 \begin{itemize}
   \item Bootstrapping: Compare percentile and BCa approach?
@@ -269,28 +296,31 @@ Bolin
 \subsection{Different trending abilities for same rmse and mae} \label{sec:simulation_rmse_mae}
 
 Let the quantity of interest 
-\begin{equation}
+\begin{equation}\label{eq: simulation}
   y_t = a \sin(2 \pi t / T) + \varepsilon_t^y, \ t = 1, \dots, T
 \end{equation}
 with $\varepsilon_t^y \stackrel{\text{iid}}{\sim} N(0, \sigma_y)$ and 
 \begin{equation}
   \ydiff_t = y_t - y_{t-1}.
 \end{equation}
+
+\todo[inline]{Anpassung der Simulationssettings an Gl. \ref{additive error decomposition} (?)}
 The nowcasts are characterised by 
 \begin{align}
-	\xdiff_t^1 &= e^x_t \ydiff_t \\
-	\xdiff_t^2 &= \begin{cases}
-		e^x_t \ydiff_t &, \text{if}\ q^2_t = 0 \lor e^x_t > 0\\
-		(| e^x_t | + 2) \ydiff_t &, \text{if}\ q^2_t = 1 \land e^x_t < 0
+	(\xdifft_t)^1 &= e^x_t \ydifft_t \\
+	(\xdifft_t)^2 &= \begin{cases}
+		e^x_t \ydifft_t &, \text{if}\ q^2_t = 0 \lor e^x_t \geq 0\\
+		(| e^x_t | + 2) \ydifft_t &, \text{if}\ q^2_t = 1 \land e^x_t < 0
 	\end{cases} \\
-	\xdiff_t^3 &= \begin{cases}
-		e^x_t \ydiff_t &, \text{if}\ (q^{3, \text{down}}_t = 0 \lor e^x_t > 0) \land \ydiff_t \geq 0\\
-		(| e^x_t | + 2) \ydiff_t &, \text{if}\ (q^{3, \text{down}}_t = 1 \land e^x_t < 0) \land \ydiff_t \geq 0 \\
-		e^x_t \ydiff_t &, \text{if}\ (q^{3, \text{up}}_t = 0 \lor e^x_t > 0) \land \ydiff_t < 0\\
-		(| e^x_t | + 2) \ydiff_t &, \text{if}\ (q^{3, \text{up}}_t = 1 \land e^x_t < 0) \land \ydiff_t < 0
+	(\xdifft_t)^3 &= \begin{cases}
+		e^x_t \ydifft_t &, \text{if}\ (q^{3, \text{down}}_t = 0 \lor e^x_t > 0) \land \ydifft_t \geq 0\\
+		(| e^x_t | + 2) \ydifft_t &, \text{if}\ (q^{3, \text{down}}_t = 1 \land e^x_t < 0) \land \ydifft_t \geq 0 \\
+		e^x_t \ydifft_t &, \text{if}\ (q^{3, \text{up}}_t = 0 \lor e^x_t > 0) \land \ydifft_t < 0\\
+		(| e^x_t | + 2) \ydifft_t &, \text{if}\ (q^{3, \text{up}}_t = 1 \land e^x_t < 0) \land \ydifft_t < 0
 	\end{cases}
 \end{align}
-where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the direction of nowcast 2 is corrected and for nowcast 3 with $q^{3, \text{up}}_t \sim \text{Ber}(p_3^{\text{up}})$, $q^{3, \text{down}}_t \sim \text{Ber}(p_3^{\text{down}})$ the probabilities of direction correction depend on the direction of change. $e^x_t \sim N(0, 1)$
+where $q^2_t \sim \text{Ber}(2p_2 - 1)$ and $p_2 > 0.5$ denotes the probability that the direction of nowcast 2 is correct.
+For nowcast 3 with $q^{3, \text{up}}_t \sim \text{Ber}(2p_3^{\text{up}}-1)$, $q^{3, \text{down}}_t \sim \text{Ber}(2p_3^{\text{down}}-1)$ the probabilities of direction correction depend on the direction of change. Additionally, let $e^x_t \sim N(0, 1)$.
 
 \begin{figure}
   \centering
@@ -314,8 +344,7 @@ where $q^2_t \sim \text{Ber}(p_2)$ and $p_2$ denotes the probability that the di
   \label{fig:simulation_rmse_mae_4q}
 \end{figure}
 
-\todo[inline]{Add results}
-
+\todo[inline]{Weiteres Beispiel für viele richtigen Punkte sehr nah an den Entscheidungsgrenzen.}
 \subsection{Simulation: Bootstrap}
 
 Simulation setup:
@@ -353,5 +382,7 @@ Analysis:
 \subsection{Nowcasting of GDP}
 
 \section{Conclusion}
+\medskip
+\printbibliography
 
 \end{document} 
