@@ -125,15 +125,16 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
     \item Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
 \end{itemize}
 
-\listoftodos
-
 Für nächstes Treffen:
 \begin{itemize}
     \item Formale Fragestellung
     \item Wie wird $\sigma$ geschätzt? Filter vs. Empirie
-    \item Kondidenzinterval 
-    
+    \item Kondidenzinterval     
 \end{itemize}
+
+
+\listoftodos
+
 
 \section{Introduction}
 
@@ -150,13 +151,13 @@ Notation
 \begin{itemize}
   \item Let $y_1, \ldots, y_T$ be the values of the nowcasted quantity.
   \item Let $x_t^k$ be the $k$-th nowcast for time $t = 1, \ldots, T$ (possibly after some aggregation if several raw nowcasts apply).
-  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. If $y_{t-1}$ is not available at time $t$, it can be reasonable to use an update nowcasts for time $t-1$.
+  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. If $y_{t-1}$ is not available at time $t$, it can be reasonable to use an updated nowcast for time $t-1$. (Move this point to a place after error model, as the error model can account for the error made at this point)
   \item Then, $\xdiff_t^k$ can be seen as point forecast of nowcaster $k$ for $\ydiff_t$. 
 \end{itemize}
 
 \subsection{What is the trend of a nowcast?}
 
-Trend: Issuing the right \enquote{direction} of change between two time steps; statistical consistency of $\sign(\ydiff_t)$ and $\sign(\xdiff_t)$; $P(\ydiff_t \cdot \xdiff_t > 0)$
+Trend: Issuing the right \enquote{direction} of change between two time steps; statistical consistency of $\sign(\ydiff_t)$ and $\sign(\xdiff_t)$
 
 \begin{itemize}
   \item Translate into mathematical notation
@@ -206,7 +207,7 @@ maybe use \enquote{positive} measure instead, i.e.,
 		m_{\text{ny}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\ydiff_t < 0}} \\
 		m_{\text{nx}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\xdiff_t < 0}}
 	\end{align}
- \item Bezug auf Consusionsmatrix 
+ \item Bezug auf Confusionsmatrix 
 \end{itemize}
 
 
@@ -406,6 +407,11 @@ Analysis:
 \appendix
 \section{Illustrative examples for probabilistic measures}
 
-
+\begin{figure}
+    \centering
+    \includegraphics{plots/illustrative_examples/plots_4q_and_mtilde.pdf}
+    \caption{Various examplary courses of the measures $\tilde{m}$ for different configurations of $\ydiff$ and $\xdiff$}
+    \label{fig:example_mtilde}
+\end{figure}
 
 \end{document} 
