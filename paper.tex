@@ -156,7 +156,7 @@ Notation
 
 \subsection{What is the trend of a nowcast?}
 
-Trend: Issuing the right \enquote{direction} of change between two time steps
+Trend: Issuing the right \enquote{direction} of change between two time steps; statistical consistency of $\sign(\ydiff_t)$ and $\sign(\xdiff_t)$; $P(\ydiff_t \cdot \xdiff_t > 0)$
 
 \begin{itemize}
   \item Translate into mathematical notation
@@ -259,7 +259,7 @@ Resulting measures:
 	where $\Phi$ denotes a (possibly multivariate) normal distribution
 \end{itemize}
 \item For $\sigma_x \sigma_y \rightarrow 0$, the probabilistic measures approach the count-based ones
-\item For $\sigma_x \sigma_y \rightarrow \infty$, the probabilistic measures approach 0.5 as all probabilities are approximately 0.5
+\item For $\sigma_x \sigma_y \rightarrow \infty$, the probabilistic accuracy approaches   0.5 as all probabilities are approximately 0.5
 \item Lag-$l$-measures can easily be obtained by using the $D^l$-difference, i.e., $D^l y_t = y_t - y_{t-l}$
 \end{itemize}
 
@@ -273,9 +273,27 @@ In the frequency domain approach, the time series are first decomposed using spe
 
 For the noisy signal in the form of \ref{eq: simulation},  there are the following results (cf. pic \ref{fig:estimation std})
 
+% \begin{figure}
+%   \centering
+% \includegraphics[scale=0.5]{plots/std_estimate.png}
+%   \caption{Estimation of std with different methods.}
+%   \label{fig:estimation std}
+% \end{figure}
+
 \begin{figure}
   \centering
-\includegraphics[scale=0.5]{plots/std_estimate.png}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/std estimation/std_estimation_boxplot_25.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/std estimation/std_estimation_boxplot_50.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/std estimation/std_estimation_boxplot_100.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/std estimation/std_estimation_boxplot_1000.pdf}
+    \end{subfigure}
   \caption{Estimation of std with different methods.}
   \label{fig:estimation std}
 \end{figure}
@@ -384,5 +402,10 @@ Analysis:
 \section{Conclusion}
 \medskip
 \printbibliography
+
+\appendix
+\section{Illustrative examples for probabilistic measures}
+
+
 
 \end{document} 
