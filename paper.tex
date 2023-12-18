@@ -123,6 +123,9 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
     \item Wahl des Rauschens; haben wir da irgendeine Methode aus den Daten das Sigma zu bekommen?
     \item Was ist mit anderen Verteilungen?
     \item Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
+    \item Messen die Maße das richtige? Sollte man andere Maße nutzen? Braucht man Korrekturterm?
+    \item Indikatoren oder Wahrscheinlichkeiten?
+    \item Wahrscheinlichkeit von der Pike herleiten
 \end{itemize}
 
 Für nächstes Treffen:
@@ -142,6 +145,7 @@ Für nächstes Treffen:
 	\item Trending is an important feature of nowcasts to be identify changes in the situation before the actual quantity can be measured
 	\item What scores are currently used?
 	\item Examples: Covid, BIP, Medicine, ... 
+ \item nowcasting schön aufschreiben, dass auch für Nicht-Nowcaster klar wird, warum Nowcasting speziell ist
 \end{itemize}
 
 
@@ -151,13 +155,13 @@ Notation
 \begin{itemize}
   \item Let $y_1, \ldots, y_T$ be the values of the nowcasted quantity.
   \item Let $x_t^k$ be the $k$-th nowcast for time $t = 1, \ldots, T$ (possibly after some aggregation if several raw nowcasts apply).
-  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. If $y_{t-1}$ is not available at time $t$, it can be reasonable to use an updated nowcast for time $t-1$. (Move this point to a place after error model, as the error model can account for the error made at this point)
+  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. If $y_{t-1}$ is not available at time $t$, it can be reasonable to use an updated nowcast for time $t-1$. (Move this point to a place after error model, as the error model can account for the error made at this point) \todo{Kaligraphisches $x$, um vorzubereiten, dass es anderes sein könnte}
   \item Then, $\xdiff_t^k$ can be seen as point forecast of nowcaster $k$ for $\ydiff_t$. 
 \end{itemize}
 
 \subsection{What is the trend of a nowcast?}
 
-Trend: Issuing the right \enquote{direction} of change between two time steps; statistical consistency of $\sign(\ydiff_t)$ and $\sign(\xdiff_t)$
+Trend: Issuing the right \enquote{direction} of change between two time steps; statistical consistency of $\sign(\ydiff_t)$ and $\sign(\xdiff_t)$ (Problem: mit kleinen Fehlern; Hinweis Exclusion area)
 
 \begin{itemize}
   \item Translate into mathematical notation
@@ -189,7 +193,7 @@ Trend: Issuing the right \enquote{direction} of change between two time steps; s
 
 \begin{itemize}
   \item Accuracy: \begin{equation}
-  	m_{\text{acc}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0} + \sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{T-1}
+  	m_{\text{acc}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0} + \sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{T-w}
 \end{equation}
 	\item Capability of detecting a positive trend (probability of detection)
 	\begin{equation}
@@ -226,7 +230,7 @@ Resulting measures:
 % \end{itemize}
 \item Probabilistic versions of non-probabilistic measures; small sample characteristic of $m_{acc}$ can be driven by random effects near the axis; therefore probabilistic \enquote{correction}:
 \begin{itemize}
-  \item Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects or for effects on inaccurate representation of $y_{t-1}$ in the computation of $Dx_t$:
+  \item Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects or for effects on inaccurate representation of $y_{t-1}$ in the computation of $Dx_t$ (\hl{this, no additional complexity}):
   	\begin{align}\label{additive error decomposition}
   		\ydiff_t &= \ydifft + \varepsilon_t^y \\
   		\xdiff_t &= \xdifft + \varepsilon_t^x
@@ -239,10 +243,10 @@ Resulting measures:
      \xdiff_t &= x_t^\star + \epsilon_t^x - (x_{t-1}^\star + \epsilon_{t-1}^x) = x_t^\star - x_{t-1}^\star + \underbrace{\epsilon_t^x - \epsilon_{t-1}^x}_{\sim N(0, \sqrt{2} \sigma_x)}
  \end{align}
  Advantage of the approach: For different lags, no new standard deviation has to be estimated.\\
- Disadvantage: Theoretically, there is serial correlation of the errors.
+ Disadvantage: Theoretically, there is serial correlation of the errors. (Wie behandle ich die Autokorrelation; wie rausrechnen)
 \item  Replace indicators in the above formulations by the corresponding probabilities:
 \begin{align}
-		\mprob_{\text{acc}} &= \frac{\sum_{t=T-w}^T \Prob{ \ydifft_t > 0, \xdifft_t > 0} + \sum_{t=T-w}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{T-1}  \\
+		\mprob_{\text{acc}} &= \frac{\sum_{t=T-w}^T \Prob{ \ydifft_t > 0, \xdifft_t > 0} + \sum_{t=T-w}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{T-w}  \\
    \mprob_{\text{py}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=T-w}^T \Prob{\ydifft_t > 0}} \\
     \mprob_{\text{px}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t > 0, \xdifft_t > 0}}{\sum_{t=T-w}^T \Prob{\xdifft_t > 0}} \\
     \mprob_{\text{ny}} &= \frac{\sum_{t=T-w}^T \Prob{\ydifft_t < 0, \xdifft_t < 0}}{\sum_{t=T-w}^T \Prob{\ydifft_t < 0}} \\
@@ -255,7 +259,7 @@ Resulting measures:
   \end{align}
   yields, e.g.,
   	\begin{equation}
-  		\mprob_{\text{acc}} = \frac{1}{T-1} \sum_{t=T-w}^T  \big( 1 - \Phi_{\ydiff_t, \sigma_y}(0) - \Phi_{\xdiff_t, \sigma_x} (0) + 2 \Phi_{\xdiff_t,\sigma_x}( 0)\Phi_{\ydiff_t,\sigma_y}( 0) \big), 
+  		\mprob_{\text{acc}} = \frac{1}{T-w} \sum_{t=T-w}^T  \big( 1 - \Phi_{\ydiff_t, \sigma_y}(0) - \Phi_{\xdiff_t, \sigma_x} (0) + 2 \Phi_{\xdiff_t,\sigma_x}( 0)\Phi_{\ydiff_t,\sigma_y}( 0) \big), 
 	\end{equation}
 	where $\Phi$ denotes a (possibly multivariate) normal distribution
 \end{itemize}
@@ -274,27 +278,42 @@ In the frequency domain approach, the time series are first decomposed using spe
 
 For the noisy signal in the form of \ref{eq: simulation},  there are the following results (cf. pic \ref{fig:estimation std})
 
-% \begin{figure}
-%   \centering
-% \includegraphics[scale=0.5]{plots/std_estimate.png}
-%   \caption{Estimation of std with different methods.}
-%   \label{fig:estimation std}
-% \end{figure}
+
+
+%\begin{figure}
+%  \centering
+%    \begin{subfigure}{0.24\textwidth}
+%        \includegraphics{plots/std estimation/std_estimation_boxplot_25.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.24\textwidth}
+%        \includegraphics{plots/std estimation/std_estimation_boxplot_50.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.24\textwidth}
+%        \includegraphics{plots/std estimation/std_estimation_boxplot_100.pdf}
+%    \end{subfigure}
+%    \begin{subfigure}{0.24\textwidth}
+%        \includegraphics{plots/std estimation/std_estimation_boxplot_1000.pdf}
+%    \end{subfigure}
+%  \caption{Estimation of std with different methods.}
+%  \label{fig:estimation std}
+%\end{figure}%
 
 \begin{figure}
   \centering
-    \begin{subfigure}{0.24\textwidth}
-        \includegraphics{plots/std estimation/std_estimation_boxplot_25.pdf}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_25.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.24\textwidth}
-        \includegraphics{plots/std estimation/std_estimation_boxplot_50.pdf}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_50.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.24\textwidth}
-        \includegraphics{plots/std estimation/std_estimation_boxplot_100.pdf}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_100.pdf}
     \end{subfigure}
-    \begin{subfigure}{0.24\textwidth}
-        \includegraphics{plots/std estimation/std_estimation_boxplot_1000.pdf}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_1000.pdf}
     \end{subfigure}
+
   \caption{Estimation of std with different methods.}
   \label{fig:estimation std}
 \end{figure}
