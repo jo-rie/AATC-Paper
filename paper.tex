@@ -91,6 +91,7 @@
 \newcommand{\mprob}{\tilde{m}}
 \newcommand{\Ber}{\text{Ber}}
 \newcommand{\SBer}{\text{SBer}}
+\newcommand{\cond}{\:\lvert\:}
 
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
@@ -215,6 +216,40 @@ maybe use \enquote{positive} measure instead, i.e.,
 \end{itemize}
 
 
+\hl{Idea: Weighted Indicator, accounting for the likeliness of a point's location being driven by noise}
+
+\begin{itemize}
+  \item Weights $\omega_t$ for $(\ydiff_t, \xdiff_t)$ could be determined by error model and corresponds to the maximal likeliness of the point belonging to the different quadrants ($Q_1, \dots, Q_4$); thus, point that have less explanatory power for assessing the trending ability becomes less weight:
+ 	\begin{equation}
+  		\omega_t = \max_{i \in [4]} {P\big( (\ydifft_t, \xdifft_t) \in Q_i \cond \ydiff_t, \xdiff_t \big)} 
+	\end{equation}
+	\item E.g., the accuracy becomes
+	\begin{equation}
+  m_{acc, \omega} = \frac{\sum_{t=T-w}^T \omega_t \ind{\ydiff_t \cdot \xdiff_t > 0} }{\sum_{t=T-w}^T \omega_t}
+\end{equation}
+	\item Thus, $\omega_t \in [0.25, 1]$. Maybe it would make sense to \enquote{ignore} values without explanatory power and use $\omega_t^\star = 4/3 \ \omega_t \in [0, 1]$ \hl{to discuss}
+	\item Figure~\ref{fig:comparison_estimators} shows the resulting estimates for the simulation study comparing the pure indicator, the probability-version and the weighted indicator estimation; the data is generated (in a very simpel model) by
+	\begin{align}
+		\ydifft_t &\sim N(0, 2) \\
+		\xdifft_t &= (2 b_t - 1) \cdot \ydiff_t , b_t \sim \Ber (k) \\
+		\ydiff_t &= \ydifft_t + \varepsilon_t^y, \varepsilon_t^y \sim N(0, 0.1) \\
+		\xdiff_t &= \xdifft_t + \varepsilon_t^x, \varepsilon_t^x \sim N(0, 0.1) \\
+	\end{align}
+\end{itemize}
+
+\begin{figure}
+  \centering
+	\includegraphics{plots/unbiasedness/boxplot_k_0.1.pdf}
+	\includegraphics{plots/unbiasedness/boxplot_k_0.3.pdf}
+	\includegraphics{plots/unbiasedness/boxplot_k_0.5.pdf}
+	\includegraphics{plots/unbiasedness/boxplot_k_0.7.pdf}
+	\includegraphics{plots/unbiasedness/boxplot_k_0.9.pdf}			
+  \caption{Simulations results comparing the three types of estimators for the accuracy in a trending setting}
+  \label{fig:comparison_estimators}
+\end{figure}
+
+
+
 Resulting measures:
 \begin{itemize}
   % \item Scoring rules for probabilities
@@ -235,7 +270,7 @@ Resulting measures:
   		\ydiff_t &= \ydifft + \varepsilon_t^y \\
   		\xdiff_t &= \xdifft + \varepsilon_t^x
 	\end{align}
- \item \hl{Wouldn't it be more natural to model the original time series with a noise term?} (Qualitatively, it would yield the same results)
+ \item Wouldn't it be more natural to model the original time series with a noise term? (Qualitatively, it would yield the same results)
  \begin{align}
      y_t &= y_t^\star + \epsilon_t^y \\
      x_t &= x_t^\star + \epsilon_t^x \\
@@ -301,17 +336,17 @@ For the noisy signal in the form of \ref{eq: simulation},  there are the followi
 \begin{figure}
   \centering
     \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_25.pdf}
+        \includegraphics[width=\textwidth]{plots/std_estimation/std_estimation_boxplot_25.pdf}
     \end{subfigure}
     \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_50.pdf}
+        \includegraphics[width=\textwidth]{plots/std_estimation/std_estimation_boxplot_50.pdf}
     \end{subfigure}
 
     \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_100.pdf}
+        \includegraphics[width=\textwidth]{plots/std_estimation/std_estimation_boxplot_100.pdf}
     \end{subfigure}
     \begin{subfigure}{0.48\textwidth}
-        \includegraphics[width=\textwidth]{plots/std estimation/std_estimation_boxplot_1000.pdf}
+        \includegraphics[width=\textwidth]{plots/std_estimation/std_estimation_boxplot_1000.pdf}
     \end{subfigure}
 
   \caption{Estimation of std with different methods.}
