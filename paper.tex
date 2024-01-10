@@ -120,22 +120,11 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 \subsection*{Offene Punkte}
 
 \begin{itemize}
-    \item was ist mit dem Trendinghorizont, also welche Zeitinkremente sind zu nehmen. Da würde sich irgendwie ein Plot Maß gegen Inkrement anbieten. Dann würden sich für unterschiedliche Inkremente unterschiedliche Trendingcapabilities ergeben (gabe es nicht so einen schonmal bei irgendeinem Treffen?)
-    \item Wahl des Rauschens; haben wir da irgendeine Methode aus den Daten das Sigma zu bekommen?
-    \item Was ist mit anderen Verteilungen?
-    \item Nicht nur Nowcast, sondern auch Measurement und Forecasts; in Introduction Unterschiede zwischen den Feldern; mehr Literatur; Einleitung ausbauen
-    \item Messen die Maße das richtige? Sollte man andere Maße nutzen? Braucht man Korrekturterm?
-    \item Indikatoren oder Wahrscheinlichkeiten?
-    \item Wahrscheinlichkeit von der Pike herleiten
+    \item Welche Form sollte das Maß haben? Mögliche Wahlen: Indikator, Probabilistisch, Weighted (1), Weighted (2), Indikator mit Korrektur, ... (Siehe Tabelle \ref{tab:comparison-measures})
+    \item Schätzung/Wahl des Rauschparameters $\sigma$; haben wir da irgendeine Methode aus den Daten das Sigma zu bekommen? Filter vs. Empirie 
+    \item Gehen wir auf andere Verteilungen für den Fehler ein?
+    \item Konfidenzintervalle
 \end{itemize}
-
-Für nächstes Treffen:
-\begin{itemize}
-    \item Formale Fragestellung
-    \item Wie wird $\sigma$ geschätzt? Filter vs. Empirie
-    \item Kondidenzinterval     
-\end{itemize}
-
 
 \listoftodos
 
@@ -146,7 +135,8 @@ Für nächstes Treffen:
 	\item Trending is an important feature of nowcasts to be identify changes in the situation before the actual quantity can be measured
 	\item What scores are currently used?
 	\item Examples: Covid, BIP, Medicine, ... 
- \item nowcasting schön aufschreiben, dass auch für Nicht-Nowcaster klar wird, warum Nowcasting speziell ist
+ \item Nice an comprehensive introduction to nowcasting, so that it becomes clear for non-nowcasters what is special about nowcasting
+ \item Measurements and Forecasting; What are the differences to nowcasting from a modeling point of view?
 \end{itemize}
 
 
@@ -156,8 +146,9 @@ Notation
 \begin{itemize}
   \item Let $y_1, \ldots, y_T$ be the values of the nowcasted quantity.
   \item Let $x_t^k$ be the $k$-th nowcast for time $t = 1, \ldots, T$ (possibly after some aggregation if several raw nowcasts apply).
-  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - y_{t-1}$ the change nowcaster $k$ issued between the time steps. If $y_{t-1}$ is not available at time $t$, it can be reasonable to use an updated nowcast for time $t-1$. (Move this point to a place after error model, as the error model can account for the error made at this point) \todo{Kaligraphisches $x$, um vorzubereiten, dass es anderes sein könnte}
-  \item Then, $\xdiff_t^k$ can be seen as point forecast of nowcaster $k$ for $\ydiff_t$. 
+  \item Let $\ydiff_t = y_t - y_{t-1}$ be the change that occurred between the time steps $t-1$ and $t$ and $\xdiff_t^k = x_t - \mathcal{x}_{t-1}$ the change nowcaster $k$ issued between the time steps. Let us first assume that $y_{t-1}$ is available at time $t$ so that it can be used for the evaluation. 
+  In Section \hl{error-model-section}, we expand on other reasonable choices for $\mathcal{x}_{t-1}$.
+  \item Then, $\xdiff_t^k$ can be seen as the point forecast of nowcaster $k$ for $\ydiff_t$. 
 \end{itemize}
 
 \subsection{What is the trend of a nowcast?}
@@ -192,34 +183,60 @@ Trend: Issuing the right \enquote{direction} of change between two time steps; s
 %\end{tabular}
 %\end{table}
 
+\begin{table}[]
+    \centering
+    \begin{tabular}{l l p{4cm} p{4cm} p{4cm}}
+    \toprule
+    name & abbr. & accuracy & + & - \\ \midrule
+    indicator & i & $\frac{1}{T-1} \sum \ind{x_t y_t > 0}$ &  well-known, intuitive & what about points near (0,0) \\
+    Probabilistic & p & $\frac{1}{T-1} \sum P{(x_t y_t > 0)}$ & small variance, weighting due to probabilities & unintuitive, asymptotics unclear, driven towards 0.5, no standard estimation for $\sigma$  \\
+    weighted 1 (*) & w1 & {\small{$\sum w_i \ind{x_t y_t > 0} / \sum w_i$,\newline $w_i = \max_j\{P(y_i, x_i) \in Q_j \}$}} & intuitive, implicit exclusion area, natural extension & all points gain weight, estimation of $\sigma$. \\
+    weighted 2 (*) & w2 & {\small {$\sum w_i \ind{x_t y_t > 0} / \sum w_i$,\newline $w_i = \max_j\{P(y_i, x_i) \in Q_j \} - 0.25$}} & as w1, points near (0,0) do not gain weight & \\ \bottomrule
+    \end{tabular}
+    \caption{Comparison between different measures for accuracy. }
+    \label{tab:comparison-measures}
+\end{table}
+
+\unsure[inline]{Anpassung der gewichteten Formel}
+(*): The weighted formula can also be changed by using the signum function $\sign$ instead of $\ind$ to take into account the influence of negative trending.\\
+
+Natural evaluation method for 4Q-plot, as known from dichotomous event evaluation, evaluation of classification (confusion matrix)
+
 \begin{itemize}
   \item Accuracy: \begin{equation}
   	m_{\text{acc}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0} + \sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{T-w}
 \end{equation}
-	\item Capability of detecting a positive trend (probability of detection)
+	\item Capability of detecting a positive trend (probability of detection)/Sensitivity
 	\begin{equation}
   		m_{\text{py}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0}}{\sum_{t=T-w}^T \ind{\ydiff_t > 0}}
 	\end{equation}
-	\item False alarm rate \hl{Name does not fit} \begin{equation}
-  m_{\text{far}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t > 0}}{\sum_{t=T-w}^T \ind{\xdiff_t > 0}}
-\end{equation}
-maybe use \enquote{positive} measure instead, i.e.,
+	\item positive predictive values
 \begin{equation}
   m_{\text{px}} = \frac{\sum_{t=T-w}^T \ind{\ydiff_t > 0, \xdiff_t > 0}}{\sum_{t=T-w}^T \ind{\xdiff_t > 0}}  
 \end{equation}
-	\item same measures for negative direction:
+	\item Specificity
 	\begin{align}
-		m_{\text{ny}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\ydiff_t < 0}} \\
+		m_{\text{ny}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\ydiff_t < 0}} 
+  \end{align}
+  \item Negative predictive value
+	\begin{align}
 		m_{\text{nx}} &=  \frac{\sum_{t=T-w}^T \ind{\ydiff_t < 0, \xdiff_t < 0}}{\sum_{t=T-w}^T \ind{\xdiff_t < 0}}
 	\end{align}
- \item Bezug auf Confusionsmatrix 
 \end{itemize}
 
+Different setting here: We do not only have binary predictions and realization, but we do know the real values behind; intuitive evaluation of a 4Q-plot assigns a greater explanatory power to point far away from (0,0), as small deviations from (0,0) could be driven by noise.
 
-\hl{Idea: Weighted Indicator, accounting for the likeliness of a point's location being driven by noise}
+Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects or for effects on inaccurate representation of $y_{t-1}$ in the computation of $Dx_t$ (\hl{this, no additional complexity}):
+  	\begin{align}\label{additive error decomposition}
+  		\ydiff_t &= \ydifft + \varepsilon_t^y \\
+  		\xdiff_t &= \xdifft + \varepsilon_t^x
+	\end{align}
 
+Extension 1: 
 \begin{itemize}
-  \item Weights $\omega_t$ for $(\ydiff_t, \xdiff_t)$ could be determined by error model and corresponds to the maximal likeliness of the point belonging to the different quadrants ($Q_1, \dots, Q_4$); thus, point that have less explanatory power for assessing the trending ability becomes less weight:
+  \item 
+Adapt the measures to be weighted by the explanatory power of the points:\\
+Weights $\omega_t$ for $(\ydiff_t, \xdiff_t)$ could be determined by error model and corresponds to the maximal likeliness of the point belonging to the different quadrants ($Q_1, \dots, Q_4$); thus, point that have less explanatory power for assessing the trending ability becomes less weight:
  	\begin{equation}
   		\omega_t = \max_{i \in [4]} {P\big( (\ydifft_t, \xdifft_t) \in Q_i \cond \ydiff_t, \xdiff_t \big)} 
 	\end{equation}
@@ -227,7 +244,7 @@ maybe use \enquote{positive} measure instead, i.e.,
 	\begin{equation}
   m_{acc, \omega} = \frac{\sum_{t=T-w}^T \omega_t \ind{\ydiff_t \cdot \xdiff_t > 0} }{\sum_{t=T-w}^T \omega_t}
 \end{equation}
-	\item Thus, $\omega_t \in [0.25, 1]$. Maybe it would make sense to \enquote{ignore} values without explanatory power and use $\omega_t^\star = 4/3 \ \omega_t \in [0, 1]$ \hl{to discuss}
+	\item Thus, $\omega_t \in [0.25, 1]$. Maybe it would make sense to \enquote{ignore} values without explanatory power and use $\omega_t^\star = 4/3 \ \omega_t \in [0, 1]$ \hl{w2}
 	\item Figure~\ref{fig:comparison_estimators} shows the resulting estimates for the simulation study comparing the pure indicator, the probability-version and the weighted indicator estimation; the data is generated (in a very simpel model) by
 	\begin{align}
 		\ydifft_t &\sim N(0, 2) \\
@@ -250,19 +267,8 @@ maybe use \enquote{positive} measure instead, i.e.,
 
 
 
-Resulting measures:
+Probabilistic extension:
 \begin{itemize}
-  % \item Scoring rules for probabilities
-
-% \begin{itemize}
-%   \item Quadratic/Brier Score for $k$ possible outcomes \hl{Erst mal rauslassen; wäre anderes setting: probabilistischer Nowcast}: \begin{equation}
-%   S((p_1, \dots, p_k), i) = 2 p_i - \sum_{l=1}^k p_i^2 - 1;
-% \end{equation}
-% for dichotomous outcomes ($p_1 = \hat{P}(\ydiff_t > 0)$: probability for $\ydiff_t > 0$):
-% \begin{equation}
-%   S(p_1, \ydiff_t) = p_1 \ind{\ydiff_t > 0} + (1 - p_1) (1 - \ind{\ydiff_t > 0}) + p_1^2 + (1-p_1)^2 - 1
-% \end{equation}
-% \end{itemize}
 \item Probabilistic versions of non-probabilistic measures; small sample characteristic of $m_{acc}$ can be driven by random effects near the axis; therefore probabilistic \enquote{correction}:
 \begin{itemize}
   \item Assume an additive error decomposition for both observation and nowcast to account for non-systematic and short-term (i.e., intra-day) effects or for effects on inaccurate representation of $y_{t-1}$ in the computation of $Dx_t$ (\hl{this, no additional complexity}):
@@ -301,6 +307,42 @@ Resulting measures:
 \item For $\sigma_x \sigma_y \rightarrow 0$, the probabilistic measures approach the count-based ones
 \item For $\sigma_x \sigma_y \rightarrow \infty$, the probabilistic accuracy approaches   0.5 as all probabilities are approximately 0.5
 \item Lag-$l$-measures can easily be obtained by using the $D^l$-difference, i.e., $D^l y_t = y_t - y_{t-l}$
+\end{itemize}
+
+\unsure[inline]{Diskussion der Annahme der additiven Fehler-Dekomposition}
+
+Nach Annahme der additiven Fehler-Dekomposition ist es ohne weiteres nicht möglich, die probabilistische Formel, insbesondere den Ausdruck $P(Dy^*\cdot Dx^* > 0|Dx=Dx_t, Dy=Dy_t) $ auszurechnen, da $(Dx,Dy)$ und $(Dx^*,Dy^*)$ abhängig sind
+
+\subsection{Gewichtete Formel }
+\unsure[inline]{Gewichtete Formel mit einer anderen Modelannahme und storyline}
+
+Motivation: Die Punkte $(Dx_t, Dy_t)$, die nahe an den Entscheidungsgrenzen (Ursprung und Koordinatenachsen) liegen, sollen für die Berechnung des Trending-Maßes nur begrenzt aussagekräftig sein, da es unsicher ist, ob solche Punkte wirklich zu den zugehörigen Quadranten (1,3 oder 2,4) gehören.\\\\
+Idee: Sicherheit der Zugehörigkeit als Gewichtung in die Indikatorformel einführen.\\\\
+Annahme: Der wahre Wert eines beobachteten Wertepaares $(Dx_t,Dy_t)$ unterliegt einer Normalverteilung, die durch den Mittelpunkt $(Dx_t,Dy_t)$ und die Kovarianz  beschrieben 
+$\begin{pmatrix} \sigma_x & 0 \\
+0 & \sigma_y 
+\end{pmatrix}$ wird.\\\\
+Berechnung der Gewichte als Sicherheit der Zugehörigkeit: 
+\[ 
+w_t = 
+\begin{cases} 
+  P(Dx_t \cdot Dy_t > 0) = \left(1 - \Phi\left(\frac{-Dx_t}{\sigma_X}\right)\right)\left(1 - \Phi\left(\frac{-Dy_t}{\sigma_Y}\right)\right) + \Phi\left(\frac{-Dx_t}{\sigma_X}\right) \Phi\left(\frac{-Dy_t}{\sigma_Y}\right) & \text{wenn } Dx_t \cdot Dy_t > 0,  \\
+  P(Dx_t \cdot Dy_t < 0) = \left(1 - \Phi\left(\frac{-Dx_t}{\sigma_X}\right)\right) \Phi\left(\frac{-Dy_t}{\sigma_Y}\right) + \Phi\left(\frac{-Dx_t}{\sigma_X}\right) \left(1 - \Phi\left(\frac{-Dy_t}{\sigma_Y}\right)\right)  & \text{wenn } Dx_t \cdot Dy_t < 0,  \\
+  0 & \text{sonst} 
+\end{cases}
+\]\\\\
+Dies ermöglicht eine kanonische Erweiterung der Indikatorformel: 
+
+
+\[m_{\text{acc}} = \frac{\sum_{t=T-w}^T \omega_t \cdot \text{sgn}(Dx_t\cdot Dy_t)}{T-w}\]\\\\
+Anderer Normierungsfaktor: z.B. $\sum_t w_t$ möglich, aber folgendes Problem: Wenn alle Punkte z.B. im ersten Quadranten liegen, dann verursacht der Normierungsfaktor $\sum_t w_t$ immer das Maß $1$, was in manchen Fällen nicht der Intuition entspricht, z.B. wenn die Punkte nahe an der Entscheidungsgrenze liegen (in diesem Fall würde man intuitiv eigentlich eine leicht positive Zahl erwarten). \\\\
+Bestimmung der Unsicherheit: $\sigma_x$ und $\sigma_y$ geben die Schätzung der Unsicherheit wieder, d.h. wie "weit" der wahre Punkt vom beobachteten Punkt im Vier-Quadranten-Plot entfernt sein kann. Es ist schwierig, die Standardabweichungen anhand der Daten zu bestimmen, da die beobachtbaren Daten diese Information nicht enthalten. Eine empirische Methode besteht z. B. darin, die empirische Varianz von $Dx$ und $Dy$ als Referenz zu nehmen und daraus Werte zu berechnen (z. B. 10 $\%$ der Varianz von $Dx$ und $Dy$).\\\\
+Eine weitre Möglichkeit ist die Funktion $(\sigma_x,\sigma_y)\mapsto m_{\text{acc}}(\sigma_x,\sigma_y)$ zu betrachten und robuste Aussage (z.B. durch Optimierung) zu treffen. 
+
+\begin{itemize}
+     \item Maximum der Funktion: Wie viel Trending ist unter Berücksichtigung der Unsicherheit maximal möglich.
+    \item Minimum der Funktion: Wie viel Trend ist unter Berücksichtigung der Unsicherheit minimal möglich.
+    \item Erwartungswert: Hier kann eine zusätzliche Annahme über die Verteilung der Unsicherheit getroffen werden.Oder man berechnet für einen hinreichend großen Bereich von $\sigma_x$ und $\sigma_y$ den Mittelwert der aus verschiedenen $\sigma_x$ und $\sigma_y$ resultierenden Maße.
 \end{itemize}
 
 
@@ -349,7 +391,7 @@ For the noisy signal in the form of \ref{eq: simulation},  there are the followi
         \includegraphics[width=\textwidth]{plots/std_estimation/std_estimation_boxplot_1000.pdf}
     \end{subfigure}
 
-  \caption{Estimation of std with different methods.}
+  \caption{Estimation of std using different methods.}
   \label{fig:estimation std}
 \end{figure}
 
@@ -363,8 +405,33 @@ For the noisy signal in the form of \ref{eq: simulation},  there are the followi
   \item Missing data
 \end{itemize}
 
+\subsection{Trending over various time lags}
+
+\begin{itemize}
+    \item Introduce plot over several time lags
+    \item Question: Re-estimate noise for every lag? 
+\end{itemize}
+
 
 \section{Simulation studies}
+
+\subsection{Bias-Variance tradeoff}
+
+Simulation:
+\begin{enumerate}
+    \item For $T = 50, 100, 500, 1000$, \verb|dist| in N(0,1), N(0,5), N(0,10), N(1,1), N(1,5), N(1,10), Chi-squared(3), Chi-squared(7), Chi-squared(9)
+    \begin{enumerate}
+        \item For $k \in \{0.05, \dots, 0.95\}$:
+        \begin{enumerate}
+            \item Sample $T$ samples from $\ydifft$ following \verb|dist|
+            \item For $t = 1, \dots, T$: Set $\xdifft_t = \ydifft_t$ with probability $k$, otherwise set $\ydifft_t = - \ydifft_t$
+            \item Set $\ydiff_t = \ydifft + N(0,0.1)$, $\xdiff_t = \xdifft + N(0,0.1)$
+            \item Compute all trending measures
+            \item Repeat 1,000 times
+        \end{enumerate}
+        \item Plot the trending estimates over $k$.
+    \end{enumerate}
+\end{enumerate}
 
 \subsection{Different trending abilities for same rmse and mae} \label{sec:simulation_rmse_mae}
 
@@ -374,10 +441,10 @@ Let the quantity of interest
 \end{equation}
 with $\varepsilon_t^y \stackrel{\text{iid}}{\sim} N(0, \sigma_y)$ and 
 \begin{equation}
-  \ydiff_t = y_t - y_{t-1}.
+  \ydiff_t = y_t - y_{t-1}. 
 \end{equation}
 
-\todo[inline]{Anpassung der Simulationssettings an Gl. \ref{additive error decomposition} (?)}
+\todo[inline]{Anpassung der Simulationssettings an Gl. \ref{additive error decomposition}; Beschreibung Verbessern}
 The nowcasts are characterised by 
 \begin{align}
 	(\xdifft_t)^1 &= e^x_t \ydifft_t \\
