@@ -260,8 +260,8 @@ Different setting here: We do not only have binary predictions and realization, 
 \subsubsection{Weighted measure by accounting for explanatory power of the points}\label{subsec:w1}
 
 Unlike the situation in dichotomous forecast evaluation or binary classification, the points $(\ydiff_t, \xdiff_t)$ are not binary.
-For points with small $\ydiff_t$ and $\xdiff_t$, the sign of their product is more likely to be driven by noise and not a systematic relationship.
-Weighting the observations by their likelihood to be driven by noise makes the estimation more robust and does not decrease the trending ability because of times of small and nonsystematic changes. 
+For points with small $\ydiff_t$ and $\xdiff_t$, the sign of their product is more likely to be driven by noise or a nonsystematic relationship.
+Weighting the observations by their likelihood to be driven by noise makes the estimation more robust and prevents a decrease of the trending ability because of periods of small and nonsystematic changes. 
 A simple method to account for the uncertainty in the measurement of $\ydiff_t$ and $\xdiff_t$ is to assume that the true values $\ydifft_t$ and $\xdifft$ follow (independent) Gaussian distributions around their observed counterparts with standard deviation $\sigma_y$ and $\sigma_y$, respectively.
 Then, the estimation can be weighted by how clearly a point can be assigned to one of the quadrants:
 \begin{equation}
@@ -272,6 +272,10 @@ Thus, the $w_t$ are in $[0, 0.75]$ and points very close to $(0, 0)$ do not have
 Due to the typical weight structure, $m_{\text{acc}}^1$ is in $[0,1]$ and the bounds are attained if and only if all points are concordant or disconcordant, respectively.
 
 Instead of using the indicator of concordance, one could also use the signum function of the product of $(\ydiff_t, \xdiff_t)$ to scale the result to $(-1, 1)$.
+Consistency to the accuracy measure from binary forecasting or classification argues for the indicator function.
+Similarly, the weights could be determined as the maximum probability of the true observation lying in $Q_1 \cup Q_3$ or $Q_2 \cup Q_4$.
+
+The estimation uncertainty of $m_{\text{acc}}^1$ can be determined by computing the confidence intervals of the estimation using bootstrapping or by resampling using the Gaussian distribution assumption.
 
 \subsubsection{Combined measure of trending and its uncertainty} \label{subsec:w2}
 \unsure[inline]{Gewichtete Formel mit einer anderen Modelannahme und storyline}
@@ -433,96 +437,98 @@ For the noisy signal in the form of \ref{eq: simulation},  there are the followi
 
 \section{Simulation studies}
 
-\subsection{Bias-Variance tradeoff}
+\todo{Discuss aims of simulation studies, appropriate study designs and implement}
 
-Simulation:
-\begin{enumerate}
-    \item For $T = 50, 100, 500, 1000$, \verb|dist| in N(0,1), N(0,5), N(0,10), N(1,1), N(1,5), N(1,10), Chi-squared(3), Chi-squared(7), Chi-squared(9)
-    \begin{enumerate}
-        \item For $k \in \{0.05, \dots, 0.95\}$:
-        \begin{enumerate}
-            \item Sample $T$ samples from $\ydifft$ following \verb|dist|
-            \item For $t = 1, \dots, T$: Set $\xdifft_t = \ydifft_t$ with probability $k$, otherwise set $\ydifft_t = - \ydifft_t$
-            \item Set $\ydiff_t = \ydifft + N(0,0.1)$, $\xdiff_t = \xdifft + N(0,0.1)$
-            \item Compute all trending measures
-            \item Repeat 1,000 times
-        \end{enumerate}
-        \item Plot the trending estimates over $k$.
-    \end{enumerate}
-\end{enumerate}
+% \subsection{Bias-Variance tradeoff}
 
-\subsection{Different trending abilities for same rmse and mae} \label{sec:simulation_rmse_mae}
+% Simulation:
+% \begin{enumerate}
+%     \item For $T = 50, 100, 500, 1000$, \verb|dist| in N(0,1), N(0,5), N(0,10), N(1,1), N(1,5), N(1,10), Chi-squared(3), Chi-squared(7), Chi-squared(9)
+%     \begin{enumerate}
+%         \item For $k \in \{0.05, \dots, 0.95\}$:
+%         \begin{enumerate}
+%             \item Sample $T$ samples from $\ydifft$ following \verb|dist|
+%             \item For $t = 1, \dots, T$: Set $\xdifft_t = \ydifft_t$ with probability $k$, otherwise set $\ydifft_t = - \ydifft_t$
+%             \item Set $\ydiff_t = \ydifft + N(0,0.1)$, $\xdiff_t = \xdifft + N(0,0.1)$
+%             \item Compute all trending measures
+%             \item Repeat 1,000 times
+%         \end{enumerate}
+%         \item Plot the trending estimates over $k$.
+%     \end{enumerate}
+% \end{enumerate}
 
-Let the quantity of interest 
-\begin{equation}\label{eq: simulation}
-  y_t = a \sin(2 \pi t / T) + \varepsilon_t^y, \ t = 1, \dots, T
-\end{equation}
-with $\varepsilon_t^y \stackrel{\text{iid}}{\sim} N(0, \sigma_y)$ and 
-\begin{equation}
-  \ydiff_t = y_t - y_{t-1}. 
-\end{equation}
+% \subsection{Different trending abilities for same rmse and mae} \label{sec:simulation_rmse_mae}
 
-\todo[inline]{Anpassung der Simulationssettings an Gl. \ref{additive error decomposition}; Beschreibung Verbessern}
-The nowcasts are characterised by 
-\begin{align}
-	(\xdifft_t)^1 &= e^x_t \ydifft_t \\
-	(\xdifft_t)^2 &= \begin{cases}
-		e^x_t \ydifft_t &, \text{if}\ q^2_t = 0 \lor e^x_t \geq 0\\
-		(| e^x_t | + 2) \ydifft_t &, \text{if}\ q^2_t = 1 \land e^x_t < 0
-	\end{cases} \\
-	(\xdifft_t)^3 &= \begin{cases}
-		e^x_t \ydifft_t &, \text{if}\ (q^{3, \text{down}}_t = 0 \lor e^x_t > 0) \land \ydifft_t \geq 0\\
-		(| e^x_t | + 2) \ydifft_t &, \text{if}\ (q^{3, \text{down}}_t = 1 \land e^x_t < 0) \land \ydifft_t \geq 0 \\
-		e^x_t \ydifft_t &, \text{if}\ (q^{3, \text{up}}_t = 0 \lor e^x_t > 0) \land \ydifft_t < 0\\
-		(| e^x_t | + 2) \ydifft_t &, \text{if}\ (q^{3, \text{up}}_t = 1 \land e^x_t < 0) \land \ydifft_t < 0
-	\end{cases}
-\end{align}
-where $q^2_t \sim \text{Ber}(2p_2 - 1)$ and $p_2 > 0.5$ denotes the probability that the direction of nowcast 2 is correct.
-For nowcast 3 with $q^{3, \text{up}}_t \sim \text{Ber}(2p_3^{\text{up}}-1)$, $q^{3, \text{down}}_t \sim \text{Ber}(2p_3^{\text{down}}-1)$ the probabilities of direction correction depend on the direction of change. Additionally, let $e^x_t \sim N(0, 1)$.
+% Let the quantity of interest 
+% \begin{equation}\label{eq: simulation}
+%   y_t = a \sin(2 \pi t / T) + \varepsilon_t^y, \ t = 1, \dots, T
+% \end{equation}
+% with $\varepsilon_t^y \stackrel{\text{iid}}{\sim} N(0, \sigma_y)$ and 
+% \begin{equation}
+%   \ydiff_t = y_t - y_{t-1}. 
+% \end{equation}
 
-\begin{figure}
-  \centering
-  \includegraphics{plots/simulation_same_rmse_mae/time_series.pdf}
-  \caption{Realisation of Simulation~\ref{sec:simulation_rmse_mae} with $T = 100$, $\sigma_y=0.1$, $a = 10$, $p_2 = 0.8$, and $p_3 = (0.9, 0.5)$}
-  \label{fig:simulation_rmse_mae_ts}
-\end{figure}
+% \todo[inline]{Anpassung der Simulationssettings an Gl. \ref{additive error decomposition}; Beschreibung Verbessern}
+% The nowcasts are characterised by 
+% \begin{align}
+% 	(\xdifft_t)^1 &= e^x_t \ydifft_t \\
+% 	(\xdifft_t)^2 &= \begin{cases}
+% 		e^x_t \ydifft_t &, \text{if}\ q^2_t = 0 \lor e^x_t \geq 0\\
+% 		(| e^x_t | + 2) \ydifft_t &, \text{if}\ q^2_t = 1 \land e^x_t < 0
+% 	\end{cases} \\
+% 	(\xdifft_t)^3 &= \begin{cases}
+% 		e^x_t \ydifft_t &, \text{if}\ (q^{3, \text{down}}_t = 0 \lor e^x_t > 0) \land \ydifft_t \geq 0\\
+% 		(| e^x_t | + 2) \ydifft_t &, \text{if}\ (q^{3, \text{down}}_t = 1 \land e^x_t < 0) \land \ydifft_t \geq 0 \\
+% 		e^x_t \ydifft_t &, \text{if}\ (q^{3, \text{up}}_t = 0 \lor e^x_t > 0) \land \ydifft_t < 0\\
+% 		(| e^x_t | + 2) \ydifft_t &, \text{if}\ (q^{3, \text{up}}_t = 1 \land e^x_t < 0) \land \ydifft_t < 0
+% 	\end{cases}
+% \end{align}
+% where $q^2_t \sim \text{Ber}(2p_2 - 1)$ and $p_2 > 0.5$ denotes the probability that the direction of nowcast 2 is correct.
+% For nowcast 3 with $q^{3, \text{up}}_t \sim \text{Ber}(2p_3^{\text{up}}-1)$, $q^{3, \text{down}}_t \sim \text{Ber}(2p_3^{\text{down}}-1)$ the probabilities of direction correction depend on the direction of change. Additionally, let $e^x_t \sim N(0, 1)$.
 
-\begin{figure}
-  \centering
-  \begin{subfigure}{.32\textwidth}
-  	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_1}
-  \end{subfigure}
-  \begin{subfigure}{.32\textwidth}
-  	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_2}
-  \end{subfigure}
-    \begin{subfigure}{.32\textwidth}
-  	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_3}
-  \end{subfigure}
-  \caption{4Q-Plot for Simulation~\ref{sec:simulation_rmse_mae} with $T = 100$, $\sigma_y=0.1$, $a = 10$, $p_2 = 0.8$, and $p_3 = (0.9, 0.5)$.}
-  \label{fig:simulation_rmse_mae_4q}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \includegraphics{plots/simulation_same_rmse_mae/time_series.pdf}
+%   \caption{Realisation of Simulation~\ref{sec:simulation_rmse_mae} with $T = 100$, $\sigma_y=0.1$, $a = 10$, $p_2 = 0.8$, and $p_3 = (0.9, 0.5)$}
+%   \label{fig:simulation_rmse_mae_ts}
+% \end{figure}
 
-\todo[inline]{Weiteres Beispiel für viele richtigen Punkte sehr nah an den Entscheidungsgrenzen.}
-\subsection{Simulation: Bootstrap}
+% \begin{figure}
+%   \centering
+%   \begin{subfigure}{.32\textwidth}
+%   	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_1}
+%   \end{subfigure}
+%   \begin{subfigure}{.32\textwidth}
+%   	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_2}
+%   \end{subfigure}
+%     \begin{subfigure}{.32\textwidth}
+%   	\includegraphics{plots/simulation_same_rmse_mae/4q_plot_3}
+%   \end{subfigure}
+%   \caption{4Q-Plot for Simulation~\ref{sec:simulation_rmse_mae} with $T = 100$, $\sigma_y=0.1$, $a = 10$, $p_2 = 0.8$, and $p_3 = (0.9, 0.5)$.}
+%   \label{fig:simulation_rmse_mae_4q}
+% \end{figure}
 
-Simulation setup:
+% \todo[inline]{Weiteres Beispiel für viele richtigen Punkte sehr nah an den Entscheidungsgrenzen.}
+% \subsection{Simulation: Bootstrap}
 
-\begin{itemize}
-  \item $T = 10,000$
-  \item $\ydiff_t \sim N(0, 1)$ 
-  \item $\xdiff_t^{1, k} = b_t  \ydiff_t, b_t \sim \SBer(k)$ (symmetric Bernoulli)
-\end{itemize}
-\unsure[inline]{(or both + random (non-systematic) noise?)}
+% Simulation setup:
 
-Analysis:
-\begin{itemize}
-\item Do for $l = 1, \dots, 100$:
-\begin{itemize}
-  \item Sample $\ydiff, \xdiff$
-  \item Compute bootstrap confidence intervals $(b_{low}, b_{up})_l$ using $B = 10,000$
-\end{itemize}
-  \item Visualize all intervals with real value (confidence interval should cover real value in $\alpha$ cases)
-\end{itemize}
+% \begin{itemize}
+%   \item $T = 10,000$
+%   \item $\ydiff_t \sim N(0, 1)$ 
+%   \item $\xdiff_t^{1, k} = b_t  \ydiff_t, b_t \sim \SBer(k)$ (symmetric Bernoulli)
+% \end{itemize}
+% \unsure[inline]{(or both + random (non-systematic) noise?)}
+
+% Analysis:
+% \begin{itemize}
+% \item Do for $l = 1, \dots, 100$:
+% \begin{itemize}
+%   \item Sample $\ydiff, \xdiff$
+%   \item Compute bootstrap confidence intervals $(b_{low}, b_{up})_l$ using $B = 10,000$
+% \end{itemize}
+%   \item Visualize all intervals with real value (confidence interval should cover real value in $\alpha$ cases)
+% \end{itemize}
 
 
 
@@ -544,13 +550,13 @@ Analysis:
 \printbibliography
 
 \appendix
-\section{Illustrative examples for probabilistic measures}
+% \section{Illustrative examples for probabilistic measures}
 
-\begin{figure}
-    \centering
-    \includegraphics{plots/illustrative_examples/plots_4q_and_mtilde.pdf}
-    \caption{Various examplary courses of the measures $\tilde{m}$ for different configurations of $\ydiff$ and $\xdiff$}
-    \label{fig:example_mtilde}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics{plots/illustrative_examples/plots_4q_and_mtilde.pdf}
+%     \caption{Various examplary courses of the measures $\tilde{m}$ for different configurations of $\ydiff$ and $\xdiff$}
+%     \label{fig:example_mtilde}
+% \end{figure}
 
 \end{document} 
