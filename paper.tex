@@ -24,6 +24,7 @@
 \usepackage{booktabs}
 \usepackage{multirow} % cells over several rows
 \usepackage{tabularx}
+\usepackage{tabularray}
 
 %%% --- Mathematics
 \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools, mathabx}
@@ -307,13 +308,24 @@ Eine weitre Möglichkeit ist die Funktion $(\sigma_x,\sigma_y)\mapsto m_{\text{a
 \newpage
 \subsubsection{Comparison of weighted measures using examples} \label{subsec:w1-w2}
 
-\begin{tabularx}{\textwidth}{c l l l}
-     & Indicator & Weighted 1 & Weighted 2 \\
-     \includegraphics{plots/simulation_com} & & & \\
-     Konzentration in Q1/Q3, aber viel an Entscheidungsgrenzen, kein Noise & & & \\
-     $\ydiff_t = \xdiff_t$ und $\ydiff_t \sim N(0, 1)$ & & & \\
-     
-\end{tabularx}
+Compare the resulting trending assessments for the indicator formula and the weighted schemes. The horizontal axis displays $\ydiff$; the vertical axis corresponds to $\xdiff$. 
+The plots show 200 points, but the estimations are computed on 10,000 points.
+
+\noindent
+\begin{tblr}{
+  colspec = {Q[h]X[-1,m]X[-1,m]X[-1,m]|X[m]},
+  width=\textwidth,
+  stretch = 0,
+  rowsep = 6pt,
+}
+     & Indicator & Weighted 1 & Weighted 2 & Remarks \\
+     \includegraphics{plots/simulation_comparison_weighted_measures/simple.pdf} & 0.7705 & 0.7906 & &  \\
+     \includegraphics{plots/simulation_comparison_weighted_measures/concordant_no_noise.pdf} & 1 & 1 &  & {\scriptsize$\xdiff = \xdifft = 0.05 \ydifft = 0.05 \ydiff$}\newline critique on w1: slight deviation of $\xdiff$ from 0 (near decision boundary), nevertheless, full trending ability. \\
+     \includegraphics{plots/simulation_comparison_weighted_measures/concordant_noise.pdf} & 0.6485 & 0.6835 & \\
+     \includegraphics{plots/simulation_comparison_weighted_measures/perfect_normal.pdf} & 1 & 1 & & critique on w2: $\xdiff = \ydiff$, but not trending ability 1\\
+
+     \includegraphics{plots/simulation_comparison_weighted_measures/sure_unsure_combination.pdf} & 0.6152 & 0.6932 & & \\
+\end{tblr}
 
 
 \newpage
