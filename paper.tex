@@ -278,15 +278,14 @@ Similarly, the weights could be determined as the maximum probability of the tru
 The estimation uncertainty of $m_{\text{acc}}^1$ can be determined by computing the confidence intervals of the estimation using bootstrapping or by resampling using the Gaussian distribution assumption.
 
 \subsubsection{Combined measure of trending and its uncertainty} \label{subsec:w2}
-\unsure[inline]{Gewichtete Formel mit einer anderen Modelannahme und storyline}
+The points $(Dx_t, Dy_t)$, which are close to the decision boundaries (origin and coordinate axes), should only be of limited informative value for the calculation of the trending measure, as it is uncertain whether such points really belong to the associated quadrants (1,3 or 2,4).
 
-Motivation: Die Punkte $(Dx_t, Dy_t)$, die nahe an den Entscheidungsgrenzen (Ursprung und Koordinatenachsen) liegen, sollen für die Berechnung des Trending-Maßes nur begrenzt aussagekräftig sein, da es unsicher ist, ob solche Punkte wirklich zu den zugehörigen Quadranten (1,3 oder 2,4) gehören.\\\\
-Idee: Sicherheit der Zugehörigkeit als Gewichtung in die Indikatorformel einführen.\\\\
-Annahme: Der wahre Wert eines beobachteten Wertepaares $(Dx_t,Dy_t)$ unterliegt einer Normalverteilung, die durch den Mittelpunkt $(Dx_t,Dy_t)$ und die Kovarianz  beschrieben 
+The certainty of belonging can be introduced as a weighting in the indicator formula. The simplest assumption is that the true value of an observed pair of values $(Dx_t,Dy_t)$ is subject to a normal distribution described by the centre $(Dx_t,Dy_t)$ and the covariance 
 $\begin{pmatrix} \sigma_x & 0 \\
 0 & \sigma_y 
-\end{pmatrix}$ wird.\\\\
-Berechnung der Gewichte als Sicherheit der Zugehörigkeit: 
+\end{pmatrix}$.
+
+The weights as certainty of affiliation can be calculated as follows:
 \[ 
 w_t = 
 \begin{cases} 
@@ -294,19 +293,21 @@ w_t =
   P(Dx_t \cdot Dy_t < 0) = \left(1 - \Phi\left(\frac{-Dx_t}{\sigma_X}\right)\right) \Phi\left(\frac{-Dy_t}{\sigma_Y}\right) + \Phi\left(\frac{-Dx_t}{\sigma_X}\right) \left(1 - \Phi\left(\frac{-Dy_t}{\sigma_Y}\right)\right)  & \text{wenn } Dx_t \cdot Dy_t < 0,  \\
   0 & \text{sonst} 
 \end{cases}
-\]\\\\
-Dies ermöglicht eine kanonische Erweiterung der Indikatorformel: 
+\]
+
+This enables a canonical extension of the indicator formula:
 
 
 \[m_{\text{acc}} = \frac{\sum_{t=T-w}^T \omega_t \cdot \text{sgn}(Dx_t\cdot Dy_t)}{T-w}\]\\\\
-Anderer Normierungsfaktor: z.B. $\sum_t w_t$ möglich, aber folgendes Problem: Wenn alle Punkte z.B. im ersten Quadranten liegen, dann verursacht der Normierungsfaktor $\sum_t w_t$ immer das Maß $1$, was in manchen Fällen nicht der Intuition entspricht, z.B. wenn die Punkte nahe an der Entscheidungsgrenze liegen (in diesem Fall würde man intuitiv eigentlich eine leicht positive Zahl erwarten). \\\\
-Bestimmung der Unsicherheit: $\sigma_x$ und $\sigma_y$ geben die Schätzung der Unsicherheit wieder, d.h. wie "weit" der wahre Punkt vom beobachteten Punkt im Vier-Quadranten-Plot entfernt sein kann. Es ist schwierig, die Standardabweichungen anhand der Daten zu bestimmen, da die beobachtbaren Daten diese Information nicht enthalten. Eine empirische Methode besteht z. B. darin, die empirische Varianz von $Dx$ und $Dy$ als Referenz zu nehmen und daraus Werte zu berechnen (z. B. 10 $\%$ der Varianz von $Dx$ und $Dy$).\\\\
-Eine weitre Möglichkeit ist die Funktion $(\sigma_x,\sigma_y)\mapsto m_{\text{acc}}(\sigma_x,\sigma_y)$ zu betrachten und robuste Aussage (z.B. durch Optimierung) zu treffen. 
+Other normalisation factor: e.g. $\sum_t w_t$ possible, but the following problem: If all points lie in the first quadrant, for example, then the normalisation factor $\sum_t w_t$ always causes the measure $1$, which in some cases does not correspond to intuition, e.g. if the points lie close to the decision limit (in this case one would intuitively expect a slightly positive number). 
+
+Determination of the uncertainty: $\sigma_x$ and $\sigma_y$ reflect the estimate of the uncertainty, i.e. how "far" the true point can be from the observed point in the four-quadrant plot. It is difficult to determine the standard deviations from the data, as the observable data do not contain this information. One empirical method, for example, is to take the empirical variance of $Dx$ and $Dy$ as a reference and calculate values from it (e.g. 10 $\%$ of the variance of $Dx$ and $Dy$).\\\\
+Another possibility is to look at the function $(\sigma_x,\sigma_y)\mapsto m_{\text{acc}}(\sigma_x,\sigma_y)$ and make a robust statement (e.g. by optimisation).
 
 \begin{itemize}
-     \item Maximum der Funktion: Wie viel Trending ist unter Berücksichtigung der Unsicherheit maximal möglich.
-    \item Minimum der Funktion: Wie viel Trend ist unter Berücksichtigung der Unsicherheit minimal möglich.
-    \item Erwartungswert: Hier kann eine zusätzliche Annahme über die Verteilung der Unsicherheit getroffen werden.Oder man berechnet für einen hinreichend großen Bereich von $\sigma_x$ und $\sigma_y$ den Mittelwert der aus verschiedenen $\sigma_x$ und $\sigma_y$ resultierenden Maße.
+    \item Maximum of the function: How much trending is maximally possible taking into account the uncertainty.
+    \item Minimum of the function: What is the minimum possible trend taking into account the uncertainty.
+    \item Expected value: An additional assumption about the distribution of the uncertainty can be made here, or the mean value of the measures resulting from different $\sigma_x$ and $\sigma_y$ can be calculated for a sufficiently large range of $\sigma_x$ and $\sigma_y$.
 \end{itemize}
 
 \newpage
