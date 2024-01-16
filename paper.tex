@@ -121,11 +121,16 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 \subsection*{Offene Punkte}
 
 \begin{itemize}
-    \item Welche Form sollte das Maß haben? Mögliche Wahlen: Indikator, Probabilistisch, verschiedene Gewichtungen, ... (Siehe Tabelle \ref{tab:comparison-measures})
+    \item Welche Anforderungen sollte das Maß erfüllen
+    \item Welche Gewichtung sollte im Maß benutzt werden?
+    \item Steht im Nenner die Summe der Gewichte oder die Anzahl der Beobachtungen?
     \item Indikator oder Signum?
-    \item Schätzung/Wahl des Rauschparameters $\sigma$ bei Maßen außer Indikator
-    \item Gehen wir auf andere Verteilungen für den Fehler ein?
-    \item Konfidenzintervalle
+    \item Punkte für die weitere Diskussion:
+    \begin{itemize}
+        \item Schätzung/Wahl des Rauschparameters $\sigma$ bei Maßen außer Indikator
+        \item Gehen wir auf andere Verteilungen für den Fehler ein?
+        \item Konfidenzintervalle
+    \end{itemize}
 \end{itemize}
 
 \listoftodos
@@ -187,7 +192,7 @@ Requirements for a reasonable measure:
     \item $\ydiff = \xdiff$: trending measure should be 1
     \item $\ydiff = - \xdiff$: trending measure should be 0 or -1
     \item Points \enquote{close} to the axis should be treated differently than points that are far away from axis
-    \item Scalar multiplication of $y$ or $x$ should not change the trending measure (?)
+    \item (to be discussed) scalar multiplication of $y$ or $x$ should not change the trending measure
 \end{itemize}
 
 %\begin{table}
@@ -276,19 +281,19 @@ Then, the estimation can be weighted by how clearly a point can be assigned to o
     m_{\text{acc}}^1 = \frac{\sum_{t=T-w}^T \omega_t \ind{\ydiff_t \xdiff_t > 0} }{\sum w_t}
 \end{equation}
 with $w_t = \max_{i \in [4]} P((\ydiff_t \xdiff_t) \in Q_i) - 0.25$.
-Thus, the $w_t$ are in $[0, 0.75]$ and points very close to $(0, 0)$ do not have any weight in assessing the trend. 
+Thus, $w_t$ are in $[0, 0.75]$ and points very close to $(0, 0)$ do not have any weight in assessing the trend. 
 Due to the typical weight structure, $m_{\text{acc}}^1$ is in $[0,1]$ and the bounds are attained if and only if all points are concordant or disconcordant, respectively.
 
 Instead of using the indicator of concordance, one could also use the signum function of the product of $(\ydiff_t, \xdiff_t)$ to scale the result to $(-1, 1)$.
-Consistency to the accuracy measure from binary forecasting or classification argues for the indicator function.
+Consistency to the accuracy measure from binary forecasting or classification is an argument for the indicator function.
 Similarly, the weights could be determined as the maximum probability of the true observation lying in $Q_1 \cup Q_3$ or $Q_2 \cup Q_4$.
 
 The estimation uncertainty of $m_{\text{acc}}^1$ can be determined by computing the confidence intervals of the estimation using bootstrapping or by resampling using the Gaussian distribution assumption.
 
 \subsubsection{Combined measure of trending and its uncertainty} \label{subsec:w2}
-The points $(Dx_t, Dy_t)$, which are close to the decision boundaries (origin and coordinate axes), should only be of limited informative value for the calculation of the trending measure, as it is uncertain whether such points really belong to the associated quadrants (1,3 or 2,4).
+The points $(Dx_t, Dy_t)$, which are close to the decision boundaries (origin and coordinate axes), should only have a limited informative value for the calculation of the trending measure, as it is uncertain whether such points really belong to the associated quadrants (1,3 or 2,4).
 
-The certainty of belonging can be introduced as a weighting in the indicator formula. The simplest assumption is that the true value of an observed pair of values $(Dx_t,Dy_t)$ is subject to a normal distribution described by the centre $(Dx_t,Dy_t)$ and the covariance 
+The certainty of belonging can be introduced as a weighting in the indicator formula. The simplest assumption is that the true value of an observed pair of values $(Dx_t,Dy_t)$ is subject to a normal distribution described by the center $(Dx_t,Dy_t)$ and the covariance
 $\begin{pmatrix} \sigma_x & 0 \\
 0 & \sigma_y 
 \end{pmatrix}$.
@@ -332,11 +337,11 @@ The plots show 200 points, but the estimations are computed on 10,000 points.
   rowsep = 6pt,
 }
      & Indicator & Weighted 1 & Weighted 2 & Remarks \\
-     \includegraphics{plots/simulation_comparison_weighted_measures/simple.pdf} & 0.7672 & 0.7836 & 0.7694 &  \\
+     \includegraphics{plots/simulation_comparison_weighted_measures/simple.pdf} & 0.7661 & 0.7801 & 0.7605 &  \\
      \includegraphics{plots/simulation_comparison_weighted_measures/concordant_no_noise.pdf} & 1 & 1 & 0.8235 & {\scriptsize$\xdiff = \xdifft = 0.05 \ydifft = 0.05 \ydiff$}\newline critique on w1: slight deviation of $\xdiff$ from 0 (near decision boundary), nevertheless, full trending ability. \\
      \includegraphics{plots/simulation_comparison_weighted_measures/concordant_noise.pdf} & 0.6466 & 0.6823 & 0.6266 & \\
      \includegraphics{plots/simulation_comparison_weighted_measures/perfect_normal.pdf} & 1 & 1 & 0.9779 & critique on w2: $\xdiff = \ydiff$, but not trending ability 1\\
-    \includegraphics{plots/simulation_comparison_weighted_measures/sure_unsure_combination.pdf} & 0.6152 & 0.6932 & 0.6389 & \\
+    \includegraphics{plots/simulation_comparison_weighted_measures/sure_unsure_combination.pdf} & 0.7460 & 0.8429 & 0.7360 & \\
 \end{tblr}
 
 
