@@ -1,0 +1,48 @@
+\begin{itemize}
+    \item Drei Anwendungen, jeweils eine aus den Bereichen Messwerte, Nowcasting, Forecasting
+    \item Messwerte: Daten Medizinmesswerte
+    \item Nowcasting: Covid-Nowcasting-Hub
+    \begin{itemize}
+        \item Daten sind schon aufbereitet
+        \item Vergleich zwischen Nowcastern möglich
+        \item Noch zu klären: Wie wird $\xdiff$ gewählt?
+    \end{itemize}
+    \item Forecasting: Pandemie-/Epidemievorhersage, Medikamentenbedarf
+\end{itemize}
+
+\subsection{Covid nowcasting}
+
+Data from Covid-Nowcasting-Hub
+
+Besprechen
+
+\begin{itemize}
+    \item Was ist x-calligrafisch? aktuell betrachteter Nowcast oder "bester" Nowcast? Aktuell betrachteter Nowcast (keine "Auswahl" nötig mit Maß, Trainingsdatensatz, Rolling Fit, ...)
+    \item Welche Lags werden betrachtet? Tage, Woche(n)
+    \item Wie geht man mit missing values um? Vor allem auch für missing values für manche issued-times, wenn es aber andere issed-times gibt, für die Werte vorliegen?
+    \begin{itemize}
+        \item Imputation (2. Wahl)
+        \item Nachgereichte Werte mit ursprünglichen Daten (1. Wahl)
+        \item Nachgereichte Werte mit späteren Daten $\rightarrow$ nicht benutzen
+    \end{itemize}
+\end{itemize}
+
+\subsection{Forecasting emergeny department arrivals}
+
+\textcite{Rostami-Tabar2023}
+
+Paper setup:
+
+\begin{itemize}
+    \item (Probabilistic) forecast of the hourly number of arrivals in large emergency department (take expectation as point forecast)
+    \item Forecasts are produced 48 hours ahead on a 12-hour-rolling basis; background: \enquote{It enables planners to match ED staff to the number of arrivals, redeploy staff, and reconfigure units.}
+    \item training data: 2014-04-01 to 2018-2-28
+    \item evaluation from 2018-03-01 to 2019-02-28
+    \item Evaluation in Paper through RMSE; Pinball Loss and PIT-histograms
+    \item consider several lags:
+    \begin{itemize}
+        \item 72-hours-lag: Is the forecast showing the correct change compared to the most recent observation (problem: strong weekly structure (i.e., Monday and Saturday highest) makes it easy to predict right direction)
+        \item 7-days-lag: Correct trend compared to the last shift of same hour and day $\rightarrow$ change policies compared to that
+        \item Take first issued forecast for every target time
+    \end{itemize}
+\end{itemize}
