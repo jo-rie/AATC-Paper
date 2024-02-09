@@ -93,9 +93,12 @@
 \newcommand{\Ber}{\text{Ber}}
 \newcommand{\SBer}{\text{SBer}}
 \newcommand{\cond}{\:\lvert\:}
+\newcommand{\diffxl}{\mathbf{x}^{\Delta,l}}
 
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
+
+
 
 %%% --- ToDo List
 \usepackage{enumitem}
@@ -136,17 +139,17 @@ Agenda für heute:
     \item Journal/Anwendungsgebiet klären: Angewandtes Medizin Statistikjournal? Dann müsste man die folgenden Abschnitte entsprechend ausrichten
 \end{itemize}
 
-\section{Introduction}
+\section{Introduction}\label{cap: intro}
 
 \input{sections/01-introduction}
 
-\section{What is Nowcasting? Distinction from Forecasting and Measurement}
+\section{Application areas and Notation} \label{cap: notation}
 
 
 
-\input{sections/02-nowcasting}
+\input{sections/02-notation}
 
-\section{Trending assessment}
+\section{Trending assessment}\label{cap: trending}
 
 \input{sections/03-trending}
 
@@ -154,8 +157,10 @@ Agenda für heute:
 
 Eher nicht, weil angewandtes Paper
 
-\section{Application to real-world data}
+\section{Application to real-world data} \label{application}
 
 \input{sections/04-application}
+
+\printbibliography
 
 \end{document} 
