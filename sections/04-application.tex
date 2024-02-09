@@ -14,20 +14,45 @@
 
 Data from Covid-Nowcasting-Hub
 
-Besprechen
+
+\begin{figure}
+    \centering
+    \includegraphics{plots/covid_nowcast/00_true_data.pdf}
+    \caption{The seven-day-hospitalization of Covid in Germany as reported by the RKI \hl{Add citation}.}
+    \label{fig:app-covid-true}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{plots/covid_nowcast/00_nowcast_data.pdf}
+    \caption{Nowcast data without removal of outliers}
+    \label{fig:app-covid-nowcast}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{plots/covid_nowcast/01_nowcast_data_without_outliers.pdf}
+    \caption{Nowcast data after removal of outliers}
+    \label{fig:app-covid-nowcast-no-outliers}
+\end{figure}
+
+\begin{table}[]
+    \centering
+    \input{plots/covid_nowcast/01_model_scores}
+    \caption{Point evaluation measures for the issued mean of the different models. Note that not for all dates all models issue nowcasts.}
+    \label{tab:app-covid-rmse}
+\end{table}
 
 \begin{itemize}
-    \item Was ist x-calligrafisch? aktuell betrachteter Nowcast oder "bester" Nowcast? Aktuell betrachteter Nowcast (keine "Auswahl" nötig mit Maß, Trainingsdatensatz, Rolling Fit, ...)
-    \item Welche Lags werden betrachtet? Tage, Woche(n)
-    \item Wie geht man mit missing values um? Vor allem auch für missing values für manche issued-times, wenn es aber andere issed-times gibt, für die Werte vorliegen?
-    \begin{itemize}
-        \item Imputation (2. Wahl)
-        \item Nachgereichte Werte mit ursprünglichen Daten (1. Wahl)
-        \item Nachgereichte Werte mit späteren Daten $\rightarrow$ nicht benutzen
-    \end{itemize}
+    \item Seven-day hospitalization rate as central steering measure for COVID measures in Germany
+    \item Describe how it is computed
+    \item Outline measures and sources to find methods
+    \item Present overall measures for methods (Table~\ref{tab:app-covid-rmse})
+    \item Present why trending is important, particularly the differentiation between increase and decrease
+    \item Use only a subset of all methods for trending evaluation (best methods)
+    \item Present trending of the subset
 \end{itemize}
-
-\subsection{Forecasting emergeny department arrivals}
+\subsection{Forecasting emergency department arrivals}
 
 \textcite{Rostami-Tabar2023}
 
@@ -55,5 +80,6 @@ Paper setup:
 
 \begin{figure}
 	\centering
-	\includegraphics{plots/ed_arrival/CondProbs.pdf}
+	\includegraphics{plots/ed_arrival/Cond_Prob_lag_3.pdf}
+        \caption{Conditional probability plot for ED arrival}
 \end{figure}
