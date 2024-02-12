@@ -77,23 +77,31 @@
 
 %%% --- Math Commands
 
-\newcommand{\lag}[1][l]{\Delta_{#1}}
 \DeclarePairedDelimiter{\abs}\lvert\rvert
 \DeclareMathOperator{\sign}{sign}
 \newcommand{\tmax}{\bar{t}}
 \newcommand{\ind}[1]{\mathbbm{1}\{#1\}}
-\newcommand{\ydiff}{D y}
-\newcommand{\ydifft}{Dy^\star}
-\newcommand{\xdiff}{Dx}
-\newcommand{\xdifft}{Dx^\star}
-\newcommand{\Ydiff}{DY}
-\newcommand{\Xdiff}{DX}
 \newcommand{\Prob}[1]{P(#1)}
-\newcommand{\mprob}{\tilde{m}}
-\newcommand{\Ber}{\text{Ber}}
-\newcommand{\SBer}{\text{SBer}}
 \newcommand{\cond}{\:\lvert\:}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\SBer}{\text{SBer}}
+
 \newcommand{\diffxl}{\mathbf{x}^{\Delta,l}}
+\newcommand{\diffyl}{\mathbf{y}^{\Delta,l}}
+\newcommand{\diffx}{\mathbf{x}^{\Delta}}
+\newcommand{\diffy}{\mathbf{y}^{\Delta}}
+\newcommand{\diffxlt}{\mathbf{x}^{\Delta,l}_t}
+\newcommand{\diffylt}{\mathbf{y}^{\Delta,l}_t}
+\newcommand{\diffxt}{x^{\Delta}_t}
+\newcommand{\diffyt}{y^{\Delta}_t}
+
+\newcommand{\acc}{\mu}
+\newcommand{\acceps}{\acc_{\eps}}
+\newcommand{\accpeps}{\acceps^+}
+\newcommand{\accmeps}{\acceps^-}
+\newcommand{\accp}{\acc^+}
+\newcommand{\accm}{\acc^-}
 
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
@@ -111,7 +119,7 @@
 \hspace{-2.5pt}}
 \newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
 
-\title{Assessment and Optimization of Nowcast Measures for Trend Detection}
+\title{Trending assessment for nowcasts, measurements, and forecasts}
 \author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 
 \begin{document}
@@ -139,25 +147,25 @@ Agenda für heute:
     \item Journal/Anwendungsgebiet klären: Angewandtes Medizin Statistikjournal? Dann müsste man die folgenden Abschnitte entsprechend ausrichten
 \end{itemize}
 
-\section{Introduction}\label{cap: intro}
+\section{Introduction}\label{sec:introduction}
 
 \input{sections/01-introduction}
 
-\section{Application areas and Notation} \label{cap: notation}
+\section{Application areas and Notation} \label{sec:notation}
 
 
 
 \input{sections/02-notation}
 
-\section{Trending assessment}\label{cap: trending}
+\section{Trending assessment}\label{sec:trending}
 
 \input{sections/03-trending}
 
-\section{Simulation Studies (?)}
+%\section{Simulation Studies (?)}
+%
+%Eher nicht, weil angewandtes Paper
 
-Eher nicht, weil angewandtes Paper
-
-\section{Application to real-world data} \label{application}
+\section{Application to real-world data} \label{sec:application}
 
 \input{sections/04-application}
 
