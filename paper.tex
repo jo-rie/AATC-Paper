@@ -36,8 +36,9 @@
 %%% --- Other
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 %\usepackage[hidelinks]{hyperref}
-\usepackage[style=authoryear,backend=bibtex]{biblatex}
+\usepackage[style=authoryear,backend=biber]{biblatex}
 \addbibresource{library.bib}
+\addbibresource{library-jonas.bib}
 \usepackage{csquotes}
 \usepackage[shortcuts]{extdash} % For Hyphens in English
 %\usepackage{acro}
@@ -50,7 +51,7 @@
 \presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
 %\newcommand{\hl}[1]{\textcolor{Aquamarine}{#1}}
 
-\usepackage{xargs} % Use optional arguements in commands
+\usepackage{xargs,ifthen} % Use optional arguements in commands
 \newcommandx{\unsure}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
 \newcommandx{\missing}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 \newcommandx{\change}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
@@ -59,6 +60,11 @@
 \newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
 \usepackage{marginnote}
 \let\marginpar\marginnote
+
+%%% --- Acronyms
+\usepackage{acro}
+\DeclareAcronym{kde}{short=KDE, long=kernel density estimation}
+\DeclareAcronym{bca}{short=BCa, long=bias-corrected and accelerated}
 
 %%%% ---- Own Commands
 %%% --- Theorem Settings
@@ -83,6 +89,7 @@
 \newcommand{\ind}[1]{\mathbbm{1}\{#1\}}
 \newcommand{\Prob}[1]{P(#1)}
 \newcommand{\cond}{\:\lvert\:}
+\newcommand{\card}[1]{\abs{#1}}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\SBer}{\text{SBer}}
@@ -91,17 +98,20 @@
 \newcommand{\diffyl}{\mathbf{y}^{\Delta,l}}
 \newcommand{\diffx}{\mathbf{x}^{\Delta}}
 \newcommand{\diffy}{\mathbf{y}^{\Delta}}
+\newcommand{\diffxrv}{X^{\Delta}}
+\newcommand{\diffyrv}{Y^{\Delta}}
 \newcommand{\diffxlt}{\mathbf{x}^{\Delta,l}_t}
 \newcommand{\diffylt}{\mathbf{y}^{\Delta,l}_t}
 \newcommand{\diffxt}{x^{\Delta}_t}
 \newcommand{\diffyt}{y^{\Delta}_t}
 
 \newcommand{\acc}{\mu}
-\newcommand{\acceps}{\acc_{\eps}}
-\newcommand{\accpeps}{\acceps^+}
-\newcommand{\accmeps}{\acceps^-}
 \newcommand{\accp}{\acc^+}
 \newcommand{\accm}{\acc^-}
+%\newcommand{\acceps}[1][]{\ifthenelse { \equal {#1} {} }{\acc_{\eps}}{\acc_{#1}}} %https://stackoverflow.com/a/7314951
+\newcommand{\acceps}[1][\varepsilon]{\acc_{#1}} %https://stackoverflow.com/a/7314951
+\newcommand{\accpeps}[1][\varepsilon]{\acceps[#1]^+}
+\newcommand{\accmeps}[1][\varepsilon]{\acceps[#1]^-}
 
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
@@ -148,17 +158,12 @@ Agenda für heute:
 \end{itemize}
 
 \section{Introduction}\label{sec:introduction}
-
 \input{sections/01-introduction}
 
 \section{Application areas and Notation} \label{sec:notation}
-
-
-
 \input{sections/02-notation}
 
 \section{Trending assessment}\label{sec:trending}
-
 \input{sections/03-trending}
 
 %\section{Simulation Studies (?)}
@@ -166,9 +171,20 @@ Agenda für heute:
 %Eher nicht, weil angewandtes Paper
 
 \section{Application to real-world data} \label{sec:application}
-
 \input{sections/04-application}
 
 \printbibliography
+
+\appendix
+\section{Data generation for Section~\ref{sec:trending}}\label{sec:app-trending-data-generation}
+
+\todo{Write}
+
+Beispiel
+\begin{itemize}
+  \item $\diffyt \sim U(-5, 5) + N(0, 1)$
+  \item $\diffxt \sim \diffyt \cdot \SBer(k) \cdot (\text{Truncated Normal, mean 1, sigma 0.5, trunc 0})$
+\end{itemize}
+
 
 \end{document} 
