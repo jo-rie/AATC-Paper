@@ -65,6 +65,8 @@
 \usepackage{acro}
 \DeclareAcronym{kde}{short=KDE, long=kernel density estimation}
 \DeclareAcronym{bca}{short=BCa, long=bias-corrected and accelerated}
+\DeclareAcronym{cdf}{short=CDF, long=cumulative distribution function}
+
 
 %%%% ---- Own Commands
 %%% --- Theorem Settings
@@ -177,14 +179,8 @@ Agenda für heute:
 
 \appendix
 \section{Data generation for Section~\ref{sec:trending}}\label{sec:app-trending-data-generation}
+\input{sections/50-appendix-data-generation}
 
-\todo{Write}
-
-Beispiel
-\begin{itemize}
-  \item $\diffyt \sim U(-5, 5) + N(0, 1)$
-  \item $\diffxt \sim \diffyt \cdot \SBer(k) \cdot (\text{Truncated Normal, mean 1, sigma 0.5, trunc 0})$
-\end{itemize}
 
 
 \end{document} 

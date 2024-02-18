@@ -27,13 +27,14 @@ Points in the green upper right and lower left quadrant reflect a correct trendi
 Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
 Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
 Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant plot for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
+The data generation is described in Appendix~\ref{sec:app-trending-data-generation} and will carry through this section.
 The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the date of difference in the point color.
 In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to small time indices and turn green for larger $t$.
 However, four-quadrant plots become crowded for larger datasets, and the sequential information on the differences is complex to assess thoroughly.
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
-However, they lack the clearness and intuition of the four-quadrant plot while adding no more information on the trending \parencite{Saugel2015}.
+However, they lack the clearness and intuition of the four-quadrant plot while adding no more information on the trending~\parencite{Saugel2015}.
 
 \begin{figure}
 \centering
@@ -82,10 +83,10 @@ Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\tim
 Unbalanced outcomes of the differences are unlikely in our setting as they are obtained from differencing time series data.
 Nevertheless, if in a four-quadrant plot the number of positive and negative $\diffy$ are observed to differ widely, one should consider another as measures such as Cohen's $\kappa$ or the ones listed in \textcite[Table 3.3]{Jolliffe2012}.
 
-
 All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
+This trade cannot be observed in the two four-quadrant plot as it is overlaid by the high number of points.
 
 \begin{figure}
     \centering
@@ -129,10 +130,12 @@ We denote the measures accounting for an exclusion area by
 \end{align}
 The estimators can easily be adapted for other shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes different shapes of the exclusion area.
-A box-shaped exclusion area leaves points out that are small in both components and are thus likely to be driven away from the zero point by noise. \todo{Umformulieren}
+A box-shaped exclusion area leaves points out that are small in both components and are thus likely to be driven away from the zero point by noise.
+Thus, only point 1 is excluded.
 An exclusion area along one axis removes points in which one of the components could change the sign by a small amount of noise.
 This particularly suits prediction models, where small amounts of noise are inevitable.
 A cross-shaped exclusion area along both axes accounts for sign-reversal in both components.
+For those two methods, points 1 and 7 or 1, 6 and 7 are excluded, respectively.
 
 In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
 For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point.
@@ -162,10 +165,25 @@ A comprehensive introduction into multivariate \ac{kde} can be found in \textcit
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
 For kernels with infinite support, for example, the Gaussian kernel, this can convey a false impression of validity for values far beyond the values in $\diffx$.
 Thus, the plot should be limited to the core values of $\diffx$ without outliers.
+Besides the kernel, a bandwith selector has to be chosen for a multivariate \ac{kde}.
+Various methods are available with different strengths and weaknesses.
+Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross validation maximum likelihood and cross validation least squares.
+\todo{Add analysis.}
 
-Figure~\ref{fig:trending_cond_prob} provides two sample conditional trending plots.
+Figure~\ref{fig:trending_cond_prob} shows the results for the different snythetic datasets again, but only with the best-balanced cross validation least squares estimator.
 \todo[inline]{Add evaluation of the plot}
 Further examples, including comparisons between methods concerning their trending ability, are available for the applications in Section~\ref{sec:application}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.48\textwidth}
+        \missingfigure{Influence of bw method; Data set 1}
+    \end{subfigure}
+    \begin{subfigure}{.48\textwidth}
+        \missingfigure{Influence of bw method; Data set 2}
+    \end{subfigure}
+    \caption{Resulting conditional trending plot for different bandwidth selection processes.}\label{fig:trending-cond-prob-bw}
+\end{figure}
 
 \begin{figure}
     \centering
@@ -189,6 +207,26 @@ The \ac{bca} method modifies the quantiles of the empirical bootstrap distributi
 Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but needs smaller datasets for reasonable confidence intervals.
 The basic approach balances those two aims.
 We compare the approaches in a small synthetic data study in the following with respect to their small-dataset behavior and their computation time.
+We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
+The considered datasets are again the ones outlined in Appendix~\ref{sec:app-trending-data-generation}.
+The results in terms of coverage of the true values are shown in Table~\ref{tab:trending_bootstrap}.
+The computation times per method and dataset are shown in Table~\ref{tab:trending_bootstrap_time}.
+
+\begin{table}
+    \centering
+    \missingfigure{Bootstrap results}
+    \caption{}
+    \label{tab:trending_bootstrap}
+\end{table}
+
+\begin{table}
+    \centering
+    \missingfigure{Bootstrap results}
+    \caption{}
+    \label{tab:trending_bootstrap_time}
+\end{table}
+
+
 
 In bootstrapping, the sample is assumed to be independent and identically distributed.
 Thus, before applying bootstrapping methods, the strength of sequential dependence should be inspected, for example, by analyzing the autocorrelation and partial autocorrelation.
