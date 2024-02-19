@@ -17,10 +17,12 @@ Section~\ref{subsec:trending-bootstrap} gives bootstrap methods for computing co
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-basics}
 
 As noted above, a prediction is trending perfectly if all occurred changes are predicted correctly, that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
+ \unsure{vielleicht nicht change sondern direction of the change}
 Perfect trending is hardly the case in practice, but a weaker requirement is needed.
 Accordingly, when assessing the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
 A simple yet insightful method is the four-quadrant plot.
-For example, it is known in cardiac output measurement analysis~\parencite{Saugel2015}. \todo{Add other citations}
+For example, it is known in cardiac output measurement analysis~\parencite{Saugel2015}. \todo{Add other citations} 
+\unsure{\cite{perrino1998intraoperative}}
 Thereby, the occurred changes are plotted together with the predicted changes, that is, $(\diffy_t, \diffx_t)$ for $t = 1, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
