@@ -37,7 +37,7 @@ In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to small t
 However, four-quadrant plots become crowded for larger datasets, and the sequential information on the differences is complex to assess thoroughly.
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
 However, they lack the clearness and intuition of the four-quadrant plot while adding no more information on the trending~\parencite{Saugel2015}.
-\unsure{Vielleicht bei der Einführung des 4q-Plots auch exclusion area schon erwähnen?}
+
 \begin{figure}
 \centering
 \begin{subfigure}[t]{.24\textwidth}
@@ -85,7 +85,7 @@ There are various adapted measures for unbalanced outcomes, for example, Cohen's
 Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
 Unbalanced outcomes of the differences are unlikely in our setting as they are obtained from differencing time series data.
 Nevertheless, suppose in a four-quadrant plot, the positive and negative $\diffy$ are observed to differ widely. In that case, one should consider another as measures such as Cohen's $\kappa$ or those listed in \textcite[Table 3.3]{Jolliffe2012}.
-\unsure{was heisst unbalanced konrket? u}
+\unsure{was heisst unbalanced konrket? und vielleicht kappa auch irgendwie anders einführen}
 All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
@@ -120,7 +120,7 @@ So, although the estimates can be computed, the time spans with missing values s
 
 The above measures use only the information on a point's quadrant and neglect further details on its location within the quadrant, as displayed in a four-quadrant plot.
 However, points close to the zero point have intuitively less explanatory power.
-If there is noise or non-systematic effects present in true value or nowcasts, those points are likely to be driven by noise to a large amount.
+If there is noise or non-systematic effects present in true value or nowcasts, those points are likely to be driven by noise to a large amount. \unsure{anstatt nowcasts eher predictions}
 Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the above methods.
 Points within that zone are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
 The exclusion area's shape can be chosen according to the noise characteristics in predictions and true values.
@@ -139,7 +139,7 @@ An exclusion area along one axis removes points in which one of the components c
 This particularly suits prediction models, where small amounts of noise are inevitable.
 A cross-shaped exclusion area along both axes accounts for sign reversal in both components.
 For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
-
+\unsure{kann man vielleicht mu für verschiedene Varianten von Exclusion Area}
 In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
 For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point.
 These shapes are theoretically appealing, but the interpretation of the resulting estimators gets ambiguous.
