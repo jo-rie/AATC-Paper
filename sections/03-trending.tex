@@ -37,7 +37,7 @@ In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to small t
 However, four-quadrant plots become crowded for larger datasets, and the sequential information on the differences is complex to assess thoroughly.
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
 However, they lack the clearness and intuition of the four-quadrant plot while adding no more information on the trending~\parencite{Saugel2015}.
-
+\unsure{Vielleicht bei der Einführung des 4q-Plots auch exclusion area schon erwähnen?}
 \begin{figure}
 \centering
 \begin{subfigure}[t]{.24\textwidth}
@@ -62,8 +62,9 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively.
+Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively. \unsure{vielleict genauer: wofür diese zwei ZV stehen}
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R$).
+\unsure{der Fall: z1 = z2 = 0?}
 To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0}}{\card{T}}.\label{eq:acc}
