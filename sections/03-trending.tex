@@ -23,7 +23,7 @@ A simple yet insightful method is the four-quadrant plot.
 For example, it is known in cardiac output measurement analysis~\parencite{Saugel2015}. \todo{Add other citations}
 Thereby, the occurred changes are plotted together with the predicted changes, that is, $(\diffy_t, \diffx_t)$ for $t = 1, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays prediction data differences.
-Points in the green upper right and lower left quadrant reflect a correct trending for the respective time step, whereas point in the remaining red quadrants show incorrect predicted changes.
+Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
 Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
 Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
 Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant plot for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
@@ -60,7 +60,7 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$.
+Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively.
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R$).
 To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \begin{equation}
@@ -68,7 +68,7 @@ To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \end{equation}
 We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{1, \dots, T\}$.
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
-Such a $2 \times 2$ table of counts is often called a contingency table and is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
+Such a $2 \times 2$ table of counts is often called a contingency table. It is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
 There, a wide range of other methods is usually used to analyze further characteristics of contingency tables.
 Two simple measures focusing on specific areas of interest are the positive and negative trending ratio $\accp$ and $\accm$, respectively.
 They are defined as
@@ -81,12 +81,12 @@ The two give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diff
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \todo{Citation}.
 Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
 Unbalanced outcomes of the differences are unlikely in our setting as they are obtained from differencing time series data.
-Nevertheless, if in a four-quadrant plot the number of positive and negative $\diffy$ are observed to differ widely, one should consider another as measures such as Cohen's $\kappa$ or the ones listed in \textcite[Table 3.3]{Jolliffe2012}.
+Nevertheless, suppose in a four-quadrant plot, the positive and negative $\diffy$ are observed to differ widely. In that case, one should consider another as measures such as Cohen's $\kappa$ or those listed in \textcite[Table 3.3]{Jolliffe2012}.
 
 All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
-This trade cannot be observed in the two four-quadrant plot as it is overlaid by the high number of points.
+This seasonal behavior cannot be observed in the two four-quadrant plot as the high number of points overlays it.
 
 \begin{figure}
     \centering
@@ -107,16 +107,16 @@ This trade cannot be observed in the two four-quadrant plot as it is overlaid by
 
 Missing values are a common problem, in particular in nowcasting and forecasting.
 This will, for example, become evident in the data study in Section~\ref{sec:application-covid}.
-Data pairs with missing values can be excluded in the computation of the measures.
+Data pairs with missing values can be excluded from the computation of the measures.
 Nevertheless, missing values can considerably influence the results, mainly if they appear systematically.
-Predicting only in those times of certainty and omitting prediction in other times would generally improve evaluation measures.
+Predicting only in those times of certainty and omitting prediction in other times would improve evaluation measures.
 So, although the estimates can be computed, the time spans with missing values should be inspected visually.
 
 
 \subsection{Accounting for noise}\label{subsec:trending-noise}
 
-The above measures use only the information on a point's quadrant and neglect further information on its location within the quadrant, as displayed in a four-quadrant plot.
-However, points close to the zero points have intuitively less explanatory power.
+The above measures use only the information on a point's quadrant and neglect further details on its location within the quadrant, as displayed in a four-quadrant plot.
+However, points close to the zero point have intuitively less explanatory power.
 If there is noise or non-systematic effects present in true value or nowcasts, those points are likely to be driven by noise to a large amount.
 Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the above methods.
 Points within that zone are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
@@ -135,7 +135,7 @@ Thus, only point 1 is excluded.
 An exclusion area along one axis removes points in which one of the components could change the sign by a small amount of noise.
 This particularly suits prediction models, where small amounts of noise are inevitable.
 A cross-shaped exclusion area along both axes accounts for sign-reversal in both components.
-For those two methods, points 1 and 7 or 1, 6 and 7 are excluded, respectively.
+For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
 
 In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
 For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point.
@@ -165,12 +165,12 @@ A comprehensive introduction into multivariate \ac{kde} can be found in \textcit
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
 For kernels with infinite support, for example, the Gaussian kernel, this can convey a false impression of validity for values far beyond the values in $\diffx$.
 Thus, the plot should be limited to the core values of $\diffx$ without outliers.
-Besides the kernel, a bandwith selector has to be chosen for a multivariate \ac{kde}.
+Besides the kernel, a bandwidth selector has to be chosen for a multivariate \ac{kde}.
 Various methods are available with different strengths and weaknesses.
-Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross validation maximum likelihood and cross validation least squares usigng the \verb|statsmodels| python package~\parencite{Seabold2010}.
+Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| python package~\parencite{Seabold2010}.
 The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
-The second method, cross validation least squares, did not converge for the first dataset after a computation time of approximately 300 times the other two methods.
-The rule of thumb yielded slightly oversmoothed results, while the cross validation maximum likelihood yields rather small bandwiths.
+The second method, cross-validation least squares, did not converge for the first dataset after a computation time of approximately 300 times that of the other two methods.
+The rule of thumb yielded slightly over-smoothed results, while the cross-validation maximum likelihood yields relatively small bandwidths.
 \todo[inline]{Add evaluation of the plot}
 Further examples, including comparisons between methods concerning their trending ability, are available for the applications in Section~\ref{sec:application}.
 
@@ -184,7 +184,7 @@ Further examples, including comparisons between methods concerning their trendin
         \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_normal}
         \caption{Second dataset. }
     \end{subfigure}
-    \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross validation least squares takes a considerably larger computation time while yielding the results with best balance between smoothing and displaying local effects. The rule of thumb is the fastest method but tends to oversmooth. Cross validation least squares  }\label{fig:trending-cond-prob-bw}
+    \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time while yielding the results with the best balance between smoothing and displaying local effects. The rule of thumb is the fastest method but tends to oversmooth. Cross-validation least squares  }\label{fig:trending-cond-prob-bw}
 \end{figure}
 
 
@@ -200,11 +200,11 @@ The \textit{basic} approach computes the confidence interval based on the non-bo
 The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\parencite{Efron1987}.
 Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but needs smaller datasets for reasonable confidence intervals.
 The basic approach balances those two aims.
-We compare the approaches in a small synthetic data study in the following with respect to their small-dataset behavior and their computation time.
+We compare the approaches in a small synthetic data study concerning their small-dataset behavior and computation time.
 We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
-The considered datasets are again the ones outlined in Appendix~\ref{sec:app-trending-data-generation}, the first dataset with asymmetric dependence.
-In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals were used~\parencite{Virtanen2020}.
-The prescribed confidence level is 90 \% and the number of bootstrap samples is $10,000$.
+The considered datasets are again outlined in Appendix~\ref{sec:app-trending-data-generation}, the first dataset with asymmetric dependence.
+In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\parencite{Virtanen2020}.
+The prescribed confidence level is 90 \%, and the number of bootstrap samples is $10,000$.
 The share of confidence intervals covering the true values per method and $T$ are shown in Table~\ref{tab:trending_bootstrap}.
 The true values of the accuracy are computed based on a dataset of size $10^9$, yielding 0.7501 and 0.7700 for the two datasets.
 The computation times per method and dataset are shown in Figure~\ref{fig:trending_bootstrap_time}.
@@ -234,7 +234,7 @@ The computation times per method and dataset are shown in Figure~\ref{fig:trendi
         \includegraphics{plots/illustrative_examples/boxplot_comp_time_normal}
         \caption{Second dataset}
     \end{subfigure}
-    \caption{Boxplot of the computation time of the different bootstrapping method and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slighlty longer than the other two but the difference is neglectable.}
+    \caption{Boxplot of the computation time of the different bootstrapping method and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
     \label{fig:trending_bootstrap_time}
 \end{table}
 
