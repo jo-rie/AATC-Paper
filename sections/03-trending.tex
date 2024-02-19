@@ -167,30 +167,24 @@ For kernels with infinite support, for example, the Gaussian kernel, this can co
 Thus, the plot should be limited to the core values of $\diffx$ without outliers.
 Besides the kernel, a bandwith selector has to be chosen for a multivariate \ac{kde}.
 Various methods are available with different strengths and weaknesses.
-Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross validation maximum likelihood and cross validation least squares.
-\todo{Add analysis.}
-
-Figure~\ref{fig:trending_cond_prob} shows the results for the different snythetic datasets again, but only with the best-balanced cross validation least squares estimator.
+Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross validation maximum likelihood and cross validation least squares usigng the \verb|statsmodels| python package~\parencite{Seabold2010}.
+The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
+The second method, cross validation least squares, did not converge for the first dataset after a computation time of approximately 300 times the other two methods.
+The rule of thumb yielded slightly oversmoothed results, while the cross validation maximum likelihood yields rather small bandwiths.
 \todo[inline]{Add evaluation of the plot}
 Further examples, including comparisons between methods concerning their trending ability, are available for the applications in Section~\ref{sec:application}.
 
 \begin{figure}
     \centering
     \begin{subfigure}{.48\textwidth}
-        \missingfigure{Influence of bw method; Data set 1}
+        \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_asym_butterfly}
+        \caption{First dataset with asymmetric dependence.}
     \end{subfigure}
     \begin{subfigure}{.48\textwidth}
-        \missingfigure{Influence of bw method; Data set 2}
+        \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_normal}
+        \caption{Second dataset. }
     \end{subfigure}
-    \caption{Resulting conditional trending plot for different bandwidth selection processes.}\label{fig:trending-cond-prob-bw}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \missingfigure{Trending plot for two different simulation examples -> the two data samples of bootstrapping?}
-%    \includegraphics{}
-    \caption{}
-    \label{fig:trending_cond_prob}
+    \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross validation least squares takes a considerably larger computation time while yielding the results with best balance between smoothing and displaying local effects. The rule of thumb is the fastest method but tends to oversmooth. Cross validation least squares  }\label{fig:trending-cond-prob-bw}
 \end{figure}
 
 
@@ -208,22 +202,40 @@ Typically, the percentile approach needs larger datasets and provides an easy an
 The basic approach balances those two aims.
 We compare the approaches in a small synthetic data study in the following with respect to their small-dataset behavior and their computation time.
 We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
-The considered datasets are again the ones outlined in Appendix~\ref{sec:app-trending-data-generation}.
-The results in terms of coverage of the true values are shown in Table~\ref{tab:trending_bootstrap}.
-The computation times per method and dataset are shown in Table~\ref{tab:trending_bootstrap_time}.
+The considered datasets are again the ones outlined in Appendix~\ref{sec:app-trending-data-generation}, the first dataset with asymmetric dependence.
+In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals were used~\parencite{Virtanen2020}.
+The prescribed confidence level is 90 \% and the number of bootstrap samples is $10,000$.
+The share of confidence intervals covering the true values per method and $T$ are shown in Table~\ref{tab:trending_bootstrap}.
+The true values of the accuracy are computed based on a dataset of size $10^9$, yielding 0.7501 and 0.7700 for the two datasets.
+The computation times per method and dataset are shown in Figure~\ref{fig:trending_bootstrap_time}.
+\todo[inline]{Add evaluation when computation is finished}
 
 \begin{table}
     \centering
-    \missingfigure{Bootstrap results}
-    \caption{}
+    \begin{subtable}{.48\textwidth}
+        \input{plots/illustrative_examples/bootstrap_butterfly_cis}
+        \caption{First dataset}
+    \end{subtable}\hspace{0.02\textwidth}
+    \begin{subtable}{.48\textwidth}
+        \input{plots/illustrative_examples/bootstrap_normal_cis}
+        \caption{Second dataset}
+    \end{subtable}
+    \caption{Proportion of bootstrapping confidence intervals covering the true value of trending ratio per method and sample size $T$. The average width of the confidence interval is listed in brackets.}
     \label{tab:trending_bootstrap}
 \end{table}
 
 \begin{table}
     \centering
-    \missingfigure{Bootstrap results}
-    \caption{}
-    \label{tab:trending_bootstrap_time}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics{plots/illustrative_examples/boxplot_comp_time_butterfly}
+        \caption{First dataset}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics{plots/illustrative_examples/boxplot_comp_time_normal}
+        \caption{Second dataset}
+    \end{subfigure}
+    \caption{Boxplot of the computation time of the different bootstrapping method and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slighlty longer than the other two but the difference is neglectable.}
+    \label{fig:trending_bootstrap_time}
 \end{table}
 
 
@@ -231,12 +243,3 @@ The computation times per method and dataset are shown in Table~\ref{tab:trendin
 In bootstrapping, the sample is assumed to be independent and identically distributed.
 Thus, before applying bootstrapping methods, the strength of sequential dependence should be inspected, for example, by analyzing the autocorrelation and partial autocorrelation.
 Bootstrapping focusing on time series data is covered in~\textcite{Hardle2003,Kreiss2012}, for example.
-
-\begin{itemize}
-    \item We use the alogrithms provided by Python's \verb|scipy|-package~\parencite{Virtanen2020}.
-    \item Two simulation setups
-    \item Take different $T$
-    \item Compute "true value" based on very large sample.
-    \item Compute share of bootstrap confidence intervals that actually covered the true value for different $B$.
-    \item Results in "double table": columns $T$, main rows $B$, undercategory: bootstrap methods.
-\end{itemize}

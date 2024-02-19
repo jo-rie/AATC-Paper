@@ -10,7 +10,7 @@ Subsequently, the $\diffy$ are simulated for a constant trending ratio $k$ by
 where $n_t$ is a truncated normal distribution with mean 1 and standard deviation 0.5, truncated at 0 and a symmetric Bernoulli random variable with parameter $k$.
 For a time-varying trending ratio, the parameter $k$ is modified to have a wave-shape over time, that is,
 \begin{equation*}
-    k_t = 0.75 + \sin(t / T^\star \cdot 2 \pi) / 4,
+    k_t = 0.75 + \sin(t / 365.25 \cdot 2 \pi) / 4,
 \end{equation*}
 where $T^\star$ is $T$ divided by the number of oscillations; in this case, 4.
 For the asymmetric trending ratio, $k$ is a function of $\diffxt$,
