@@ -120,7 +120,7 @@ So, although the estimates can be computed, the time spans with missing values s
 
 The above measures use only the information on a point's quadrant and neglect further details on its location within the quadrant, as displayed in a four-quadrant plot.
 However, points close to the zero point have intuitively less explanatory power.
-If there is noise or non-systematic effects present in true value or nowcasts, those points are likely to be driven by noise to a large amount. \unsure{anstatt nowcasts eher predictions}
+If there is noise or non-systematic effects present in true value or predictions, those points are likely to be driven by noise to a large amount. 
 Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the above methods.
 Points within that zone are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
 The exclusion area's shape can be chosen according to the noise characteristics in predictions and true values.
@@ -142,7 +142,7 @@ For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
 \unsure{kann man vielleicht mu für verschiedene Varianten von Exclusion Area ausrechnen als Vergleich?}
 In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
 For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point. \unsure{vielleicht genauer bei der Verwendung von Quantilen}
-These shapes are theor etically appealing, but the interpretation of the resulting estimators gets ambiguous.
+These shapes are theoretically appealing, but the interpretation of the resulting estimators gets ambiguous.
 Thus, we use the simple exclusion areas above.
 
 In most applications, it is advisable to determine the exact shape and size of the exclusion area based on domain knowledge or expert opinions.
