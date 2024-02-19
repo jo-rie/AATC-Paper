@@ -93,16 +93,16 @@ This seasonal behavior cannot be observed in the two four-quadrant plot as the h
     \begin{subfigure}[t]{.24\textwidth}
 \includegraphics{plots/illustrative_examples/4Q_sample_without_time}
 \caption{Four-quadrant plot with simulated data.}\label{fig:trending_basic_4q_sample}
-\end{subfigure}%
+\end{subfigure}\hspace{0.01\textwidth}
 \begin{subfigure}[t]{.24\textwidth}
 \includegraphics{plots/illustrative_examples/4Q_sample_with_time}
 \caption{The data is colored according to the time index $t$, the greener, the later.}\label{fig:trending_basic_4q_sample_color}
-\end{subfigure}%
+\end{subfigure}\hspace{0.01\textwidth}
 \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
-    \caption{Rolling estimate of the trending ratio over time with window length 91. A strong yearly seasonality of the trending ratio becomes visible. The overall trending ratios are $\mu = 0.7577$ and with exclusion area $\diffx < \varepsilon$, $\mu_{1.0} = 0.7712$, respectively. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}\label{fig:trending_ratio_time_series}
+    \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption{We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{sec:app-trending-data-generation})}
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{sec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$ and with exclusion area $\diffx < \varepsilon$, $\mu_{1.0} = 0.7712$, respectively. A strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}
 \end{figure}
 
 Missing values are a common problem, in particular in nowcasting and forecasting.
@@ -134,7 +134,7 @@ A box-shaped exclusion area leaves points out that are small in both components 
 Thus, only point 1 is excluded.
 An exclusion area along one axis removes points in which one of the components could change the sign by a small amount of noise.
 This particularly suits prediction models, where small amounts of noise are inevitable.
-A cross-shaped exclusion area along both axes accounts for sign-reversal in both components.
+A cross-shaped exclusion area along both axes accounts for sign reversal in both components.
 For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
 
 In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
