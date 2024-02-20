@@ -205,7 +205,9 @@ The prescribed confidence level is 90 \%, and the number of bootstrap samples is
 The share of confidence intervals covering the true values per method and $T$ are shown in Table~\ref{tab:trending_bootstrap}.
 The true values of the accuracy are computed based on a dataset of size $10^8$, yielding 0.7501 and 0.7700 for the two datasets.
 The computation times per method and dataset are shown in Figure~\ref{fig:trending_bootstrap_time}.
-
+For the small sample sizes up to $T = 168$, only the \ac{bca} method keeps the confidence interval size and yields slightly wider confidence intervals. 
+The method's results do not differ for the larger sample sizes. 
+The computation time for the \ac{bca} method is slightly larger than for the other methods, but all methods have a moderate computation time.
 
 \begin{table}
     \centering
