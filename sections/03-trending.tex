@@ -147,9 +147,6 @@ In most applications, it is advisable to determine the exact shape and size of t
 In addition, the size can also be calculated as a proportion of the total variance or the total range of the data.
 A third approach is to visualize the trending ratio for different values of $\varepsilon$.
 Section~\ref{subsec:trending-example} gives an example of such a plot.
-Instead of determining the exclusion area size beforehand, the plot can be used to choose the appropriate $\varepsilon$.
-\todo[inline]{Abschnitt unelegant}
-\discuss{wollen wir hier den Fass aufmachen?}
 As a base approach, we advocate using no exclusion area in the four-quadrant plot as the points do not complicate its interpretation and a $\acceps$-over-$\varepsilon$ plot to visualize the course of the trending ratio over different exclusion area sizes.
 
 
@@ -159,7 +156,6 @@ The above-defined estimators give information on the probabilites $P(\diffxrv \d
 To assess the trending ability of a prediction, an evaluation on a finder grid is of interest.
 Whereas it would be possible to build analog measures on other intervals, assessing $P(\diffxrv \diffyrv > 0 | \diffx = x)$ graphically eases the simultaneous evaluation of various intervals.
 In addition, the conditional trending plot facilitates the comparison of various methods in a single plot, and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
-\done{Asymmetrie vielleicht irgendwo oben als Begriff einführen}
 
 The probability $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ cannot be computed by the counting approach, as for almost all $x \in \R$, no data is available.
 Instead, the smoothed approach of a multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$.
