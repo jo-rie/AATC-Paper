@@ -80,10 +80,10 @@ In the classification context, these measures are known as positive or negative 
 The two give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \todo{Citation}.
 \todo{Kappa in einem Satz definieren}
+\todo{Was heißt unbalanced; warum ist das bei uns nicht?}
 Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
 Unbalanced outcomes of the differences are unlikely in our setting as they are obtained from differencing time series data.
 Nevertheless, suppose in a four-quadrant plot, the positive and negative $\diffy$ are observed to differ widely. In that case, one should consider another as measures such as Cohen's $\kappa$ or those listed in \textcite[Table 3.3]{Jolliffe2012}.
-\discuss{was heisst unbalanced konrket? und vielleicht kappa auch irgendwie anders einführen}
 All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
@@ -137,18 +137,10 @@ An exclusion area along one axis removes points in which one of the components c
 This particularly suits prediction models, where small amounts of noise are inevitable.
 A cross-shaped exclusion area along both axes accounts for sign reversal in both components.
 For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
-\discuss{kann man vielleicht mu für verschiedene Varianten von Exclusion Area ausrechnen als Vergleich? evtl. im Anhang?}
+\todo{kann man vielleicht mu für verschiedene Varianten von Exclusion Area ausrechnen als Vergleich? im Anhang?}
 In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
-<<<<<<< Updated upstream
-For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point. \unsure{vielleicht genauer bei der Verwendung von Quantilen}
+For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point, for example, exclude the points within the 95\% ... . \discuss{vielleicht genauer bei der Verwendung von Quantilen}
 These shapes are theoretically appealing, but the interpretation of the resulting estimators gets ambiguous.
-||||||| Stash base
-For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point. \unsure{vielleicht genauer bei der Verwendung von Quantilen}
-These shapes are theor etically appealing, but the interpretation of the resulting estimators gets ambiguous.
-=======
-For example, one could exclude points likely to be in another quadrant or within a specific quantile of a distribution around the zero point. \discuss{vielleicht genauer bei der Verwendung von Quantilen}
-These shapes are theoretically appealing, but the interpretation of the resulting estimators gets ambiguous.
->>>>>>> Stashed changes
 Thus, we use the simple exclusion areas above.
 
 In most applications, it is advisable to determine the exact shape and size of the exclusion area based on domain knowledge or expert opinions.
