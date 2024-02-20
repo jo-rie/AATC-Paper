@@ -5,7 +5,7 @@ In general, trending can be assessed for different lags $l$ separately, and the 
 In Section~\ref{sec:notation}, the time series of differences $\diffx$ and $\diffy$ were introduced.
 Whereas the computation of $\diffx$ differs in the different contexts, the trending assessment is similar.
 In the following, we omit the difference's lag $l$ for the ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$.
-Similarly, we call a measurement, nowcast, or forecast a \textit{prediction} for the quantity of interest $y$. \discuss{prediction a good word?}
+Similarly, we call a measurement, nowcast, or forecast a \textit{prediction} for the quantity of interest $y$. \discuss{Is prediction a good word?}
 The remainder of the section is structured as follows.
 Section~\ref{subsec:trending-basics} introduces trending basics and visualizes trending in a synthetical example.
 Section~\ref{subsec:trending-measures} reviews conveyed quantification approaches from other fields.
@@ -60,7 +60,7 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively. \discuss{vielleicht genauer: wofür diese zwei ZV stehen}
+Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively. \discuss{Überlegung: sollte genauer beschrieben sein, wofür die beiden ZV stehen?}
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
 To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \begin{equation}
