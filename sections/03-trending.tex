@@ -180,9 +180,8 @@ Besides the kernel, a bandwidth selector has to be chosen for a multivariate \ac
 Various methods are available with different strengths and weaknesses.
 Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| python package~\parencite{Seabold2010}.
 The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
-The second method, cross-validation least squares, did not converge for the first dataset after a computation time of approximately 300 times that of the other two methods.
-The rule of thumb yielded slightly over-smoothed results, while the cross-validation maximum likelihood yields relatively small bandwidths.
-\todo[inline]{Add evaluation of the plot}
+The second method, cross-validation least squares, needs long computation times while yielding small or no bandwidth results, even for the two relatively small datasets.
+The rule-of-thumb and cross-validation maximum likelihood both yield reasonable results at moderate computation times. 
 Further examples, including comparisons between methods concerning their trending ability, are available for the applications in Section~\ref{sec:application}.
 
 \begin{figure}
@@ -195,7 +194,7 @@ Further examples, including comparisons between methods concerning their trendin
         \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_normal}
         \caption{Second dataset. }
     \end{subfigure}
-    \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time while yielding the results with the best balance between smoothing and displaying local effects. The rule of thumb is the fastest method but tends to oversmooth. Cross-validation least squares  }\label{fig:trending-cond-prob-bw}
+    \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time. It does not converge for the first data set and yields a too small bandwidth for the second data set. The rule of thumb is the fastest method but tends to oversmooth. The cross-validation maximum likelihood method yields a more reasonable bandwidth with moderate computation time. }\label{fig:trending-cond-prob-bw}
 \end{figure}
 
 
