@@ -20,8 +20,7 @@ As noted above, a prediction is trending perfectly if all occurred directions of
 Perfect trending is hardly the case in practice, but a weaker requirement is needed.
 Accordingly, when assessing the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
 A simple yet insightful method is the four-quadrant plot.
-For example, it is known in cardiac output measurement analysis~\parencite{Saugel2015}. \todo{Add other citations} 
-\unsure{\cite{perrino1998intraoperative}}
+For example, it is known in cardiac output measurement analysis~\parencite{Saugel2015,perrino1998intraoperative}. 
 Thereby, the occurred changes are plotted together with the predicted changes, that is, $(\diffy_t, \diffx_t)$ for $t = 1, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
@@ -63,7 +62,6 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 
 Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively. \discuss{vielleicht genauer: wofür diese zwei ZV stehen}
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
-\unsure{der Fall: z1 = z2 = 0?}
 To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0}}{\card{T}}.\label{eq:acc}
@@ -81,6 +79,7 @@ They are defined as
 In the classification context, these measures are known as positive or negative predictive value and hit rate or detection failure ratio in forecasting.
 The two give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \todo{Citation}.
+\todo{Kappa in einem Satz definieren}
 Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
 Unbalanced outcomes of the differences are unlikely in our setting as they are obtained from differencing time series data.
 Nevertheless, suppose in a four-quadrant plot, the positive and negative $\diffy$ are observed to differ widely. In that case, one should consider another as measures such as Cohen's $\kappa$ or those listed in \textcite[Table 3.3]{Jolliffe2012}.
