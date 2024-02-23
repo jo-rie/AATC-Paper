@@ -1,0 +1,43 @@
+\section{Additional material on Section~\ref{sec:application-covid}}\label{sec:appendix-application-covid}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.31\textwidth}
+        \missingfigure{KDE for true and nowcasts of lag 1.}
+        \caption{\ac{kde} for true values and nowcasts of lag 1.}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}[t]{.31\textwidth}
+        \missingfigure{KDE for true and nowcasts of lag 7.}
+        \caption{\ac{kde} for true values and nowcasts of lag 7.}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}[t]{.31\textwidth}
+        \missingfigure{KDE for true and nowcasts of lag 14.}
+        \caption{\ac{kde} for true values and nowcasts of lag 14.}
+    \end{subfigure}
+    \caption{\Ac{kde} for true values and nowcasts of lags 1, 7, and 14 to assess the distribution of values. \hl{AUSWERTUNG; 10 \% der Werte liegen innerhalb von ... um den Ursprung.}}
+    \label{fig:app-covid-kde}
+\end{figure}
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{l X}
+        \toprule
+        Abbreviation & Nowcasting hub key \\
+        \midrule
+        EPI & Epiforecasts-independent \\
+        ILM & ILM-prop \\
+        KIT & KIT-simple\_nowcast \\
+        LMU & LMU\_StaBLab-GAM\_nowcast \\
+        RIVM & RIVM-KEW \\
+        RKI & RKI-weekly\_report \\
+        SU & SU-hier\_bayes \\
+        SZ & SZ-hosp\_nowcast\\
+        ENS-MEAN & NowcastHub-MeanEnsemble\\
+        ENS-MED & NowcastHub-MedianEnsemble\\
+        \bottomrule
+    \end{tabular}
+    \caption{Matching of the abbreviation to the key in the nowcasting hub .Information on the models and references are listed in \textcite[][Table 1]{Wolffram2023}.}
+    \label{tab:app-covid-models}
+\end{table}
