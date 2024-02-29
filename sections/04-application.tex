@@ -4,18 +4,18 @@
 \newpage
 \subsection{Covid nowcasting} \label{sec:application-covid}
 
-During the COVID 19 pandemic, the need for reliable and timely nowcasts of pandemic's development has become apparent.
-In Germany, the seven-day hospitalization rate has been established as a central steering measure for the COVID measures in November 2021 and the imposement of severe public restrictions were taken based on it~\parencite{RobertKochInstitute2021}.
+During the COVID-19 pandemic, the need for reliable and timely nowcasts of the pandemic's development has become apparent.
+In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\parencite{RobertKochInstitute2021}.
 The Robert Koch Institute (RKI) provides daily reports on the number of new hospitalizations.
-However, these reports are subject to delays and revisions rooted in two different sources.
-The first source is technical delays in the reporting process, for example, due to different authorities passing on the data to the RKI~\parencite{RobertKochInstitute2024}.
+However, these reports are subject to delays and revisions in two sources.
+The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\parencite{RobertKochInstitute2024}.
 The second, more systematic source is the structure of the seven-day hospitalization rate.
-To a given date, all the cases are allocated, whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
-The average count of cases on the given date and six days before of $100,000$ inhabitants is the seven-day hospitalization rate.
-Thus, the final seven-day hospitalization rate can only be reported with significant delay of up to more than 70 days.
-Nevertheless, as the seven-day hospitalization rate was considered a major indicator for the pandemic's development, many organizations and institutions started to issue nowcasts of the seven-day hospitalization rate, including research teams and newspapers.
+To a given date, all the cases are allocated whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
+The seven-day hospitalization rate is the average count of cases per $100,000$ inhabitants on the given date and six days before.
+Thus, the final seven-day hospitalization rate can only be reported with a significant delay of up to more than 70 days.
+Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
 To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
-The nowcasts contain the predictive mean, median and quantiles for the seven-day hospitalization rate.
+The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and quantiles.
 
 \begin{figure}
     \centering
@@ -29,34 +29,34 @@ The nowcasts contain the predictive mean, median and quantiles for the seven-day
     \caption{Same-day nowcasts}
     \label{fig:app-covid-nowcast}
         \end{subfigure}
-    \caption{True and nowcast data of the seven-day-hospitalization in Germany from November 22, 2021 to April 29, 2022 \parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
+    \caption{True and nowcast data of the seven-day-hospitalization in Germany from November 22, 2021, to April 29, 2022 \parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
     The outliers in the RKI model of values above $10^8$ are removed before the following analysis.}
     \label{fig:app-covid-true-nowcast}
 \end{figure}
 
 
-The data contains 8 nowcasts from scientific and public institutions, nowcast communities and a newspaper, using different input variables, calendar data, and length of training data.
-The model structures are diverse, including bayesian models, generalized additive models, and parametric bootstrapping.
-Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the overall structure of the model.
-Using the nowcasts, two ensemble methods are constructed by using mean or median of the ensembles.
+The data contains eight nowcasts from scientific and public institutions, nowcast communities, and a newspaper, using different input variables, calendar data, and length of training data.
+The model structures are diverse, including Bayesian models, generalized additive models, and parametric bootstrapping.
+Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the model's overall structure.
+Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
-In line with the initial study design, we consider the time span from November 22, 2021 to April 29, 2022 as evaluation period.
-In contrast to~\textcite{Wolffram2023} we use the newest data available on the true values and not the data from August 8, 2022.
+In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
+In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not the data from August 8, 2022.
 \unsure{Nochmal längere Evaluation?}
-We do not expand on the models' performance on specific regions or age groups in Germany and on the probabilistic nowcast assessment.
+We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
 Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
-The time comprises the forth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany lasting until May 28, 2022~\parencite{Tolksdorf2022}.
+The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\parencite{Tolksdorf2022}.
 Table~\ref{tab:app-covid-rmse} summarizes the point evaluation measures for the issued mean of the different models.
 The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\parencite[see][Tables A2, A3, and A4]{Wolffram2023}.
-The best performing models are the ILM and RKI model in terms of both RMSE and MAE.
-The ensemble methods perform worse than the best models in terms of the mean location.
+The best-performing models in terms of RMSE and MAE are the ILM and RKI models.
+The ensemble methods perform worse than the best models regarding the mean location.
 The performance of the models is diverse, with more than twice as high RMSE values for the worst models compared to the best models.
-Note that the high values for the EPI model could be driven by a very far off value at the end of the evaluation period.
+Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period.
 
-In addition to close inspection of the point evaluation measures, assessing trending of the nowcasts is crucial.
-To assess the impact of taken measures and the direction of curve, it is important to distinguish between rising and falling hospitalization rates.
-If hospitalization rates are rising, measures should be tightened, while falling rates might allow for loosening measures.
-Especially, asymmetries are of interest to assess whether some models are better in recognizing a fall than a rise or vice versa.
+In addition to close inspection of the point evaluation measures, assessing the trending of the nowcasts is crucial.
+To assess the impact of taken measures and the direction of the curve, it is essential to distinguish between rising and falling hospitalization rates.
+If hospitalization rates rise, measures should be tightened, while falling rates might allow for loosening measures.
+Especially, asymmetries are of interest to assess whether some models are better at recognizing a fall than a rise or vice versa.
 
 \begin{table}[]
     \centering
@@ -69,48 +69,48 @@ Especially, asymmetries are of interest to assess whether some models are better
 
 In the following, we apply the trending assessment of Section~\ref{sec:trending} to the nowcasts of the seven-day hospitalization rate.
 We report the trending for the lags 1, 7, and 14 days.
-While lag 1 assesses the short-term trending, lags 7 and 14 assess the medium-term trending.
-The lags 7 and 14 are particularly interesting as they reflect a usual time span until new policy changes are taken.
+While lag 1 assesses the short-term trending, lags 7 and 14 consider the medium-term trending.
+The lags 7 and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
 
-Before stating the results, we provide some background information on the marginal distributions of the true values and nowcasts for the different lags.
+Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different lags.
 Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} provides information on marginal statistics of the nowcasts and true values.
-Overall, the variability and general level of differences grows with the lag.
-The standard deviation of the differences between nowcasts and true values increases from roughly 300 for the lag 1 to 1,200 for the lag 7 and 2,000 for the lag 14.
+Overall, the variability and general level of differences grow with the lag.
+The standard deviation increases from roughly 300 for lag 1 to 1,200 for lag 7 and 2,000 for lag 14.
 Similarly, the 10\%-quantile of differences increases.
 The 10\%-quantile is used for the exclusion areas in the trending assessment.
-The exclusion area is rectangular; a point falls within it, if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the differences.
-Thus, points are still included in the trending assessment if they are large in one dimension, but not in the other; thus ensuring, that large changes in, e.g., $\diffy$ are to be recognized by the nowcaster and vice versa.
+The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the differences.
+Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, e.g., $\diffy$ are to be recognized by the nowcast and vice versa.
 
-Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the lag 7 days.
+Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the lag of 7 days.
 The trending ratios without exclusion area range from 0.72 to 0.85 for the lag of 7 days.
 The negative trending ratios are higher than the positive trending ratios for all models.
-For all models, the confidence intervals for the postive and negative trending ratio do not overlap, indicating that the trending ratios are indeed different.
-The 10\%-quantile exclusion areas have at most an influence of 0.03 on the ratios.
-The model with the highest trending ratio is the ILM model, the model with the lowest is the RKI model.
+For all models, the confidence intervals for the positive and negative trending ratios do not overlap, indicating that the trending ratios are indeed different.
+The 10\%-quantile exclusion areas have, at most, an influence of 0.03 on the ratios.
+The model with the highest trending ratio is the ILM model, and the model with the lowest is the RKI model.
 The confidence intervals between all models overlap, reflecting the evaluation period lasting 159 days.
-The positive trending ratio imply a similar ranking of the models, while the negative ratio is second best for the RKI model.
+The positive trending ratio implies a similar ranking of the models, while the negative ratio is second best for the RKI model.
 For the lags of 1 and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
 
-Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over exclusion area for the lag 7 days; the respective plots for the lags 1 day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
-Here, only the best four models in terms of point evaluation measures, ILM, RKI, RIVM and ENS-MED, are shown to keep the plots readable.
-If RKI or ILM issue a fall of the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issue a fall.
-The opposite is the case for a nowcasted increase of the hospitalization rate and the margin in probability is higher.
+Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the lag seven days; the respective plots for the lags one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
+Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots readable.
+If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
+The opposite is the case for a nowcasted hospitalization rate increase, and the probability margin is higher. \todo{was soll das heißen?}
 Similar observations can be made for the lag of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
 For a lag of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
-The RKI model is still less conclusive when issuing an increase of the hospitalization rate, while RIVM is most informative in that case.
+The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
 The curves cross for an issued fall, with ENS-MED being on top for issued falls above 250.
 
 The trending ratios are plotted for various exclusion areas in Figure~\ref{fig:app-covid-trending-ratio-7}.
 In general, the trending ratio increases with larger exclusion areas.
-While the RIVM and ENS-MED trending ratio evolve similarly, the RKI and ILM trending ratio get closer.
-For the lag of 1 day, the RKI trending ratio decreases with increasing exclusion area size,while the other models evolve increasingly (see Figure~\ref{fig:app-covid-trending-ratio-1}).
+While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
+For the lag of 1 day, the RKI trending ratio decreases with increasing exclusion area size while the other models evolve increasingly (see Figure~\ref{fig:app-covid-trending-ratio-1}).
 For the lag of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
 
 \begin{table}
     \centering
     \tiny
     \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[l]$, and negative trending ratio $\accml[l]$ for the models with and without exclusion areas for the lag 7 days. The exclusion areas are rectangles centered on the zero points with width and height of 10\%-quantile of the absolute values of nowcast and true values. }
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[l]$, and negative trending ratio $\accml[l]$ for the models with and without exclusion areas for the lag seven days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\%-quantile of the absolute values of nowcast and true values. }
     \label{tab:app-covid-trending-ratios-lag-7}
 \end{table}
 
@@ -125,7 +125,7 @@ For the lag of 14 days, all trending ratio curves increase with the exclusion ar
     \includegraphics{plots/covid_nowcast/40_acc_eps_lag_7}
     \caption{Trending ratio over exclusion area size in $\diffx$.}\label{fig:app-covid-trending-ratio-7}
     \end{subfigure}
-    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM and ENS-MED for the lag 7 days.}
+    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the lag seven days.}
     \label{fig:app-covid-cond-prob-trending-ratio-7}
 \end{figure}
 
@@ -133,61 +133,61 @@ For the lag of 14 days, all trending ratio curves increase with the exclusion ar
 
 \subsubsection*{Discussion}
 
-For all lags, the influence of the exclusion area on the 10\%-quantile level is small.
-The trending ratio is changes at most by 0.03, for example, for the EPI model with $\acc^{-, 14}$.
+For all lags, the influence of the exclusion area on the 10\%-quantile level is negligible.
+For example, the trending ratio changes at most by 0.03 for the EPI model with $\acc^{-, 14}$.
 The exclusion areas are thus not crucial for the trending assessment in the case of the nowcasts of the seven-day hospitalization rate.
 The lower bound of confidence intervals is at least 0.68 for all models, indicating that they perform better than random guessing the trend.
 
 Trending assessment is unattached to point evaluation measures.
-RKI is among the best in terms of point evaluation measures, but performs worse in terms of trending assessment.
-The assessment of asymmetry in the conditional trending plots is crucial for the interpretation of the trending ratios, with the RKI model being the most prominent example.
+RKI is among the best in point evaluation measures but performs worse in trending assessment.
+The assessment of asymmetry in the conditional trending plots is crucial for interpreting the trending ratios, with the RKI model being the most prominent example.
 
-In general, a larger training size would be beneficial for the assessment of the models' performance.
+A more extensive training size would be beneficial for assessing the models' performance.
 For some models, more data is accessible, but we stick with the study protocol that uses an evaluation period of 159 days.
 
 \newpage
 \subsection{Forecasting emergency department arrivals}\label{sec:application-eda}
 
 In a second example, we consider the forecasting of the hourly number of arrivals in a large emergency department.
-Forecasting the number of arrivals in an emergency department is crucial for the planning of staff and resources.
-In \textcite{Rostami-Tabar2023}, various different models are employed on the task of forecasting the hourly number of arrivals in a large emergency department.
+Forecasting the number of arrivals in an emergency department is crucial for planning staff and resources.
+In \textcite{Rostami-Tabar2023}, various models are employed to forecast the hourly number of arrivals in a large emergency department.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 Thus, the management can take measures according to the expected number of arrivals, for example, through redeploying staff and reconfiguring units.
-The models issue probabilistic quantile forecasts which are evaluated through RMSE, pinball loss, pinball skill scores and PIT-histograms.
-The models are trained on data from April 1, 2014 to February 28, 2018 and evaluated on data from March 1, 2018 to February 28, 2019.
+The models issue probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
+The models are trained on data from April 1, 2014, to February 28, 2018, and evaluated on data from March 1, 2018, to February 28, 2019.
 For further notes on the models and the evaluation, we refer to \textcite{Rostami-Tabar2023}.
-From the issued forecasts, we use the mean as point forecast for the trending assessment.
+From the issued forecasts, we use the mean as a point forecast for the trending assessment.
 We use the forecasts issued at the first time point for every target time.
-Thus, the forecasts are issued 36 to 48 hours ahead of the target time and the emergency department management has time to adjust the measures according to the expected number of arrivals.
-As we consider only the forecasts of at least 36 hours ahead, we restrict the evaluation period to March 2, 2018 at 12:00 to February 28, 2019 at 23:00, comprising 8,724 hours.
+Thus, the forecasts are issued 36 to 48 hours ahead of the target time, and the emergency department management has time to adjust the measures according to the expected number of arrivals.
+Considering only the forecasts of at least 36 hours ahead, we restrict the evaluation period to March 2, 2018, at noon, to February 28, 2019, at 23:00, comprising 8,724 hours.
 
 In this setup, trending assessment is a simple and intuitive way to assess the models' performance.
 It is easy for the management to understand and implement, as simple comparisons of the expected workload to an hour in the recent past can be made.
 If, for example, the staff was near capacity in the last shift and an increase in the number of arrivals is expected, the management can take measures to adjust the workload.
 
 The number of arrivals has a strong weekly and daily pattern.
-Thus, we consider the lags of 72 hours, which is the last completely observed shift of the same hour of day, and 7 days, which is the last shift of the same hour and day.
+Thus, we consider the lags of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day.
 Table~\ref{tab:app-eda-point-evaluation} lists the point evaluation measures for the models.
-The best performing models are the NBI-2 and Poisson-2 model in terms of both RMSE and MAE.
-More than 8,600 forecasts are available for all of the models, with differences in the number due to missing values on four afternoons in 2018.
-Note that the reported values for the RMSE differ from the values in \textcite{Rostami-Tabar2023}.
+The best-performing models regarding RMSE and MAE are the NBI-2 and Poisson-2 models.
+More than 8,600 forecasts are available for all models, with differences in the number due to missing values on four afternoons in 2018.
+Note that the reported values for the RMSE differ from those in \textcite{Rostami-Tabar2023}.
 In contrast to their work, we use only the forecast data at least 36 hours ahead and not the entire forecast data for evaluation.
 
 \begin{table}
 \centering
 \input{plots/ed_arrival/00_point_evaluation_measures}
-\caption{Point evaluation measures for the models. The smaller count for some models stems from missing forecast for a few hours in the middle of the evaluation period.}\label{tab:app-eda-point-evaluation}
+\caption{Point evaluation measures for the models. The smaller count for some models stems from missing forecasts for a few hours in the course of the evaluation period.}\label{tab:app-eda-point-evaluation}
 \end{table}
 
 
 \subsubsection*{Results}
 
-Table~\ref{tab:app-eda-marginals} analyzes the differences' marginal distributions for the forecasts and true values for the lags of 3 and 7 days.
-Note that the diffences are in line with Section~\ref{sec:notation} defined as difference between forecasted mean and true value of 3 and 7 days before, as the true value is available when issuing the forecast.
+Table~\ref{tab:app-eda-marginals} analyzes the differences in marginal distributions for the forecasts and true values for the lags of 3 and 7 days.
+Note that the difference definition aligns with Section~\ref{sec:notation}, defined as the difference between the forecasted mean and true value of 3 and 7 days before, as the true value is available when issuing the forecast.
 The fraction of positive differences varies between 0.39 and 0.63 for the lag of 3 days and between 0.37 and 0.63 for the lag of 7 days.
-The variability of differences decreases from lag 3 days to lag 7 days for most models, only for the ETS model it increases.
-The 10\%-quantile of the differences is between 0 and one for all models and lags.
-Thus, we exclude only values smaller than 1 from the trending assessment.
+The variability of differences decreases for the larger lag for most models; only for the ETS model does it increase.
+The 10\%-quantile of the differences is between zero and one for all models and lags.
+Thus, we exclude only values smaller than one from the trending assessment.
 The resulting fraction of included values in the computation is also listed in Table~\ref{tab:app-eda-marginals} and is at least 79\% of the values.
 
 \begin{table}
@@ -197,25 +197,25 @@ The resulting fraction of included values in the computation is also listed in T
     \label{tab:app-eda-marginals}
 \end{table}
 
-Table~\ref{tab:app-eda-trending-ratios} lists the trending ratios for all models for the lags of 72 hours and 7 days.
-The trending ratios range from 0.68 to 0.84 for the lag of three days and from 0.68 to 0.82 for the lag of 7 days.
+Table~\ref{tab:app-eda-trending-ratios} lists the trending ratios for all models for three and seven-day lags.
+The trending ratios range from 0.68 to 0.84 for a lag of three days and from 0.68 to 0.82 for seven days.
 The negative and positive trending ratios differ for all models and lags.
-For some models, for example, the GBM-2 model, the positive trending ratio is higher, for some models, for example, the tbats model, the negative trending ratio is higher.
-The confidence intervals width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
+For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
+The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
 The positive trending ratio is higher for other models than the negative trending ratio.
-The models GBM-2, qreg-1 and Benchmark-1 have the highest positive trending ratio for the lag of 3 and seven days, while the models Poisson-2 and NBI-2 have the highest negative trending ratio.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the lag of 3 and seven days, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
 Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags 3 and 7 days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
 The conditional trending plots show similar courses for the two lags, while the curves are shifted downwards for the lag of seven days.
-The models relative trending ability evolves consistently for the two lags, with the NBI-2 and Poisson-2 model being indistinguishable.
-The GBM-2 model outperfoms the qreg-1 model for all $x$.
+The model's relative trending ability evolves consistently for the two lags, with the NBI-2 and Poisson-2 models being indistinguishable.
+The GBM-2 model outperforms the qreg-1 model for all $x$.
 The models NBI-2 and Poisson-2 have the highest trending ability for all negative values of $x$ and the lowest trending ability for all positive values of $x$.
 Benchmark-1 lies between the other models for all $x$.
 
 \begin{table}
     \centering
     \input{plots/ed_arrival/50_trending_ratio}
-    \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with the exclusion of zero-containing points for the lags 72 hours and 7 days.}
+    \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with the exclusion of zero-containing points for the lags 72 hours and seven days.}
     \label{tab:app-eda-trending-ratios}
 \end{table}
 
@@ -236,12 +236,12 @@ Benchmark-1 lies between the other models for all $x$.
 \subsubsection*{Discussion}
 
 Trending ability is consistent for the two lags, with the models' relative trending ability evolving similarly for the two lags.
-The models' trending ability is generally higher for the smaller lag, but the differences are small and confidence intervals overlap.
+The models' trending ability is generally higher for the smaller lag, but the differences are minor, and confidence intervals overlap.
 
-The trending is for all models different for positive and negative predicted directions of change.
+The trending differs for all models for positive and negative predicted change directions.
 While some models, such as GBM-2 and qreg-1, have the highest positive trending ratio, others, such as Poisson-2 and NBI-2, have the highest negative trending ratio.
-Thus, the uncertainty of the models predicted change has to be assessed differently based on the direction.
+Thus, the uncertainty of the model's predicted change has to be assessed differently based on the direction.
 
 The example shows that trending assessment is detached from standard point evaluation measures.
-While the models with lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
+While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
 
