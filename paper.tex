@@ -25,8 +25,9 @@
 \usepackage{multirow} % cells over several rows
 \usepackage{tabularx}
 %\usepackage{tabularray}
-\usepackage{etoolbox}
-\AtBeginEnvironment{tabular}{\small}
+\usepackage{floatrow}
+\DeclareFloatFont{tiny}{\tiny}% "scriptsize" is defined by floatrow, "tiny" not
+\floatsetup[table]{font=scriptsize} %https://tex.stackexchange.com/a/27100
 
 %%% --- Mathematics
 \usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools, mathabx}
@@ -118,6 +119,9 @@
 \newcommand{\acceps}[1][\varepsilon]{\acc_{#1}} %https://stackoverflow.com/a/7314951
 \newcommand{\accpeps}[1][\varepsilon]{\acceps[#1]^+}
 \newcommand{\accmeps}[1][\varepsilon]{\acceps[#1]^-}
+\newcommand{\accl}[1][l]{\mu^{#1}}
+\newcommand{\accpl}[1][l]{\acc^{+,#1}}
+\newcommand{\accml}[1][l]{\acc^{-,#1}}
 
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}

@@ -1,23 +1,23 @@
 \section{Additional material on Section~\ref{sec:application-covid}}\label{sec:appendix-application-covid}
 
 
-\begin{figure}
-    \centering
-    \begin{subfigure}[t]{.48\textwidth}
-        \includegraphics{plots/covid_nowcast/20_kde_lag_1}
-        \caption{\ac{kde} for true values and nowcasts of lag 1.}
-    \end{subfigure}\hspace{0.01\textwidth}
-    \begin{subfigure}[t]{.48\textwidth}
-        \includegraphics{plots/covid_nowcast/20_kde_lag_7}
-        \caption{\ac{kde} for true values and nowcasts of lag 7.}
-    \end{subfigure}\hspace{0.01\textwidth}
-    \begin{subfigure}[t]{.48\textwidth}
-        \includegraphics{plots/covid_nowcast/20_kde_lag_14}
-        \caption{\ac{kde} for true values and nowcasts of lag 14.}
-    \end{subfigure}
-    \caption{\Ac{kde} for true values and nowcasts of lags 1, 7, and 14 to assess the distribution of values. \hl{AUSWERTUNG}. Exclusion areas based on the 10\%  quantile of absolute values are listed in Table~\ref{tab:app-covid-marginals}.}
-    \label{fig:app-covid-kde}
-\end{figure}
+%\begin{figure}
+%    \centering
+%    \begin{subfigure}[t]{.48\textwidth}
+%        \includegraphics{plots/covid_nowcast/20_kde_lag_1}
+%        \caption{\ac{kde} for true values and nowcasts of lag 1.}
+%    \end{subfigure}\hspace{0.01\textwidth}
+%    \begin{subfigure}[t]{.48\textwidth}
+%        \includegraphics{plots/covid_nowcast/20_kde_lag_7}
+%        \caption{\ac{kde} for true values and nowcasts of lag 7.}
+%    \end{subfigure}\hspace{0.01\textwidth}
+%    \begin{subfigure}[t]{.48\textwidth}
+%        \includegraphics{plots/covid_nowcast/20_kde_lag_14}
+%        \caption{\ac{kde} for true values and nowcasts of lag 14.}
+%    \end{subfigure}
+%    \caption{\Ac{kde} for true values and nowcasts of lags 1, 7, and 14 to assess the distribution of values. \hl{AUSWERTUNG}. Exclusion areas based on the 10\%  quantile of absolute values are listed in Table~\ref{tab:app-covid-marginals}.}
+%    \label{fig:app-covid-kde}
+%\end{figure}
 
 
 \begin{table}
@@ -38,7 +38,8 @@
         ENS-MED & NowcastHub-MedianEnsemble\\
         \bottomrule
     \end{tabular}
-    \caption{Matching of the abbreviation to the key in the nowcasting hub. Information on the models and references is listed in \textcite[][Table 1]{Wolffram2023}.}
+    \caption{Matching of the abbreviation to the key in the nowcasting hub.
+    Information on the models and references is listed in \textcite[][Table 1]{Wolffram2023}.}
     \label{tab:app-covid-models}
 \end{table}
 
@@ -46,18 +47,19 @@
 \begin{table}
     \centering
     \input{plots/covid_nowcast/10_marginal_analysis}
-    \caption{Analysis of the nowcast and true differences for the lags 1, 7, and 14 days.}
+    \caption{Analysis of the nowcast and true differences for the lags 1, 7, and 14 days.
+    The column (1), $l=l$ shows the number of values greater than zero for lag $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
     \label{tab:app-covid-marginals}
 \end{table}
 
 \begin{table}
     \centering
     \begin{subfigure}[t]{\textwidth}
-        \input{plots/covid_nowcast/30_trending_ratios_lag_1.tex}
+        \input{plots/covid_nowcast/30_trending_ratios_lag_1}
     \caption{1 day.}
     \end{subfigure}
     \begin{subfigure}[t]{\textwidth}
-        \input{plots/covid_nowcast/30_trending_ratios_lag_1.tex}
+        \input{plots/covid_nowcast/30_trending_ratios_lag_14}
         \caption{14 days.}
     \end{subfigure}
     \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with and without exclusion areas for the lag 1 and 14 days. The exclusion areas are rectangles centered on the zero points with width and height of 10\% of the quantile of the absolute values of nowcast and true values. }
@@ -68,56 +70,31 @@
 
 \begin{figure}
 \centering
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_ENS-MEAN_4q_lag_1}
-    \caption{ENS-Mean, lag 1 day}\label{fig:app-covid-4q-ens-mean-1}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_ILM_4q_lag_1}
-    \caption{ILM, lag 1 day}\label{fig:app-covid-4q-ilm-1}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_RIVM_4q_lag_1}
-    \caption{RIVM, lag 1 day}\label{fig:app-covid-4q-rivm-1}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_RKI_4q_lag_1}
-    \caption{RKI, lag 1 day}\label{fig:app-covid-4q-rki-1}
-\end{subfigure}
-% lag 7
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_ENS-MEAN_4q_lag_7}
-    \caption{ENS-Mean, lag 7 days}\label{fig:app-covid-4q-ens-mean-7}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_ILM_4q_lag_7}
-    \caption{ILM, lag 7 days}\label{fig:app-covid-4q-ilm-7}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_RIVM_4q_lag_7}
-    \caption{RIVM, lag 7 days}\label{fig:app-covid-4q-rivm-7}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_RKI_4q_lag_7}
-    \caption{RKI, lag 7 days}\label{fig:app-covid-4q-rki-7}
-\end{subfigure}
-% lag 14
-\begin{subfigure}[t]{0.23\textwidth}%
-    \includegraphics{plots/covid_nowcast/30_ENS-MEAN_4q_lag_14}
-    \caption{ENS-Mean, lag 14 days}\label{fig:app-covid-4q-ens-mean-14}
-\end{subfigure}\hspace{0.01\textwidth}
-\begin{subfigure}[t]{0.23\textwidth}%
-    \includegraphics{plots/covid_nowcast/30_ILM_4q_lag_14}
-    \caption{ILM, lag 14 days}\label{fig:app-covid-4q-ilm-14}
-\end{subfigure}\hspace{0.01\textwidth}
-\begin{subfigure}[t]{0.23\textwidth}%
-    \includegraphics{plots/covid_nowcast/30_RIVM_4q_lag_14}
-    \caption{RIVM, lag 14 days}\label{fig:app-covid-4q-rivm-14}
-\end{subfigure}\hspace{0.01\textwidth}%
-\begin{subfigure}[t]{0.23\textwidth}
-    \includegraphics{plots/covid_nowcast/30_RKI_4q_lag_14}
-    \caption{RKI, lag 14 days}\label{fig:app-covid-4q-rki-14}
-\end{subfigure}%
+\includegraphics{plots/covid_nowcast/30_4q_plots}
 \caption{Four-quadrant plots for the models ILM, RIVM, RKI, and ENS-MEAN and the lags of one, seven, and 14 days. }
 \label{fig:app-covid-4q}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+%    \includegraphics{}
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_cond_prob_lag_1}
+    \caption{Conditional trending plot for lag 1.}\label{fig:app-covid-cond-prob-1}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_cond_prob_lag_14}
+    \caption{Conditional trending plot for lag 1.}\label{fig:app-covid-cond-prob-14}
+    \end{subfigure}
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_acc_eps_lag_1}
+    \caption{Trending ratio over exclusion area size in $\diffx$ for lag 1.}\label{fig:app-covid-trending-ratio-1}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_acc_eps_lag_14}
+    \caption{Trending ratio over exclusion area size in $\diffx$ for lag 1.}\label{fig:app-covid-trending-ratio-14}
+    \end{subfigure}
+    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM and ENS-MED for the lag 7 days.}
+    \label{fig:app-covid-cond-prob-trending-ratio-1-14}
 \end{figure}
