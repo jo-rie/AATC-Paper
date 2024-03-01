@@ -245,21 +245,21 @@ While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high tre
 
 \subsection{Invasive and non-invasive blood pressure monitoring} \label{sec:application_measurement}
 
-In the last, briefer example, we consider the trending assessment of measurement data.
+In the last briefer example, we consider the trending assessment of measurement data.
 The data is from the MIMIC-III database, including various information on patients in critical care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}).
-The data is publicly available and also includes numerical measurement data such as heart rate, blood pressure, and oxigen saturation in a waveform database \parencites[][]{Moody2017}[available through][]{Goldberger2000}.
+The data is publicly available and also includes numerical measurement data such as heart rate, blood pressure, and oxygen saturation in a waveform database \parencites[][]{Moody2017}[available through][]{Goldberger2000}.
 
 For some patients, the data includes \ac{abp} and \ac{nbp} measurements.
 For an overview of blood pressure measurement methods, see \textcite{Saugel2014}.
 While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods.
-For critical patients, changes in the blood pressure can be crucial for the treatment.
+For critical patients, changes in blood pressure can be crucial for the treatment.
 Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, e.g., ]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 Of the 64,168 numerical data records in the database, 2,662 include at least one measurement of systolic \ac{abp} and \ac{nbp} and ... include at least measurements of \ac{abp} and \ac{nbp} at the same time.
 The data records generally include measurements for one patient.
 
 We consider the lags of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
-The number of available records with measurements of \ac{abp} and \ac{nbp} for the lags is listed in Table~\ref{tab:app-mimic-data-summary}.
+The number of available records with measurements of \ac{abp} and \ac{nbp} for the lags are listed in Table~\ref{tab:app-mimic-data-summary}.
 
 \begin{table}
     \centering
@@ -272,21 +272,21 @@ The number of available records with measurements of \ac{abp} and \ac{nbp} for t
 Again, we exclude the 10\% of absolute differences in trending assessment.
 The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different lags are shown in Figure~\ref{fig:app-mimic-4q}.
 The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} at the same time for two consecutive times with the specified lags.
-For the systolic measurements, 290, 332, and 442 points are available for the lags of one, five, and 15 minutes; for the mean measurements 406, 430, and 542.
+For the systolic measurements, 290, 332, and 442 points are available for the lags of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
 
-The trending ratios including confidence intervals for the different lags are listed in Table~\ref{tab:app-mimic-trending-ratios}.
-For the measurements with lag one minute, the confidence intervals have lower bounds of 0.5 or slightly above.
+The trending ratios, including confidence intervals for the different lags, are listed in Table~\ref{tab:app-mimic-trending-ratios}.
+For the measurements with a lag of one minute, the confidence intervals have lower bounds of 0.5 or slightly above.
 For larger lags, the trending ratio increases.
-The difference between positive and negative trending ratio is small for all types and lags, with overlapping confidence intervals in all cases.
+The difference between positive and negative trending ratios is small for all types and lags, with overlapping confidence intervals in all cases.
 
 Figure~\ref{fig:app-mimic-cond-prob} shows the conditional trending plots for the different lags and the systolic and mean blood pressure measurements.
 It becomes apparent that the systolic measurements have a higher trending ability than the mean measurement, except for small negative predicted changes.
-This is in line the trending ratios, but the confidence intervals overlap.
+This is in line with the trending ratios, but the confidence intervals overlap.
 
 \begin{figure}
     \centering
     \includegraphics{plots/mimic/plot_4q}
-    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, the lower row mean measurements. The columns contain the lags one, five, and 15 minutes.}
+    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements and the lower row mean measurements. The columns contain the lags one, five, and 15 minutes.}
     \label{fig:app-mimic-4q}
 \end{figure}
 
@@ -322,13 +322,13 @@ This is in line the trending ratios, but the confidence intervals overlap.
 
 The four-quadrant plots contain a considerable number of extreme points.
 It is not clearly distinguishable whether these points are due to measurement errors or actual extreme values.
-Some authors argue to exclude not only the measurements below 10\%-quantile of the absolute differences but also the points above the 90\%-quantile.
+Some authors argue to exclude not only the measurements below the 10\%-quantile of the absolute differences but also the points above the 90\%-quantile.
 We do not follow this approach here, as the extreme values are not necessarily measurement errors and could also be particularly relevant.
 
 The differences between positive and negative predicted changes are small in this example.
-The positive and negativ trending ratios have overlapping confidence intervals and the conditional trending plots do not contain prominent deviations in the course.
+The positive and negative trending ratios have overlapping confidence intervals, and the conditional trending plots do not contain prominent deviations in the course.
 This is in line with the four-quadrant plots, where no clear asymmetry is visible.
 
 The bootstrap confidence intervals are wide.
-For the trending ratio the width is around 0.1, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the lag of 1 minute.
+For the trending ratio, the width is around 0.1, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the lag of 1 minute.
 
