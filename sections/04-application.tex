@@ -13,8 +13,8 @@ The seven-day hospitalization rate is the average count of cases per $100,000$ i
 Thus, the final seven-day hospitalization rate can only be reported with a significant delay of up to more than 70 days.
 Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
 To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
-The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and quantiles.
-\unsure{median ist ja auch quantile}
+The nowcasts contain the seven-day hospitalization rate's predictive mean, median , and quantiles.
+\unsure{median}
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
@@ -36,7 +36,7 @@ The nowcasts contain the seven-day hospitalization rate's predictive mean, media
 The data contains eight nowcasts from scientific and public institutions, nowcast communities, and a newspaper, using different input variables, calendar data, and length of training data.
 The model structures are diverse, including Bayesian models, generalized additive models, and parametric bootstrapping.
 Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the model's overall structure.
-Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
+Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or for the large .
 We denote them by ENS-MEAN and ENS-MED.
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
 In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not the data from August 8, 2022.
@@ -103,6 +103,8 @@ In general, the trending ratio increases with larger exclusion areas.
 While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
 For the lag of 1 day, the RKI trending ratio decreases with increasing exclusion area size while the other models evolve increasingly (see Figure~\ref{fig:app-covid-trending-ratio-1}).
 For the lag of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
+
+\unsure{Generell bei diesem Abschnitt: man liest hier eigentlich nur Beobachtungen, kann man auch daraus Schlüsse ziehen? Kann man results und discussion verschmelzen?}
 
 \begin{table}
     \centering
@@ -256,7 +258,9 @@ For critical patients, changes in blood pressure can be crucial for the treatmen
 Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, e.g., ]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 Of the 64,168 numerical data records in the database, 2,662 include at least one measurement of systolic \ac{abp} and \ac{nbp} and ... include at least measurements of \ac{abp} and \ac{nbp} at the same time.
+\unsure{... include ...?}
 The data records generally include measurements for one patient.
+\unsure{irgendwie wird die Datenstruktur nicht ganz klar beschrieben. Habe ich hier Datensätze von verschiedenen Patienten und bei jeem Datensatz gibt es dann fehlende Punkte von ABP oder NBP?}
 
 We consider the lags of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
 The number of available records with measurements of \ac{abp} and \ac{nbp} for the lags are listed in Table~\ref{tab:app-mimic-data-summary}.
@@ -270,6 +274,7 @@ The number of available records with measurements of \ac{abp} and \ac{nbp} for t
 \subsubsection*{Results}
 
 Again, we exclude the 10\% of absolute differences in trending assessment.
+\unsure{vielleicht genauer: we exclude the smallest 10 \% of the absolute differences in the trend assessment.}
 The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different lags are shown in Figure~\ref{fig:app-mimic-4q}.
 The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} at the same time for two consecutive times with the specified lags.
 For the systolic measurements, 290, 332, and 442 points are available for the lags of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
