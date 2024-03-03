@@ -1,4 +1,7 @@
-
+In this section, we apply the trending assessment to three different applications.
+In the first application in Section~\ref{sec:application-covid}, we consider the nowcasting of the seven-day hospitalization rate for COVID-19 in Germany.
+Section~\ref{sec:application-eda} applies the trending assessment to forecast methods for the number of arrivals in a large emergency department.
+In the last application in Section~\ref{sec:application-measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
 
 \subsection{Covid nowcasting} \label{sec:application-covid}
 
@@ -13,8 +16,8 @@ The seven-day hospitalization rate is the average count of cases per $100,000$ i
 Thus, the final seven-day hospitalization rate can only be reported with a significant delay of up to more than 70 days.
 Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
 To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
-The nowcasts contain the seven-day hospitalization rate's predictive mean, median , and quantiles.
-\unsure{median}
+The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and other quantiles.
+
 \begin{figure}
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
@@ -92,7 +95,7 @@ For the lags of 1 and 14 days, we refer to Table~\ref{tab:app-covid-trending-rat
 Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the lag seven days; the respective plots for the lags one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
 Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots readable.
 If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
-The opposite is the case for a nowcasted hospitalization rate increase, and the probability margin is higher. \todo{was soll das heißen?}
+The opposite is the case for a nowcasted hospitalization rate increase, and the difference between the models' performance is higher.
 Similar observations can be made for the lag of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
 For a lag of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
 The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
@@ -257,10 +260,11 @@ While non-invasive blood pressure measurement methods are relatively gentle, the
 For critical patients, changes in blood pressure can be crucial for the treatment.
 Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, e.g., ]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
-Of the 64,168 numerical data records in the database, 2,662 include at least one measurement of systolic \ac{abp} and \ac{nbp} and ... include at least measurements of \ac{abp} and \ac{nbp} at the same time.
-\unsure{... include ...?}
-The data records generally include measurements for one patient.
-\unsure{irgendwie wird die Datenstruktur nicht ganz klar beschrieben. Habe ich hier Datensätze von verschiedenen Patienten und bei jeem Datensatz gibt es dann fehlende Punkte von ABP oder NBP?}
+The database contains 64,168 numerical data records.
+One data record includes all numerical measurements for one patient.
+In general, the measured signals vary in length, frequency and type of measurement.
+Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} at the same time.
+2,548 include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one measurement of systolic \ac{abp} and \ac{nbp} at the same time; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
 
 We consider the lags of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
 The number of available records with measurements of \ac{abp} and \ac{nbp} for the lags are listed in Table~\ref{tab:app-mimic-data-summary}.
@@ -273,8 +277,7 @@ The number of available records with measurements of \ac{abp} and \ac{nbp} for t
 
 \subsubsection*{Results}
 
-Again, we exclude the 10\% of absolute differences in trending assessment.
-\unsure{vielleicht genauer: we exclude the smallest 10 \% of the absolute differences in the trend assessment.}
+Again, we exclude the smallest 10\% of absolute differences in trending assessment.
 The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different lags are shown in Figure~\ref{fig:app-mimic-4q}.
 The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} at the same time for two consecutive times with the specified lags.
 For the systolic measurements, 290, 332, and 442 points are available for the lags of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.

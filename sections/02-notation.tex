@@ -22,11 +22,11 @@ Similar to forecasting, nowcasts are often evaluated and compared in the literat
 All the measures discussed, regardless of the area, have in common that the comparison and evaluation of the methods take into account the local absolute differences in different ways but do not directly consider whether the correct direction of change is issued.
 Because of the different ways in which data are generated and processed depending on the area of application, the data collected should be prepared in different ways for further processing in order to identify the trending ability (see Section~\ref{sec:trending}). For this purpose, a time series must be defined for a given time series (of measurements or predictions) that reflects the recording or prediction of changes (with a time delay $l$). For a series of measurements, the change between two discrete points in time is considered
 \begin{equation}
-    \diffxl = (x_{t+l} -x_{t})^T_{t=0}. \label{eq:diffxl_measure}
+    \diffxl = (x_{t+l} -x_{t})^T_{t=0}. \label{eq:diffxl_measure_old}
 \end{equation}
 For forecasts and nowcasts, we use $(y_t)^T_{t=0}$ to denote the true values of the quantity of interest. For forecasts, the current value is known at the time of the forecast, so a forecast for the time $t+l$ means the prediction of a change $x_{t+l|t} -y_{t}$ between $t$ and $t+l$. The time series of change can therefore be defined as 
 \begin{equation}
-    \diffxl = (x_{t+l|t} -y_{t})^T_{t=0}.\label{eq:diffxl_forecasting}
+    \diffxl = (x_{t+l|t} -y_{t})^T_{t=0}.\label{eq:diffxl_forecasting_old}
 \end{equation}
 For nowcasting, the value of the current point in time does not have to be known at the prediction time. Often, only an estimate of the current value is known. This can be taken into account by the following case distinction
 \begin{equation}
@@ -34,7 +34,7 @@ For nowcasting, the value of the current point in time does not have to be known
 \begin{cases} 
 (x_{t+l|t} -x_{t|t})^T_{t=0} & \text{if } y_{t} \text{ is not known at time } t, \\
 (x_{t+l|t} -y_{t})^T_{t=0}  & \text{else}.
-\end{cases} \label{eq:diffxl_nowcasting}
+\end{cases} \label{eq:diffxl_nowcasting_old}
 \end{equation}
 
 

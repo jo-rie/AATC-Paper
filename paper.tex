@@ -35,6 +35,7 @@
 \usepackage{bbm} % for blackboard 1
 \usepackage[linesnumbered,lined,algo2e,figure,boxed]{algorithm2e}
 \usepackage[short]{optidef} % for aligning linear programs
+\usepackage{nccmath} % for fleqn environment
 
 %%% --- Other
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
@@ -111,8 +112,8 @@
 \newcommand{\diffyrv}{Y^{\Delta}}
 \newcommand{\diffxlt}{\mathbf{x}^{\Delta,l}_t}
 \newcommand{\diffylt}{\mathbf{y}^{\Delta,l}_t}
-\newcommand{\diffxt}{x^{\Delta}_t}
-\newcommand{\diffyt}{y^{\Delta}_t}
+\newcommand{\diffxt}[1][t]{x^{\Delta}_{#1}}
+\newcommand{\diffyt}[1][t]{y^{\Delta}_{#1}}
 
 \newcommand{\acc}{\mu}
 \newcommand{\accp}{\acc^+}
@@ -172,8 +173,8 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 \section{Introduction}\label{sec:introduction}
 \input{sections/01-introduction}
 
-\section{Application areas and Notation} \label{sec:notation}
-\input{sections/02-notation}
+%\section{Application areas and Notation} \label{sec:notation}
+%\input{sections/02-notation}
 
 \section{Trending assessment}\label{sec:trending}
 \input{sections/03-trending}
@@ -182,14 +183,17 @@ Existing and new measures for the capability of capturing the trend of nowcasts 
 %
 %Eher nicht, weil angewandtes Paper
 
-\section{Application to real-world data} \label{sec:application}
-\todo{Adjust heading; add introduction to section}
+\section{Application to measurement, nowcasting, and forecasting data} \label{sec:application}
 \input{sections/04-application}
+
+\section{Discussion and Conclusion}\label{sec:conclusion}
+
+\todo{Write conclusion.}
 
 \printbibliography
 
 \appendix
-\section{Data generation for Section~\ref{sec:trending}}\label{sec:app-trending-data-generation}
+
 \input{sections/50-appendix-data-generation}
 
 \input{sections/55-appendix-application-covid}

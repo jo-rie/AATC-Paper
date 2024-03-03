@@ -2,21 +2,80 @@
 As outlined in Section~\ref{sec:introduction}, we refer by trending to the consistency of an observed change with the change issued by another measurement, a nowcast, or a forecast.
 In this section, we want to specify trending and lay out different methods of measuring and visualizing trending. 
 In general, trending can be assessed for different lags $l$ separately, and the relevance of considered lags has to be determined based on the question at hand.
-In Section~\ref{sec:notation}, the time series of differences $\diffx$ and $\diffy$ were introduced.
-Whereas the computation of $\diffx$ differs in the different contexts, the trending assessment is similar.
-In the following, we omit the difference's lag $l$ for the ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$.
-Similarly, we call a measurement, nowcast, or forecast a \textit{prediction} for the quantity of interest $y$. \discuss{Is prediction a good word?}
+Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal}.
+Before we introduce measures for assessing trending, we give remarks on computing the predicted change and notation in Section~\ref{subsec:notation}.
 The remainder of the section is structured as follows.
 Section~\ref{subsec:trending-basics} introduces trending basics and visualizes trending in a synthetical example.
 Section~\ref{subsec:trending-measures} reviews conveyed quantification approaches from other fields.
 The approaches are extended to the trending setting in Section~\ref{subsec:trending-noise}.
-Section~\ref{subsec:trending-cond-prob} introduces a new graphical method of trending assessment.
-Section~\ref{subsec:trending-bootstrap} gives bootstrap methods for computing confidence intervals for the measures and conducts a simulation study on their properties.
+Section~\ref{subsec:trending-cond-prob} introduces a new graphical method of trending assessment and gives a brief introduction to bootstrap methods for computing confidence intervals for the measures.
+
+\subsection{Computing the predicted change and notation}\label{subsec:notation}
+
+As noted above, trending refers to observed and predicted changes for a time lag $l$.
+The observed change is straightforward to compute for measurements, nowcasts, and forecasts.
+Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values or gold standard measurements up to time $T$.
+The sequence of observed change is then given by the differences of values in $\mathbf{y}$ with lag $l$, that is
+\begin{equation}\label{eq:diffy}
+    \diffylt = (y_{t+l} - y_t) \quad \text{for}\ t = 1, \dots, T - l.
+\end{equation}
+As noted in the introduction, the definition of predicted change depends on the context.
+Conveyeing the computation for $y$ directly, the predicted change of signal would be the difference of the signal at time $t + l$ and the true value at $t$.
+This approach lags in three practical aspects.
+For nowcasting and forecasting, the true value at time $t$ might not be known with a considerable time lag.
+In the example in Section~\ref{sec:application-covid}, for example, the time lag is more than 80 days.
+Until the true values are made publicly available, the change cannot be computed and no actions can be taken based on it.
+Thus, it is more practically relevant in this setting, to use updated signal values for time $t$ as the reference value.
+
+Second, in the context of nowcasting or forecasting, several signals for the same time $t + l$ are often available with different times of generation.
+Thus, it has to be specified in notation, which signal generated at which time is used.
+We use the term \textit{issue time} for the generation time of a signal and \textit{target time} to denote the time the forecast applies to.
+
+For measurement, usually, the use of a test method is evaluated against a gold standard to test whether the test method could replace the gold standard.
+If the test method is assessed to be consistent with the gold standard, the gold standard measurement values are not available to compute the predicted change.
+Thus, the predicted change is computed based on the test method's values at time $t$ and $t + l$.
+
+Taking the three points together, the predicted change of a signal is based on the type of signal.
+To account for several signals for a forecast time $t$ at different issue times $\tau$, we denote those by $x_{t | \tau}$.
+For nowcasting, $t$ and $\tau$ are usually close and possibly negative, for forecasting, $t$ is usually larger than $\tau$.
+For measurements, this distinction is not necessary.
+Table~\ref{tab:notation} summarizes the notation for the different types of signals and the computation of the predicted change.
+
+\begin{table}
+    \centering
+    \begin{tabularx}{0.75\textwidth}{l X}
+        \toprule
+        Application & Predicted change computation \\
+        \midrule
+        Measurement & $(x_{t + l} - x_t)_{t=0}^T \label{eq:diffxl_measure} $\\
+        Nowcasting & $
+\diffxl =
+\begin{cases}
+(x_{t+l|t+l} -x_{t|t+l})^T_{t=0} & \text{if } y_{t} \text{ is not known at time } t, \\
+(x_{t+l|t+l} -y_{t})^T_{t=0} & \text{else}.
+\end{cases} \label{eq:diffxl_nowcasting}
+$ \\
+        Forecasting & $
+\diffxl =
+\begin{cases}
+(x_{t+l|t} - x_{t|t})^T_{t=0} & \text{if } y_{t} \text{ is not known at time } t, \\
+(x_{t+l|t} - y_{t})^T_{t=0}  & \text{else}.
+\end{cases} \label{eq:diffxl_forecasting}
+$\\
+        \bottomrule
+    \end{tabularx}
+    \caption{Computation of the predicted change in the different applications. The signals $x_{t | \tau}$ refer to values issued at time $\tau$ with a target time $t$. Note the different relations of issue and target time for nowcasts and forecasts. }
+    \label{tab:notation}
+\end{table}
 
 
+\todo{Signal/Prediction vereinheitlichen}
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-basics}
 
-As noted above, a prediction is trending perfectly if all occurred directions of change are predicted correctly, that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
+Throughout the remainder of the section, we use the notation of differences, $\diffxl$ and $\diffyl$.
+While the computation of $\diffx$ differs in the different contexts, the trending assessment is similar.
+In the following, we omit the difference's lag $l$ for the ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$.
+As noted above, a signal is trending perfectly if all occurred directions of change are predicted correctly, that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Perfect trending is hardly the case in practice, but a weaker requirement is needed.
 Accordingly, when assessing the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
 A simple yet insightful method is the four-quadrant plot.
@@ -27,11 +86,12 @@ Points in the green upper right and lower left quadrants reflect a correct trend
 Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
 Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
 Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant plot for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
-The data generation is described in Appendix~\ref{sec:app-trending-data-generation} and will carry through this section.
+The data generation is described in Appendix~\ref{subsec:app-trending-data-generation} and will carry through this section.
 The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the date of difference in the point color.
-In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to small time indices and turn green for larger $t$.
+In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to earlier measurements and turn green for larger $t$.
+The lag is always one time step.
 However, four-quadrant plots become crowded for larger datasets, and the sequential information on the differences is complex to assess thoroughly.
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
 However, they lack the clearness and intuition of the four-quadrant plot while adding no more information on the trending~\parencite{Saugel2015}.
@@ -60,15 +120,16 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for new elements of $\diffy$ and $\diffx$, respectively. \discuss{Überlegung: sollte genauer beschrieben sein, wofür die beiden ZV stehen?}
+Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes, respectively.
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
 To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \begin{equation}
-    \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0}}{\card{T}}.\label{eq:acc}
+    \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
 We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{1, \dots, T\}$.
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
-Such a $2 \times 2$ table of counts is often called a contingency table. It is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
+Such a $2 \times 2$ table of counts is called a contingency table.
+It is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
 There, a wide range of other methods is usually used to analyze further characteristics of contingency tables.
 Two simple measures focusing on specific areas of interest are the positive and negative trending ratio $\accp$ and $\accm$, respectively.
 They are defined as
@@ -77,17 +138,27 @@ They are defined as
     \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}\label{eq:accm}
 \end{align}
 In the classification context, these measures are known as positive or negative predictive value and hit rate or detection failure ratio in forecasting.
-The two give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
-There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960}.
+They give the probability for a correct prediction of the direction of change, given that the signal direction is positive or negative, respectively.
+Thus, they measure the trending ability of the prediction for the positive and negative changes separately by cutting the considered data.
+In terms of probability, the two measures give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
+
+There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
 Cohen's $\kappa$ is usually used to measure inter-rater agreement and takes into account the ratio of occurred agreement and the probability of agreement by chance.
 Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
-Balanced outcome hereby refers to approximately equal occurrences of values smaller and greater zero for both $\diffx$ and $\diffy$.
+Balanced outcome hereby refers to approximately equal occurrences of values smaller and greater than zero for both $\diffx$ and $\diffy$.
 Unbalanced outcomes of the differences are unlikely in our setting as they are obtained from differencing time series data.
-Nevertheless, suppose in a four-quadrant plot, the positive and negative $\diffy$ are observed to differ widely. In that case, one should consider another as measures such as Cohen's $\kappa$ or those listed in \textcite[Table 3.3]{Jolliffe2012}.
+Nevertheless, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
+
 All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
-Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color}.
+A rolling estimate is a sequence of estimates, each computed on a length-$w$-window of the data.
+For the trending ratio a rolling estimate with a backwards-looking window is given by
+\begin{equation*}
+    \acc_t (\diffx, \diffy) \coloneqq \frac{\sum_{t^* = t-w + 1}^{t} \ind{\diffxt[t^*] \diffyt[t^*] > 0}}{w} \quad t = w-1, \dots, T.\label{eq:acc_rolling}
+\end{equation*}
+Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
-This seasonal behavior cannot be observed in the two four-quadrant plot as the high number of points overlays it.
+The trending ability of the signal has a strong yearly, sinodal seasonality with higher trending ability peak after a quarter of a year and a low point after three quarters.
+This seasonal behavior cannot be observed in the two four-quadrant plot as the high number of points overlays it or in the trending ratio.
 
 \begin{figure}
     \centering
@@ -103,69 +174,84 @@ This seasonal behavior cannot be observed in the two four-quadrant plot as the h
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{sec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$ and with exclusion area $\diffx < \varepsilon$, $\mu_{1.0} = 0.7712$, respectively. Strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$ and with exclusion area $\diffx < \varepsilon$, $\mu_{1.0} = 0.7712$, respectively. Strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}
 \end{figure}
 
-Missing values are a common problem, in particular in nowcasting and forecasting.
-This will, for example, become evident in the data study in Section~\ref{sec:application-covid}.
-Data pairs with missing values can be excluded from the computation of the measures.
-Nevertheless, missing values can considerably influence the results, mainly if they appear systematically.
-Predicting only in those times of certainty and omitting prediction in other times would improve evaluation measures.
-So, although the estimates can be computed, the time spans with missing values should be inspected visually.
 
+In applications, signal data is often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-forecasting}).
+We refer to time steps, for which either signal or true values or both are not available, as missing values.
+Data pairs with missing values can be excluded from the computation of the measures, so that the time indices with missing values are excluded from $\mathcal{T}$.
+In general, the measures can be computed for data with missing values, if the missing values do not systematically occur.
+Systematic missing values would lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
+In this case, the measures should be computed for the time steps with available data and the results should be interpreted with caution.
+Thus, inspection of missing data, for example, visually, should accompany applications with missing data.
+In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:application-forecasting}, only few missing values occur and we give information on the missing data by inspecting the missing data as lists.
 
-\subsection{Accounting for noise}\label{subsec:trending-noise}
+\subsection{Accounting for noise and non-informative small changes}\label{subsec:trending-noise}
 
-The above measures use only the information on a point's quadrant and neglect further details on its location within the quadrant, as displayed in a four-quadrant plot.
-However, points close to the zero point have intuitively less explanatory power.
-If there is noise or non-systematic effects present in true value or predictions, those points are likely to be driven by noise to a large amount. 
-Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the above methods.
+The above measures use only the information on a point's quadrant and neglect further details on its location within the quadrant.
+However, points close to the zero point have intuitively less explanatory power or are less reliable.
+If there is noise or non-systematic effects present in true value or predictions, those points are likely to be driven by noise to a large amount.
+That means that the quadrant the point's assignment to a quadrant is driven by noise instead of a systematic trending ability of the signal.
+
+Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures}.
 Points within that zone are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
 The exclusion area's shape can be chosen according to the noise characteristics in predictions and true values.
 In general, it is likely that the models of predictions have a noise component and should thus be part of the exclusion area.
-We denote the measures accounting for an exclusion area by
+We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $e$ by
 \begin{align}
-    \acceps (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{\abs{\diffxt} > \varepsilon}}{\sum_{t \in \mathcal{T}} \ind{\abs{\diffxt} > \varepsilon}}\label{eq:acceps}\\
-    \accpeps (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > \varepsilon}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > \varepsilon}} \label{eq:accpeps}\\
-    \accmeps (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < \varepsilon}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < \varepsilon }}\label{eq:accmeps}
+    \acceps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin e}}\label{eq:acceps}\\
+    \accpeps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin e}} \label{eq:accpeps}\\
+    \accmeps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin e}}\label{eq:accmeps}
 \end{align}
-The estimators can easily be adapted for other shapes of the exclusion area.
+
+\todo[inline]{Bsp. für einfache Exclusion area mit rectangle und resulting measures; Bsp. für andere shapes und wie dann $e$ gestaltet wäre}
+
+The measures are then estimators for probability of trending, given that the change is not in the exclusion area $e$, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin e)$.
+The estimators can easily be adapted for various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes different shapes of the exclusion area.
-A box-shaped exclusion area leaves points out that are small in both components and are thus likely to be driven away from the zero point by noise.
-Thus, only point 1 is excluded.
-An exclusion area along one axis removes points in which one of the components could change the sign by a small amount of noise.
-This particularly suits prediction models, where small amounts of noise are inevitable.
-A cross-shaped exclusion area along both axes accounts for sign reversal in both components.
+A rectangular shaped exclusion area, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, leaves points out that are small in both components and are thus likely to be driven away from the zero point by noise.
+Points, where at least true value or signal are unlikely to be zero, are not excluded.
+In the example plot, only point 1 is excluded.
+An exclusion area along one axis, for example, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq 0 \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change the sign by a small amount of noise.
+This particularly suits signals, where small amounts of noise are inevitable.
+A cross-shaped exclusion area, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for likely sign reversal in both components.
 For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
-\todo{Berechnung $\mu$ für verschiedene Varianten für Beispiel im Anhang?}
-In addition to these straight shapes, exclusion areas could also be determined based on an error model of the components.
-For example, one could exclude points likely to be in another quadrant or within a specific quantile range of a distribution around the zero point, for example, exclude the points within the 5 \% quantile and 95 \% quantile of a standard normal distribution. 
-These shapes are theoretically appealing, but the interpretation of the resulting estimators gets ambiguous.
+
+In addition to these straigt shapes, exclusion areas could have more difficult shapes, such as ellipsis.
+Such a shape could, for example, be obtained by using a multivariate normal error model around the zero point and excluding points, that exceed a certain likelihood of being obtained by chance from the zero point.
+These shapes are theoretically appealing, but the interpretation of the resulting estimators gets complex.
 Thus, we use the simple exclusion areas above.
 
 In most applications, it is advisable to determine the exact shape and size of the exclusion area based on domain knowledge or expert opinions.
 In addition, the size can also be calculated as a proportion of the total variance or the total range of the data.
-A third approach is to visualize the trending ratio for different values of $\varepsilon$.
+A third approach is to visualize the trending ratio for different values of $e$.
 In Section~\ref{sec:application}, there are various examples of such a plot.
-As a base approach, we advocate using no exclusion area in the four-quadrant plot as the points do not complicate its interpretation and a $\acceps$-over-$\varepsilon$ plot to visualize the course of the trending ratio over different exclusion area sizes.
+As a base approach, we advocate using no exclusion area in the four-quadrant plot as the points do not complicate its interpretation and a $\acceps$-over-$e$ plot to visualize the course of the trending ratio over different exclusion area sizes.
 
 
-\subsection{Conditional trending plot}\label{subsec:trending-cond-prob}
-\discuss{Allgemeine Frage: können wir hier von Wahrscheinlichkeit sprechen? }
-The above-defined estimators give information on the probabilites $P(\diffxrv \diffyrv > 0)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > \varepsilon)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < \varepsilon)$.
-To assess the trending ability of a prediction, an evaluation on a finder grid is of interest.
+\subsection{The conditional trending plot and confidence intervals based on bootstrapping}\label{subsec:trending-cond-prob}
+The above-defined estimators give information on the probabilites $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin e)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin e)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin e)$.
+These probabilites point a general picture, but still too coarse for local effects.
+To assess the local trending ability of a prediction, more insights might be gained by considering the conditional distribution.
 Whereas it would be possible to build analog measures on other intervals, assessing $P(\diffxrv \diffyrv > 0 | \diffx = x)$ graphically eases the simultaneous evaluation of various intervals.
 In addition, the conditional trending plot facilitates the comparison of various methods in a single plot, and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
 
-The probability $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ cannot be computed by the counting approach, as for almost all $x \in \R$, no data is available.
-Instead, the smoothed approach of a multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$.
+A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
+\begin{align*}
+P(\diffxrv \diffyrv > 0 | \diffxrv = x) = \begin{cases}
+                                              \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \: \textrm{d} \: y & \text{if } x < 0, \\
+                                              \int_{0}^{\infty} \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \: \textrm{d} \: y & \text{if } x > 0, \\
+\end{cases}
+\end{align*}
+for $x \neq 0$ through a \ac{kde}.
 A comprehensive introduction into multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages~\parencite[e.g., for  Python in][]{Seabold2010}.
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
-For kernels with infinite support, for example, the Gaussian kernel, this can convey a false impression of validity for values far beyond the values in $\diffx$.
-Thus, the plot should be limited to the core values of $\diffx$ without outliers.
+Note that for kernels with infinite support, for example, the Gaussian kernel, the plot should be limited to the core values of $\diffx$ without outliers to avoid estimates based on small subsets of the data.
 Besides the kernel, a bandwidth selector has to be chosen for a multivariate \ac{kde}.
 Various methods are available with different strengths and weaknesses.
 Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| python package~\parencite{Seabold2010}.
+While the rule-of-thumb is based only on the covariance matrix, the other two numerically optimize the bandwidth with a hold-one-out least squares or likelihood objective function.
 The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
 The second method, cross-validation least squares, needs long computation times while yielding small or no bandwidth results, even for the two relatively small datasets.
 The rule-of-thumb and cross-validation maximum likelihood both yield reasonable results at moderate computation times. 
@@ -184,12 +270,10 @@ Further examples, including comparisons between methods concerning their trendin
     \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time. It does not converge for the first data set and yields a too small bandwidth for the second data set. The rule of thumb is the fastest method but tends to oversmooth. The cross-validation maximum likelihood method yields a more reasonable bandwidth with moderate computation time. }\label{fig:trending-cond-prob-bw}
 \end{figure}
 
-
-\subsection{Confidence intervals based on bootstrapping}\label{subsec:trending-bootstrap}
-
-Confidence intervals can be issued to account for the estimation uncertainty of the measures above.
-Bootstrapping confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
-Whereas classical confidence intervals are computed from parametric assumptions on the underlying data, new samples are drawn with replacement from the dataset in bootstrapping.
+\todo{Übergang zu Bootstrapping}
+Confidence intervals can be used to account for the estimation uncertainty of the measures above.
+Bootstrap confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
+New samples are drawn with replacement from the dataset in bootstrapping and are not based on parametric assumptions as for classical confidence intervals.
 The confidence interval is then computed based on the bootstrap samples.
 We examine three methods for bootstrapping here: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
 In the \textit{percentile} approach, the confidence interval for level $\alpha$ is built directly from the bootstrap estimators' empirical distribution.
@@ -197,49 +281,15 @@ The \textit{basic} approach computes the confidence interval based on the non-bo
 The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\parencite{Efron1987}.
 Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but needs smaller datasets for reasonable confidence intervals.
 The basic approach balances those two aims.
-We compare the approaches in a small synthetic data study concerning their small-dataset behavior and computation time.
-We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
-The considered datasets are again outlined in Appendix~\ref{sec:app-trending-data-generation}, the first dataset with asymmetric dependence.
-In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\parencite{Virtanen2020}.
-The prescribed confidence level is 90 \%, and the number of bootstrap samples is $10,000$.
-The share of confidence intervals covering the true values per method and $T$ are shown in Table~\ref{tab:trending_bootstrap}.
-The true values of the accuracy are computed based on a dataset of size $10^8$, yielding 0.7501 and 0.7700 for the two datasets.
-The computation times per method and dataset are shown in Figure~\ref{fig:trending_bootstrap_time}.
-For the small sample sizes up to $T = 168$, only the \ac{bca} method keeps the confidence interval size and yields slightly wider confidence intervals. 
-The method's results do not differ for the larger sample sizes. 
-The computation time for the \ac{bca} method is slightly larger than for the other methods, but all methods have a moderate computation time.
-
-\begin{table}
-    \centering
-    \begin{subtable}{.48\textwidth}
-        \input{plots/illustrative_examples/bootstrap_butterfly_cis}
-        \caption{First dataset}
-    \end{subtable}\hspace{0.02\textwidth}
-    \begin{subtable}{.48\textwidth}
-        \input{plots/illustrative_examples/bootstrap_normal_cis}
-        \caption{Second dataset}
-    \end{subtable}
-    \caption{Proportion of bootstrapping confidence intervals covering the true value of trending ratio per method and sample size $T$. The average width of the confidence interval is listed in brackets.}
-    \label{tab:trending_bootstrap}
-\end{table}
-
-\begin{table}
-    \centering
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics{plots/illustrative_examples/boxplot_comp_time_butterfly}
-        \caption{First dataset}
-    \end{subfigure}
-    \begin{subfigure}{0.48\textwidth}
-        \includegraphics{plots/illustrative_examples/boxplot_comp_time_normal}
-        \caption{Second dataset}
-    \end{subfigure}
-    \caption{Boxplot of the computation time of the different bootstrapping method and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
-    \label{fig:trending_bootstrap_time}
-\end{table}
-
-
+We compare the approaches in a small synthetic data study concerning their small-dataset behavior and computation time in Appendix~\ref{sec:appendix}.
+For small datasets, the \ac{bca} holds the confidence level also for small data sets with a neglibly higher computation time than the other approaches.
+Thus, we use the \ac{bca} method for the confidence intervals in the applications in Section~\ref{sec:application}.
 
 In standard bootstrapping, the sample is assumed to be independent and identically distributed.
 Thus, before applying bootstrapping methods, the strength of sequential dependence should be inspected, for example, by analyzing the autocorrelation and partial autocorrelation.
 The simple bootstrapping methods above do not account for serial dependence. 
 Bootstrapping focusing on time series data is covered in~\textcite{Hardle2003,Kreiss2012}, for example.
+
+\subsection{Probabilistic Evaluation}
+
+\todo{Schreiben}
