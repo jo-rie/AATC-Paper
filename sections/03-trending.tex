@@ -29,18 +29,18 @@ Until the true values are publicly available, the change could not be computed, 
 Thus, it is more practically relevant to use updated signal values for time $t$ as the reference value in this setting.
 
 Second, in the context of nowcasting or forecasting, several signals for the same time $t + l$ are often available at different generation times.
-Thus, it has to be specified in notation which signal generated at which time is used.
+Thus, the generation time and forecast time have to be included in the notation of nowcasts and forecasts.
 We use the term \textit{issue time} for the generation time of a signal and \textit{target time} to denote the time the forecast applies to.
 
 For measurement, a test method is usually evaluated against a gold standard to test whether the test method could replace the gold standard.
 If the test method is assessed to be consistent with the gold standard, the gold standard measurement values are not available to compute the predicted change.
-Thus, the predicted change is computed based on the test method's values at time $t$ and $t + l$.
+Thus, the predicted change is computed on the basis of the test method's values at time $t$ and $t + l$.
 
 Taking the three points together, the signal's predicted change is based on the type of signal.
 To account for several signals for a target time $t$ at different issue times $\tau$, we denote those by $x_{t | \tau}$.
 For nowcasting, $\tau$ is usually not considerably larger than $t$; while $t$ is usually at least $\tau$ in forecasting.
 For measurements, this distinction is not necessary.
-Table~\ref{tab:notation} summarizes the notation for the different signal types and the predicted change computation.
+Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
 
 \begin{table}
     \centering
@@ -65,37 +65,37 @@ $ \\
 $\\
         \bottomrule
     \end{tabularx}
-    \caption{Computation of the predicted change in the different applications. The signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. Note the different relations of issue and target time for nowcasts and forecasts. }
+    \caption{Computation of the predicted change in the different applications. Signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. Note the different relations of issue and target time for nowcasts and forecasts. }
     \label{tab:notation}
 \end{table}
 
 
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-basics}
 
-While the computation of $\diffxl$ differs in different contexts, the trending assessment is similar.
-In the following, we omit the difference's lag $l$ for the ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$ as defined in Table~\ref{tab:notation}.
-As noted above, a signal is trending perfectly if all occurred directions of change are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
+Although the calculation of $\diffxl$ differs in different contexts, the trending assessment is similar.
+In the following, we omit the difference lag $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$ as defined in Table~\ref{tab:notation}.
+As noted above, a signal's trending is perfect if all the directions of change that occur are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Perfect trending is hardly the case in practice, but a weaker requirement is needed.
-Accordingly, when assessing the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
+Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
 A simple yet insightful method is the four-quadrant plot.
 For example, it is known in cardiac output measurement analysis~\parencite{Saugel2015,perrino1998intraoperative}. 
-Thereby, the occurred changes are plotted together with the predicted changes, that is, $(\diffy_t, \diffx_t)$ for $t = 1, \dots, T$.
-Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays prediction data differences.
+Thus, the occured changes are plotted together with the predicted changes, that is, $(\diffy_t, \diffx_t)$ for $t = 1, \dots, T$.
+Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
 
 Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
 Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
-Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant plot for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
-The data generation is described in Appendix~\ref{subsec:app-trending-data-generation} and will carry through this section.
+Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant graph for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
+Data generation is described in Appendix~\ref{subsec:app-trending-data-generation} and will continue into this section.
 The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
 
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
-It can be extended by including information on the date of difference in the point color.
-In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to earlier measurements and turn green for larger $t$.
+It can be extended by including information on the date of difference in the color of the point.
+In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$.
 The lag is always one time step.
-However, four-quadrant plots become crowded for larger datasets, and the sequential information on the differences is complex to assess thoroughly.
+However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
-However, they lack the clearness and intuition of the four-quadrant plot while adding no more information on the trending~\parencite{Saugel2015}.
+However, they lack the clarity and intuition of the four-quadrant plot, without adding any more information on trending~\parencite{Saugel2015}.
 
 \begin{figure}
 \centering
@@ -124,7 +124,7 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 Analyzing the number of points in the green quadrants versus the red quadrants is a standard approach in trending assessment of measurement data \parencite{Critchley2010,Saugel2015}.
 It boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes, respectively.
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
-To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
+The standard estimator for $P(\diffxrv \diffyrv > 0)$ is
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
@@ -132,21 +132,21 @@ We refer to this estimator as the trending ratio of the prediction and set $\mat
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
 Such a $2 \times 2$ table of counts is called a contingency table.
 It is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
-There, a wide range of other methods is usually used to analyze further characteristics of contingency tables.
-Two simple measures focusing on specific areas of interest are the positive and negative trending ratio $\accp$ and $\accm$, respectively.
+There, a wide range of other methods are usually used to analyze further characteristics of contingency tables.
+Two simple measures that focus on specific areas of interest are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
 They are defined as
 \begin{align}
     \accp (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0}} \label{eq:accp}\\
     \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}\label{eq:accm}
 \end{align}
 In the classification context, these measures are known as positive or negative predictive value and hit rate or detection failure ratio in forecasting.
-They give the probability for a correct prediction of the direction of change, given that the signal direction is positive or negative, respectively.
-Thus, they measure the trending ability of the prediction for the positive and negative changes separately by cutting the considered data.
+They give the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, respectively.
+Therefore, they measure the trending ability of the prediction for positive and negative changes separately by cutting the considered data.
 In terms of probability, the two measures give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
 
-The use of those estimators could encourage the predictors to exploit imbalances in the number of positive and negative changes. 
-A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t in \mathcal{T}} \ind{\diffyt > 0}$ is unlikely in the trending setting as $\diffy$ is obtained from differencing time series data.
-Nevertheless, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
+The use of these estimators could encourage predictors to exploit imbalances in the number of positive and negative changes. 
+A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t in \mathcal{T}} \ind{\diffyt > 0}$ is unlikely in the trending setting, since $\diffy$ is obtained from differencing time series data.
+However, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
 Cohen's $\kappa$ is usually used to measure inter-rater agreement and takes into account the ratio of occurred agreement and the probability of agreement by chance.
 Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
@@ -159,7 +159,7 @@ For the trending ratio, a rolling estimate with a backward-looking window is giv
 \end{equation*}
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
-The trending ability of the signal has a strong yearly, sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
+The trending ability of the signal has a strong yearly sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
 This seasonal behavior cannot be distinguished in the two four-quadrant plots or in the trending ratio.
 
 
@@ -177,13 +177,13 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$. Strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$. The strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are delayed as the windows look backward.}
 \end{figure}
 
 
-In applications, signal data is often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
-We refer to time steps, for which either signal or true values or both are unavailable, as missing values.
-Data pairs with missing values can be excluded from the set $\mathcal{T}$ for the computation of the measures, and the measures are computed normally. 
+In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
+We refer to time steps for which either signal or true values or both are unavailable as missing values.
+Pairs of data with missing values can be excluded from the set $\mathcal{T}$ for the computation of the measures, and the measures are normally calculated. 
 However, systematical missing values could lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
 In this case, the measures should be interpreted cautiously, and
 inspection of missing data should accompany applications with missing data, for example, through a visual assessment.
