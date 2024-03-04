@@ -1,19 +1,19 @@
 
-As outlined in Section~\ref{sec:introduction}, we refer by trending to the consistency of an observed change with the change issued by another measurement, a nowcast, or a forecast.
-In this section, we want to specify trending and lay out different methods of measuring and visualizing trending. 
+As described in Section~\ref{sec:introduction}, we refer by trending to the consistency of an observed change with the change issued by another measurement, a nowcast, or a forecast.
+In this section, we want to specify trending and define different methods of measuring and visualizing trending. 
 In general, trending can be assessed for different lags $l$ separately, and the relevance of the considered lags has to be determined based on the question at hand.
 Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is insignificant.
-Before introducing measures for assessing trending, we give remarks on computing the predicted change and notation in Section~\ref{subsec:notation}.
-Section~\ref{subsec:trending-basics} introduces trending basics and visualizes trending in a synthetical example.
+Before introducing measures to evaluate trending, we make remarks on the calculation of predicted change and notation in Section~\ref{subsec:notation}.
+Section~\ref{subsec:trending-basics} introduces the basics of trending and visualizes trending in a synthetic example.
 In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
 The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise}.
-Section~\ref{subsec:trending-cond-prob} introduces a new graphical method for local trending assessment and briefly introduces bootstrap methods for computing confidence intervals for the measures of the prior sections.
+Section~\ref{subsec:trending-cond-prob} introduces a new graphical method for local trending assessment and briefly introduces bootstrap methods for computing confidence intervals for the measures in the previous sections.
 Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:probabilistic}.
 
 \subsection{Computing the predicted change and notation}\label{subsec:notation}
 
 As noted above, trending refers to observed and predicted changes for a time lag $l$.
-The \textit{observed} change is straightforward to compute for all types of signal.
+The \textit{observed} change is straightforward to compute for all types of signals.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values or gold standard measurements up to time $T$.
 The sequence of observed change is then given by the differences of values in $\mathbf{y}$ with lag $l$, that is
 \begin{equation}\label{eq:diffy}
@@ -24,7 +24,7 @@ As noted in the introduction, the definition of the predicted change depends on 
 Applying the computation for $y$ directly, the signal's predicted change would be the difference between the signal at time $t + l$ and the true value at $t$.
 This approach lags in three practical aspects.
 For nowcasting and forecasting, the true value at time $t$ might not be known with a considerable time delay.
-In the nowcasting application of Section~\ref{sec:application-covid}, for example, the time lag is more than 80 days.
+In the nowcasting application of Section~\ref{sec:application-covid}, for example, the time delay is more than 80 days.
 Until the true values are publicly available, the change could not be computed, and no actions could be taken based on it.
 Thus, it is more practically relevant to use updated signal values for time $t$ as the reference value in this setting.
 
@@ -229,26 +229,48 @@ Section~\ref{sec:application} contains various examples of such a plot.
 As a base approach, we suggest using no exclusion area in the four-quadrant plot as the points do not complicate its interpretation and a $\acceps$-over-$e$ plot to visualize the course of the trending ratio over different exclusion area sizes.
 
 
-\subsection{The conditional trending plot and confidence intervals based on bootstrapping}\label{subsec:trending-cond-prob}
+\subsection{Bootstrap confidence intervals and the conditional trending plot}\label{subsec:trending-cond-prob}
+
+Confidence intervals can account for the estimation uncertainty of the measures above.
+Bootstrap confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
+New samples are drawn with replacement from the dataset and are not based on parametric assumptions as for classical confidence intervals.
+The confidence interval is then computed based on the bootstrap samples.
+We examine three methods for bootstrapping here: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
+In the \textit{percentile} approach, the confidence interval for level $\alpha$ is built directly from the bootstrap estimators' empirical distribution.
+The \textit{basic} approach computes the confidence interval based on the non-bootstrapped estimate using the bootstrapped quantile deviations~\parencite{Davison1997}.
+The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\parencite{Efron1987}.
+Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but needs smaller datasets for reasonable confidence intervals.
+The basic approach balances those two aims.
+We compare the approaches in a small synthetic data study concerning their small-dataset behavior and computation time in Appendix~\ref{sec:appendix}.
+The \ac{bca} is the only method holding the confidence level also for small datasets while increasing the computation time only moderately for larger datasets.
+Thus, we use the \ac{bca} method for the confidence intervals in the applications in Section~\ref{sec:application}.
+
+The sample is assumed to be independent and identically distributed in standard bootstrapping.
+Thus, before applying bootstrapping methods, the strength of sequential dependence should be inspected, for example, by analyzing the autocorrelation and partial autocorrelation.
+The simple bootstrapping methods above do not account for serial dependence. 
+Bootstrapping focusing on time series data is covered in~\textcite{Hardle2003,Kreiss2012}, for example.
+
 The above-defined estimators give information on the probabilites $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin e)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin e)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin e)$.
 These probabilities draw a general picture but might still be too coarse for local effects.
 More insights might be gained by considering the conditional distribution to assess the local trending ability of a prediction.
 Whereas it would be possible to build analog measures on other intervals, assessing $P(\diffxrv \diffyrv > 0 | \diffx = x)$ graphically eases the simultaneous evaluation of various intervals.
-In addition, the conditional trending plot facilitates the comparison of various methods in a single plot and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
+In addition, the plot facilitates the comparison of various methods in a single plot, and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
+We refer to the plot as a conditional trending plot.
 
 A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
 \begin{align*}
 P(\diffxrv \diffyrv > 0 | \diffxrv = x) = \begin{cases}
-                                              \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \: \textrm{d} \: y & \text{if } x < 0, \\
-                                              \int_{0}^{\infty} \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \: \textrm{d} \: y & \text{if } x > 0, \\
+                                              \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \ \textrm{d} \: y & \text{if } x < 0, \\
+                                              \int_{0}^{\infty} \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \ \textrm{d} \: y & \text{if } x > 0, \\
 \end{cases}
 \end{align*}
 for $x \neq 0$ through a \ac{kde}.
 A comprehensive introduction into multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages~\parencite[e.g., for  Python in][]{Seabold2010}.
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
+The multivariate \ac{kde} takes as modeling parameters a kernel and a bandwidth selector. 
 Note that for kernels with infinite support, for example, the Gaussian kernel, the plot should be limited to the core values of $\diffx$ without outliers to avoid estimates based on small subsets of the data.
-Besides the kernel, a bandwidth selector has to be chosen for a multivariate \ac{kde}.
-Various methods are available with different strengths and weaknesses.
+While the kernel is typically Gaussian, various methods for the bandwidth selector are available with different strengths and weaknesses.
+
 Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| python package~\parencite{Seabold2010}.
 While the rule-of-thumb is based only on the covariance matrix, the other two numerically optimize the bandwidth with a hold-one-out least squares or likelihood objective function.
 The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
@@ -269,24 +291,6 @@ Further examples, including comparisons between methods concerning their trendin
     \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time. It does not converge for the first data set and yields a bandwidth too small for the second data set. The rule of thumb is the fastest method but tends to oversmooth. The cross-validation maximum likelihood method yields a more reasonable bandwidth with moderate computation time. }\label{fig:trending-cond-prob-bw}
 \end{figure}
 
-Confidence intervals can account for the estimation uncertainty of the measures above.
-Bootstrap confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
-New samples are drawn with replacement from the dataset in bootstrapping and are not based on parametric assumptions as for classical confidence intervals.
-The confidence interval is then computed based on the bootstrap samples.
-We examine three methods for bootstrapping here: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
-In the \textit{percentile} approach, the confidence interval for level $\alpha$ is built directly from the bootstrap estimators' empirical distribution.
-The \textit{basic} approach computes the confidence interval based on the non-bootstrapped estimate using the bootstrapped quantile deviations~\parencite{Davison1997}.
-The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\parencite{Efron1987}.
-Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but needs smaller datasets for reasonable confidence intervals.
-The basic approach balances those two aims.
-We compare the approaches in a small synthetic data study concerning their small-dataset behavior and computation time in Appendix~\ref{sec:appendix}.
-For small datasets, the \ac{bca} holds the confidence level also for small data sets with a negligibly higher computation time than the other approaches.
-Thus, we use the \ac{bca} method for the confidence intervals in the applications in Section~\ref{sec:application}.
-
-The sample is assumed to be independent and identically distributed in standard bootstrapping.
-Thus, before applying bootstrapping methods, the strength of sequential dependence should be inspected, for example, by analyzing the autocorrelation and partial autocorrelation.
-The simple bootstrapping methods above do not account for serial dependence. 
-Bootstrapping focusing on time series data is covered in~\textcite{Hardle2003,Kreiss2012}, for example.
 
 \subsection{Probabilistic Evaluation}
 
