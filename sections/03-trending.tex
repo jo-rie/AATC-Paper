@@ -82,11 +82,13 @@ For example, it is known in cardiac output measurement analysis~\parencite{Sauge
 Thereby, the occurred changes are plotted together with the predicted changes, that is, $(\diffy_t, \diffx_t)$ for $t = 1, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
+
 Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
 Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
 Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant plot for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
 The data generation is described in Appendix~\ref{subsec:app-trending-data-generation} and will carry through this section.
 The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
+
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the date of difference in the point color.
 In Figure~\ref{fig:trending_basic_4q_sample_color}, blue points refer to earlier measurements and turn green for larger $t$.
@@ -119,13 +121,14 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green quadrants versus the red quadrants boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes, respectively.
+Analyzing the number of points in the green quadrants versus the red quadrants is a standard approach in trending assessment of measurement data \parencite{Critchley2010,Saugel2015}.
+It boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes, respectively.
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
 To estimate $P(\diffxrv \diffyrv > 0)$ it lies at hand to use
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
-We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{1, \dots, T\}$.
+We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{1, \dots, T-l\}$.
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
 Such a $2 \times 2$ table of counts is called a contingency table.
 It is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
@@ -167,13 +170,13 @@ This seasonal behavior cannot be observed in the two four-quadrant plots as the 
 \end{subfigure}\hspace{0.01\textwidth}
 \begin{subfigure}[t]{.24\textwidth}
 \includegraphics{plots/illustrative_examples/4Q_sample_with_time}
-\caption{The data is colored according to the time index $t$, the greener, the later.}\label{fig:trending_basic_4q_sample_color}
+\caption{The same data is colored according to the time index $t$, the greener, the later.}\label{fig:trending_basic_4q_sample_color}
 \end{subfigure}\hspace{0.01\textwidth}
 \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$ and with exclusion area $\diffx < \varepsilon$, $\mu_{1.0} = 0.7712$, respectively. Strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$. Strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability of $\diffxt$ having the same sign as $\diffyt$ for each time step. The rolling estimates hang back as the windows are backward-looking.}
 \end{figure}
 
 
