@@ -69,7 +69,6 @@ $\\
 \end{table}
 
 
-\todo{Signal/Prediction vereinheitlichen}
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-basics}
 
 Throughout the remainder of the section, we use the notation of differences, $\diffxl$ and $\diffyl$.
@@ -157,7 +156,7 @@ For the trending ratio, a rolling estimate with a backward-looking window is giv
 \end{equation*}
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
-The trending ability of the signal has a strong yearly, sinus-shaped seasonality with higher trending ability peak after a quarter of a year and a low point after three quarters.
+The trending ability of the signal has a strong yearly, sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
 This seasonal behavior cannot be observed in the two four-quadrant plots as the high number of points overlays it or in the trending ratio.
 
 \begin{figure}
@@ -270,7 +269,6 @@ Further examples, including comparisons between methods concerning their trendin
     \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time. It does not converge for the first data set and yields a bandwidth too small for the second data set. The rule of thumb is the fastest method but tends to oversmooth. The cross-validation maximum likelihood method yields a more reasonable bandwidth with moderate computation time. }\label{fig:trending-cond-prob-bw}
 \end{figure}
 
-\todo{Übergang zu Bootstrapping}
 Confidence intervals can account for the estimation uncertainty of the measures above.
 Bootstrap confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
 New samples are drawn with replacement from the dataset in bootstrapping and are not based on parametric assumptions as for classical confidence intervals.
