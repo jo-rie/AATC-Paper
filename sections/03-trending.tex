@@ -5,25 +5,27 @@ In general, trending can be assessed for different lags $l$ separately, and the 
 Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is insignificant.
 Before introducing measures for assessing trending, we give remarks on computing the predicted change and notation in Section~\ref{subsec:notation}.
 Section~\ref{subsec:trending-basics} introduces trending basics and visualizes trending in a synthetical example.
-In Section~\ref{subsec:trending-measures}, various quantification methods from different disciplines and tasks are examined.
-The approaches are extended to the trending setting in Section~\ref{subsec:trending-noise}.
-Section~\ref{subsec:trending-cond-prob} introduces a new graphical method of trending assessment and briefly introduces bootstrap methods for computing confidence intervals for the measures.
+In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
+The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise}.
+Section~\ref{subsec:trending-cond-prob} introduces a new graphical method for local trending assessment and briefly introduces bootstrap methods for computing confidence intervals for the measures of the prior sections.
+Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:probabilistic}.
 
 \subsection{Computing the predicted change and notation}\label{subsec:notation}
 
 As noted above, trending refers to observed and predicted changes for a time lag $l$.
-The observed change is straightforward to compute for measurements, nowcasts, and forecasts.
+The \textit{observed} change is straightforward to compute for all types of signal.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values or gold standard measurements up to time $T$.
 The sequence of observed change is then given by the differences of values in $\mathbf{y}$ with lag $l$, that is
 \begin{equation}\label{eq:diffy}
     \diffylt = (y_{t+l} - y_t) \quad \text{for}\ t = 1, \dots, T - l.
 \end{equation}
-As noted in the introduction, the definition of predicted change depends on the context.
-Conveying the computation for $y$ directly, the signal's predicted change would be the difference between the signal at time $t + l$ and the true value at $t$.
+
+As noted in the introduction, the definition of the predicted change depends on the context.
+Applying the computation for $y$ directly, the signal's predicted change would be the difference between the signal at time $t + l$ and the true value at $t$.
 This approach lags in three practical aspects.
-For nowcasting and forecasting, the true value at time $t$ might not be known with a considerable time lag.
-In the example in Section~\ref{sec:application-covid}, for example, the time lag is more than 80 days.
-Until the true values are publicly available, the change cannot be computed, and no actions can be taken based on it.
+For nowcasting and forecasting, the true value at time $t$ might not be known with a considerable time delay.
+In the nowcasting application of Section~\ref{sec:application-covid}, for example, the time lag is more than 80 days.
+Until the true values are publicly available, the change could not be computed, and no actions could be taken based on it.
 Thus, it is more practically relevant to use updated signal values for time $t$ as the reference value in this setting.
 
 Second, in the context of nowcasting or forecasting, several signals for the same time $t + l$ are often available at different generation times.
@@ -35,8 +37,8 @@ If the test method is assessed to be consistent with the gold standard, the gold
 Thus, the predicted change is computed based on the test method's values at time $t$ and $t + l$.
 
 Taking the three points together, the signal's predicted change is based on the type of signal.
-To account for several signals for a forecast time $t$ at different issue times $\tau$, we denote those by $x_{t | \tau}$.
-For nowcasting, $t$ and $\tau$ are usually close and possibly negative; for forecasting, $t$ is usually larger than $\tau$.
+To account for several signals for a target time $t$ at different issue times $\tau$, we denote those by $x_{t | \tau}$.
+For nowcasting, $\tau$ is usually not considerably larger than $t$; while $t$ is usually at least $\tau$ in forecasting.
 For measurements, this distinction is not necessary.
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the predicted change computation.
 
@@ -70,9 +72,8 @@ $\\
 
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-basics}
 
-Throughout the remainder of the section, we use the notation of differences, $\diffxl$ and $\diffyl$.
-While the computation of $\diffx$ differs in different contexts, the trending assessment is similar.
-In the following, we omit the difference's lag $l$ for the ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$.
+While the computation of $\diffxl$ differs in different contexts, the trending assessment is similar.
+In the following, we omit the difference's lag $l$ for the ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common lag $l$ as defined in Table~\ref{tab:notation}.
 As noted above, a signal is trending perfectly if all occurred directions of change are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Perfect trending is hardly the case in practice, but a weaker requirement is needed.
 Accordingly, when assessing the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
@@ -102,7 +103,7 @@ However, they lack the clearness and intuition of the four-quadrant plot while a
 \end{subfigure}\hspace{0.01\textwidth}%
 \begin{subfigure}[t]{.24\textwidth}
 \includegraphics{plots/illustrative_examples/4q_excl_box}
-\caption{Four-quadrant plot with rectangle exclusion area.}\label{fig:trending_basic_4q_excl_box}
+\caption{Four-quadrant plot with rectangular exclusion area.}\label{fig:trending_basic_4q_excl_box}
 \end{subfigure}\hspace{0.01\textwidth}%
 \begin{subfigure}[t]{.24\textwidth}
 \includegraphics{plots/illustrative_examples/4q_excl_axis}
