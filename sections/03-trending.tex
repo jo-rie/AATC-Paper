@@ -145,7 +145,7 @@ Thus, they measure the trending ability of the prediction for the positive and n
 In terms of probability, the two measures give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
 
 The use of those estimators could encourage the predictors to exploit imbalances in the number of positive and negative changes. 
-A large difference in $\sum_{\mathcal} \ind{\diffyt > 0}$ and $\sum_{\mathcal} \ind{\diffyt > 0}$ is unlikely in the trending setting as $\diffy$ is obtained from differencing time series data.
+A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t in \mathcal{T}} \ind{\diffyt > 0}$ is unlikely in the trending setting as $\diffy$ is obtained from differencing time series data.
 Nevertheless, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
 Cohen's $\kappa$ is usually used to measure inter-rater agreement and takes into account the ratio of occurred agreement and the probability of agreement by chance.
@@ -193,11 +193,11 @@ In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:applica
 
 The above measures use only the information on a point's quadrant and neglect further details on its location within the quadrant.
 However, points close to the zero point have intuitively less explanatory power or are less reliable.
-If there is noise or non-systematic effects present in true value or predictions, those points are likely to be driven by noise to a large amount.
-That means that the quadrant the point's assignment to a quadrant is driven by noise instead of a systematic trending ability of the signal.
+If there are noise or non-systematic effects present in the true values or predictions, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
+For points with at least one small coordinate, this happens more frequently.
 
 Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures}.
-Points within that zone are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
+Points within that area are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
 The exclusion area's shape can be chosen according to the noise characteristics in predictions and true values.
 In general, it is likely that the models of predictions have a noise component and should thus be part of the exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $e$ by
@@ -206,18 +206,16 @@ We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{e
     \accpeps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin e}} \label{eq:accpeps}\\
     \accmeps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin e}}\label{eq:accmeps}
 \end{align}
-
-
-The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $e$, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin e)$.
-The estimators can easily be adapted for various shapes of the exclusion area.
+The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $e$, that is, for $\acceps$, $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin e)$.
+The estimators accept various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes different shapes of the exclusion area.
 A rectangularly shaped exclusion area, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, leaves points out that are small in both components and are thus likely to be driven away from the zero point by noise.
 Points where at least the true value or signal is unlikely to be zero are not excluded.
-In the example plot, only point 1 is excluded.
+In the example plot in Figure~\ref{fig:trending_basic_4q_excl_box}, only point 1 is excluded.
 An exclusion area along one axis, for example, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq 0 \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change the sign by a small amount of noise.
 This particularly suits signals where small amounts of noise are inevitable.
 A cross-shaped exclusion area, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for likely sign reversal in both components.
-For those two methods, points 1 and 7 or 1, 6, and 7 are excluded, respectively.
+For those two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
 
 In addition to these straight shapes, exclusion areas could have more complex shapes, such as ellipses.
 Such a shape could, for example, be obtained by using a multivariate normal error model around the zero point and excluding points that exceed a certain likelihood of being produced by chance from the zero point.
@@ -225,10 +223,10 @@ These shapes are theoretically appealing, but interpreting the resulting estimat
 Thus, we use the simple exclusion areas above.
 
 In most applications, it is advisable to determine the exact shape and size of the exclusion area based on domain knowledge or expert opinions.
-In addition, the size can also be calculated as a proportion of the total variance or the total range of the data.
+The size estimation can also be based on a proportion of the total variance or the total range of the data.
 A third approach is to visualize the trending ratio for different values of $e$.
 Section~\ref{sec:application} contains various examples of such a plot.
-As a base approach, we advocate using no exclusion area in the four-quadrant plot as the points do not complicate its interpretation and a $\acceps$-over-$e$ plot to visualize the course of the trending ratio over different exclusion area sizes.
+As a base approach, we suggest using no exclusion area in the four-quadrant plot as the points do not complicate its interpretation and a $\acceps$-over-$e$ plot to visualize the course of the trending ratio over different exclusion area sizes.
 
 
 \subsection{The conditional trending plot and confidence intervals based on bootstrapping}\label{subsec:trending-cond-prob}
