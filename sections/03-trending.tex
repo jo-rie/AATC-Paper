@@ -160,7 +160,8 @@ For the trending ratio, a rolling estimate with a backward-looking window is giv
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction's trending ratio can be detected.
 The trending ability of the signal has a strong yearly, sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
-This seasonal behavior cannot be observed in the two four-quadrant plots as the high number of points overlays it or in the trending ratio.
+This seasonal behavior cannot be distinguished in the two four-quadrant plots or in the trending ratio.
+
 
 \begin{figure}
     \centering
@@ -180,14 +181,13 @@ This seasonal behavior cannot be observed in the two four-quadrant plots as the 
 \end{figure}
 
 
-In applications, signal data is often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-forecasting}).
+In applications, signal data is often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
 We refer to time steps, for which either signal or true values or both are unavailable, as missing values.
-Data pairs with missing values can be excluded from the computation of the measures so that the time indices with missing values are excluded from $\mathcal{T}$.
-In general, the measures can be computed for data with missing values if the missing values do not systematically occur.
-Systematic missing values would lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
-In this case, the measures should be computed for the time steps with available data, and the results should be interpreted cautiously.
-Thus, inspection of missing data should accompany applications with missing data, for example, through a visual assessment.
-In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:application-forecasting}, only a few missing values occur, and we give information on the missing data by inspecting the missing data as lists.
+Data pairs with missing values can be excluded from the set $\mathcal{T}$ for the computation of the measures, and the measures are computed normally. 
+However, systematical missing values could lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
+In this case, the measures should be interpreted cautiously, and
+inspection of missing data should accompany applications with missing data, for example, through a visual assessment.
+In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}, only a few missing values occur, and we give information on the missing data by inspecting the missing data as lists.
 
 \subsection{Accounting for noise and non-informative small changes}\label{subsec:trending-noise}
 
