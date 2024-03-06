@@ -214,6 +214,13 @@ The GBM-2 model outperforms the qreg-1 model for all $x$.
 The models NBI-2 and Poisson-2 have the highest trending ability for all negative values of $x$ and the lowest trending ability for all positive values of $x$.
 Benchmark-1 lies between the other models for all $x$.
 
+Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
+The \acf{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the lags 3 and 7 days are shown Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+The \acp{bs} are smallest and close for NBI-2 and Poisson-2 for both lags, while the Brier scores for the other models are larger and differ more.
+The qreg-1 model has the highest \ac{bs} for both lags.
+The reliability diagrams of GBM-2 and NBI-2 are also close and show overall a too small fraction of increases for the predicted probability.
+For the other models, the reliability diagrams show rather a too large fraction of increases for the corresponding predicted probability.
+
 \begin{table}
     \centering
     \input{plots/ed_arrival/50_trending_ratio}
@@ -235,14 +242,34 @@ Benchmark-1 lies between the other models for all $x$.
     \label{fig:app-eda-cond-prob}
 \end{figure}
 
+\begin{figure}
+    \begin{subfigure}{0.32\textwidth}
+    \tiny
+    \input{plots/ed_arrival/70_brier_scores}
+    \caption{Brier Scores for the different models and lags.}\label{fig:app-eda-prob-brier}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \begin{subfigure}[t]{0.32\textwidth}
+    \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_3}
+    \caption{Reliability diagram for lag 3 days.}\label{fig:app-eda-prob-rel-3}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \begin{subfigure}[t]{0.32\textwidth}
+    \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_7}
+    \caption{Reliability diagram for lag 7 days.}\label{fig:app-eda-prob-rel-7}
+    \end{subfigure}
+    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags 3 and 7 days.}
+    \label{fig:app-eda-prob}
+\end{figure}
+
 \subsubsection*{Discussion}
 
-Trending ability is consistent for the two lags, with the models' relative trending ability evolving similarly for the two lags.
+The trending ability is consistent for the two lags, with the models' relative trending ability evolving similarly for the two lags.
 The models' trending ability is generally higher for the smaller lag, but the differences are minor, and confidence intervals overlap.
 
 The trending differs for all models for positive and negative predicted change directions.
 While some models, such as GBM-2 and qreg-1, have the highest positive trending ratio, others, such as Poisson-2 and NBI-2, have the highest negative trending ratio.
 Thus, the uncertainty of the model's predicted change has to be assessed differently based on the direction.
+
+The results of probabilistic trending evaluation \todo{Fertig schreiben}
 
 The example shows that trending assessment is detached from standard point evaluation measures.
 While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
@@ -271,6 +298,8 @@ The number of available records with measurements of \ac{abp} and \ac{nbp} for t
 
 \begin{table}
     \centering
+    \missingfigure{MIMIC Data summary}
+%    \input{plots/mimic/}
     \caption{Data summary of the \ac{abp} and \ac{nbp} measurements for the lags one minute, five minutes, and 15 minutes.}
     \label{tab:app-mimic-data-summary}
 \end{table}
