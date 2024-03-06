@@ -206,7 +206,7 @@ The negative and positive trending ratios differ for all models and lags.
 For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
 The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
 Other models exhibit a higher positive trending ratio than the negative trending ratio.
-The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the lag of three and seven days, while Poisson-2 and NBI-2 have the highest negative trending ratio.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for three and seven days lag, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
 Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
 The conditional trending plots show similar courses for the two lags, while the curves are shifted downwards for the lag of seven days.
@@ -272,7 +272,6 @@ Thus, the uncertainty of the model's predicted change has to be assessed differe
 
 The results of the probabilistic trending evaluation endorse the point trending assessment and assign the best scores to NBI-2 and Poisson-2. 
 The reliability diagrams show that they underestimate the fraction of increases slightly. 
-This aligns with the trending ratio where the 
 
 The example shows that trending assessment is detached from standard point evaluation measures.
 While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
