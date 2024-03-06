@@ -6,10 +6,10 @@ In the last application in Section~\ref{sec:application_measurement}, we conside
 \subsection{Covid nowcasting} \label{sec:application-covid}
 
 Amid the COVID-19 pandemic, the importance of accurate and prompt nowcasts of the pandemic's progression has become evident.
-The pandemic's spread and severity was 
+The pandemic's spread and severity were measured by various indicators. 
 In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\parencite{RobertKochInstitute2021}. \todo{Name in Citation RKI!}
 The Robert Koch Institute (RKI) provided preliminary daily reports on the seven-day hospitalization rate.
-However, these reports were subject to delays and revisions in two sources.
+However, these reports were subject to severe delays and revisions in two sources.
 The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\parencite{RobertKochInstitute2024}.
 The second, more systematic source is the structure of the seven-day hospitalization rate.
 To a given date, all the cases are allocated whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
@@ -36,12 +36,13 @@ The nowcasts contain the seven-day hospitalization rate's predictive mean, media
     \label{fig:app-covid-true-nowcast}
 \end{figure}
 
-
 The data contains eight nowcasts from scientific and public institutions, nowcast communities, and a newspaper, using different input variables, calendar data, and length of training data.
 The model structures are diverse, including Bayesian models, generalized additive models, and parametric bootstrapping.
-Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the model's overall structure.
-Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or for the large .
+Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations together with the respective names in the COVID19-Nowcasting-Hub.
+For information on the model design, we refer to~\textcite{Wolffram2023}.
+Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
+\textcite{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams that was stated in a preregistered study. 
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
 In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not the data from August 8, 2022.
 \unsure{Nochmal längere Evaluation?}
