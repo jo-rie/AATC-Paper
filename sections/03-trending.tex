@@ -334,7 +334,7 @@ It is defined as
 \end{equation*}
 The \ac{bs} assesses the calibration and sharpness of the forecast and observation simultaneously~\parencite{Ranjan2010,Mitchell2011}.
 Calibration refers to the statistical consistency of forecasts and observations, while sharpness measures the spread of the forecast distribution.
-A smaller spread and thus higher sharpness is preferable, as it indicates a greater confidence in the prediction.
+A smaller spread and, thus, higher sharpness is preferable, as it indicates a greater confidence in the prediction.
 The basic paradigm of probabilistic forecasting is to maximize the sharpness, subject to being calibrated~\parencite{Gneiting2014}.
 These two conflicting aspects cannot be distinguished in the scoring rule.
 
@@ -346,24 +346,24 @@ Local deviations from the 45-degree line indicate miscalibration of the forecast
 Thus, the reliability visualizes local and overall calibration simultaneously.
 For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 
-If the forecasts or nowcasts are given as quantiles, $p_t$ can be computed by interpolations between the quantiles.
-Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/P, \dots, (p-1) / P\}$ ($P \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
-Then, the probability $\bar{p}_t$ of a negative change is between $p^{\star}$ and $p^{\star} + 1/P$ for
+If the forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
+Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
+Then, the probability $\bar{p}_t$ of a negative change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
 \begin{equation*}
-    p^{\star} = \max \{p \in \{1/P, \dots, (p-1) / P\}: q_p \leq y_t\} , \text{if} q_{1/p} \leq y_t \leq q_{1 - 1/p}.
+    p^{\star} = \max \{p \in \{1/\pmax, \dots, (p-1) / \pmax\}: q_p \leq y_t\} , \text{if} q_{1/p} \leq y_t \leq q_{1 - 1/p}.
 \end{equation*}
-The quantiles do not determine the location within the interval.
+The quantiles do not determine the location within the interval $[p^{\star}, p^{\star} + 1/\pmax]$.
 Under the assumption of a uniform distribution within the quantile interval, the probability of a negative change is
 \begin{equation*}
-    \bar{p}_t = \frac{y_t - q_{p^\star}}{P (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
+    \bar{p}_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
 \end{equation*}
 If $y_t$ is smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile, we assume the probability mass to be uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
 This yields
 \begin{equation*}
 \bar{p}_t = \begin{cases}
-    \max \{\frac{1}{P} - \frac{q_{p^\star} - y_t}{P (q_{p2/P} - q_{1/P})}, 0\} &, \text{if } y_t < q_{1/p}, \\
-    \min \{\frac{1}{P} - \frac{y_t - q_{(P-1)/P}}{P (q_{(P-1)/P} - q_{(P-2)/P})}, 1\} &, \text{if } y_t > q_{1 - 1/p}, \\
-    \frac{y_t - q_{p^\star}}{P (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star} &, \text{otherwise.}
+    \max \{\frac{1}{\pmax} - \frac{q_{p^\star} - y_t}{\pmax (q_{p2/\pmax} - q_{1/\pmax})}, 0\} &, \text{if } y_t < q_{1/p}, \\
+    \min \{\frac{1}{\pmax} - \frac{y_t - q_{(\pmax-1)/\pmax}}{\pmax (q_{(\pmax-1)/\pmax} - q_{(\pmax-2)/\pmax})}, 1\} &, \text{if } y_t > q_{1 - 1/p}, \\
+    \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star} &, \text{otherwise.}
 \end{cases}
 \end{equation*}
 The probability of positive change is $p_t = 1 - \bar{p}_t$.
