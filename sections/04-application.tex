@@ -45,12 +45,12 @@ We denote them by ENS-MEAN and ENS-MED.
 \textcite{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams that were stated in a preregistered study. 
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
 In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not the data from August 8, 2022.
-
+The nowcasts are resolved with regard to all inhabitants but also with regard to certain geographical and age breakdowns.
 We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
 Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
 The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\parencite{Tolksdorf2022}.
 Table~\ref{tab:app-covid-rmse} summarizes the point evaluation measures for the issued mean of the different models.
-The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\parencite[see][Tables A2, A3, and A4]{Wolffram2023}.
+The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\parencite[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}.
 The best-performing models in terms of RMSE and MAE are the ILM and RKI models.
 The ensemble methods perform worse than the best models regarding the mean location.
 The performance of the models is diverse, with more than twice as high RMSE values for the worst models compared to the best models.
@@ -76,23 +76,23 @@ While lag 1 assesses the short-term trending, lags 7 and 14 consider the medium-
 The lags 7 and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
 
 Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different lags.
-Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} provides information on marginal statistics of the nowcasts and true values.
+Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} provides information on marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
 Overall, the variability and general level of differences grow with the lag.
-The standard deviation increases from roughly 300 for lag 1 to 1,200 for lag 7 and 2,000 for lag 14.
+The standard deviation increases from roughly 300 for lag one to 1,200 for lag seven and 2,000 for lag 14 days.
 Similarly, the 10\%-quantile of differences increases.
 The 10\%-quantile is used for the exclusion areas in the trending assessment.
 The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the differences.
-Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, e.g., $\diffy$ are to be recognized by the nowcast and vice versa.
+Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, for example, $\diffy$ are to be recognized by the nowcast and vice versa.
 
 Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the lag of 7 days.
-The trending ratios without exclusion area range from 0.72 to 0.85 for the lag of 7 days.
+The trending ratios without exclusion area range from 0.72 to 0.85 for the lag of seven days.
 The negative trending ratios are higher than the positive trending ratios for all models.
-For all models, the confidence intervals for the positive and negative trending ratios do not overlap, indicating that the trending ratios are indeed different.
+The confidence intervals for the positive and negative trending ratios do not overlap for all models, indicating that the trending ratios are indeed different.
 The 10\%-quantile exclusion areas have, at most, an influence of 0.03 on the ratios.
 The model with the highest trending ratio is the ILM model, and the model with the lowest is the RKI model.
-The confidence intervals between all models overlap, reflecting the evaluation period lasting 159 days.
+The confidence intervals between all models overlap.
 The positive trending ratio implies a similar ranking of the models, while the negative ratio is second best for the RKI model.
-For the lags of 1 and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
+For the lags of one and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
 
 Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the lag seven days; the respective plots for the lags one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
 Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots readable.
@@ -103,19 +103,17 @@ For a lag of one day, the models' conditional trending ability difference is les
 The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
 The curves cross for an issued fall, with ENS-MED being on top for issued falls above 250.
 
-The trending ratios are plotted for various exclusion areas in Figure~\ref{fig:app-covid-trending-ratio-7}.
+The trending ratios for various exclusion areas are shown in Figure~\ref{fig:app-covid-trending-ratio-7}.
 In general, the trending ratio increases with larger exclusion areas.
 While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
-For the lag of 1 day, the RKI trending ratio decreases with increasing exclusion area size while the other models evolve increasingly (see Figure~\ref{fig:app-covid-trending-ratio-1}).
+For the lag of one day, the RKI trending ratio decreases with increasing exclusion area size while the other models rise (see Figure~\ref{fig:app-covid-trending-ratio-1}).
 For the lag of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
-
-\unsure{Generell bei diesem Abschnitt: man liest hier eigentlich nur Beobachtungen, kann man auch daraus Schlüsse ziehen? Kann man results und discussion verschmelzen?}
 
 \begin{table}
     \centering
     \tiny
     \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[l]$, and negative trending ratio $\accml[l]$ for the models with and without exclusion areas for the lag seven days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\%-quantile of the absolute values of nowcast and true values. }
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models with and without exclusion areas for the lag seven days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\%-quantile of the absolute values of nowcast and true values. }
     \label{tab:app-covid-trending-ratios-lag-7}
 \end{table}
 
@@ -139,7 +137,7 @@ For the lag of 14 days, all trending ratio curves increase with the exclusion ar
 \subsubsection*{Discussion}
 
 For all lags, the influence of the exclusion area on the 10\%-quantile level is negligible.
-For example, the trending ratio changes at most by 0.03 for the EPI model with $\acc^{-, 14}$.
+For example, the trending ratio changes at most by 0.03 for the EPI model with $\accm[14]$.
 The exclusion areas are thus not crucial for the trending assessment in the case of the nowcasts of the seven-day hospitalization rate.
 The lower bound of confidence intervals is at least 0.68 for all models, indicating that they perform better than random guessing the trend.
 
@@ -287,7 +285,7 @@ For some patients, the data includes \ac{abp} and \ac{nbp} measurements.
 For an overview of blood pressure measurement methods, see \textcite{Saugel2014}.
 While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods.
 For critical patients, changes in blood pressure can be crucial for the treatment.
-Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, e.g., ]{Mostafa2020}.
+Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, for example, ]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 The database contains 64,168 numerical data records.
 One data record includes all numerical measurements for one patient.
