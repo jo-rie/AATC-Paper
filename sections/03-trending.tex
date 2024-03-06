@@ -39,8 +39,7 @@ Thus, the predicted change is computed based on the values of the test method at
 
 Taking the three points together, the signal's predicted change is based on the type of signal.
 To account for several signals for a target time $t$ at different issue times $\tau$, we denote them by $x_{t | \tau}$.
-For nowcasting, target times are usua; while $t$ is usually at least $\tau$ in forecasting. \unsure{Nowcast macht Schätzung i. d. R. so lange, bis der echte Wert bekannt wird oder?}
-For measurements, this distinction is not necessary.
+For nowcasting, target times $t$ are usually not considerably later than issue times $\tau$; while $t$ is usually at least $\tau$ in forecasting. For measurements, this distinction is not necessary.
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
 
 \begin{table}
@@ -122,7 +121,7 @@ However, they lack the clarity and intuition of the four-quadrant plot, without 
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green quadrants versus the red quadrants is a standard approach in trending assessment of measurement data \parencite{Critchley2010,Saugel2015}. \unsure{Quelle-Fehler}
+Analyzing the number of points in the green versus red quadrants is a standard approach in the trending assessment of measurement data \parencite{Critchley2010,Saugel2015}. 
 It boils down to assessing the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes, respectively.
 Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
 The standard estimator for $P(\diffxrv \diffyrv > 0)$ is
@@ -146,11 +145,11 @@ Therefore, they measure the trending ability of the prediction for positive and 
 In terms of probability, the two measures give estimates of $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$, respectively.
 
 The use of these estimators could encourage predictors to exploit imbalances in the number of positive and negative changes. 
-A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ is unlikely in the trending setting, since $\diffy$ is obtained from differencing time series data. \unsure{hier stimmt was nicht}
+A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t \in \mathcal{T}} \ind{\diffyt < 0}$ is unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data. 
 However, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
 Cohen's $\kappa$ is usually used to measure inter-rater agreement and takes into account the ratio of occurred agreement and the probability of agreement by chance.
-Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$ table and balanced outcomes.
+Cohen's $\kappa$ reduces to rescaling the trending ratio in the case of a $2\times2$-table and balanced outcomes.
 
 All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
 A rolling estimate is a sequence of estimates, each computed on a length-$w$-window of the data.
@@ -159,8 +158,8 @@ For the trending ratio, a rolling estimate with a backward-looking window is giv
     \acc_t (\diffx, \diffy) \coloneqq \frac{\sum_{t^\star = t-w + 1}^{t} \ind{\diffxt[t^\star] \diffyt[t^\star] > 0}}{w}, \quad t = w-1, \dots, T.\label{eq:acc_rolling}
 \end{equation*}
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
-Thus, the yearly course of the prediction's trending ratio can be detected.
-The trending ability of the signal has a strong yearly sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
+Thus, the yearly course of the prediction trending ratio can be detected.
+The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
 This seasonal behavior cannot be distinguished in the two four-quadrant plots or in the trending ratio.
 
 
@@ -178,9 +177,9 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process of the data in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratios on the whole data set are $\mu = 0.7577$. The strong yearly seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are delayed as the windows look backward.}
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process in \ref{fig:trending_basic_4q_sample} and \ref{fig:trending_basic_4q_sample_color} to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are delayed as the windows look backward.}
 \end{figure} 
-\unsure{was ist $\mu_1$ bei dem Plot, hinschreiben}
+
 In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
 We refer to time steps for which either signal or true values or both are unavailable as missing values.
 Pairs of data with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
@@ -198,23 +197,24 @@ For points with at least one small coordinate, this happens more frequently.
 
 Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures}.
 Points within that area are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
-The shape of the exclusion area can be chosen according to the noise characteristics of predictions and true values.
-In general, it is likely that the prediction models have a noise component and should thus be part of the exclusion area.\unsure{vielleicht eine große Buchstabe für exclusion area?}
-We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $e$ by
+The shape of the exclusion area can be chosen according to the noise characteristics of the predictions and the true values.
+In general, it is likely that the prediction models have a noise component and should thus be part of the exclusion area.
+We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
 \begin{align}
-    \acceps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin e}}\label{eq:acceps}\\
-    \accpeps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin e}} \label{eq:accpeps}\\
-    \accmeps (\diffx, \diffy, e) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin e}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin e}}\label{eq:accmeps}
+    \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}}\label{eq:acceps}\\
+    \accpeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}} \label{eq:accpeps}\\
+    \accmeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}\label{eq:accmeps}
 \end{align}
-The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $e$, that is, for $\acceps$, $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin e)$.
+The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $E$, that is, for $\acceps$, $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$.
 The estimators accept various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes different shapes of the exclusion area.
-A rectangular exclusion area, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ ,for $\varepsilon_x, \varepsilon_y > 0$, leaves out points that are small in both components and therefore likely to be driven by noise.
+A rectangular exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ 
+ ($\varepsilon_x, \varepsilon_y > 0$), leaves out points that are small in both components and, therefore, likely to be driven by noise.
 Points where at least the true value or signal is unlikely to be zero are not excluded.
 In the example graph in Figure~\ref{fig:trending_basic_4q_excl_box}, only point 1 is excluded.
-An exclusion area along one axis, for example, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq 0 \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
+An exclusion area along one axis, for example, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq 0 \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
 This particularly suits signals where small amounts of noise are inevitable.
-A cross-shaped exclusion area, $e = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for the sign reversal in both components.
+A cross-shaped exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for the sign reversal in both components.
 For these two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
 
 In addition to these straight shapes, exclusion areas could have more complex shapes, such as ellipses.
@@ -224,9 +224,7 @@ Thus, we suggest using the above simple exclusion areas.
 
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
 The size estimation can also be based on a proportion of the total variance or the total range of the data.
-A third approach is to visualize the trending ratio for different values of $e$.
-Section~\ref{sec:application} contains various examples of such a plot.
-As a base approach, we suggest using no exclusion area in the four-quadrant plot, as the points do not complicate its interpretation, and a $\acceps$-over-$e$ plot to visualize the course of the trending ratio over different exclusion area sizes.\unsure{"as the points do not complicate its interpretation" ist das hier die "richtige" Begründung, dass wir kein exlclusion area betrachten?}
+A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
 
 
 \subsection{Bootstrap confidence intervals and the conditional trending plot}\label{subsec:trending-cond-prob}
