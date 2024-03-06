@@ -196,7 +196,7 @@ The resulting fraction of included values in the computation is also listed in T
 \begin{table}
     \centering
     \input{plots/ed_arrival/10_marginal_analysis}
-    \caption{Marginal analysis of the nowcast and true differences. The column (1), $l=l$ shows the fraction of values greater than zero for lag $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
+    \caption{Marginal analysis of the nowcast and true differences. The column (1) shows the fraction of values greater than zero for lag $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
     \label{tab:app-eda-marginals}
 \end{table}
 
@@ -270,7 +270,9 @@ The trending differs for all models for positive and negative predicted change d
 While some models, such as GBM-2 and qreg-1, have the highest positive trending ratio, others, such as Poisson-2 and NBI-2, have the highest negative trending ratio.
 Thus, the uncertainty of the model's predicted change has to be assessed differently based on the direction.
 
-The results of probabilistic trending evaluation \todo{fertig}
+The results of the probabilistic trending evaluation endorse the point trending assessment and assign the best scores to NBI-2 and Poisson-2. 
+The reliability diagrams show that they underestimate the fraction of increases slightly. 
+This aligns with the trending ratio where the 
 
 The example shows that trending assessment is detached from standard point evaluation measures.
 While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
@@ -290,20 +292,11 @@ Thus, trending assessment can be performed in addition to standard accuracy anal
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 The database contains 64,168 numerical data records.
 One data record includes all numerical measurements for one patient.
-In general, the measured signals vary in length, frequency, and type of measurement.
+The measured signals vary in length, frequency, and type of measurement.
 Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} simultaneously.
 2,548 include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one measurement of systolic \ac{abp} and \ac{nbp} at the same time; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
 
 We consider the lags of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
-The number of available records with measurements of \ac{abp} and \ac{nbp} for the lags are listed in Table~\ref{tab:app-mimic-data-summary}.
-
-\begin{table}
-    \centering
-    \missingfigure{MIMIC Data summary}
-%    \input{plots/mimic/}
-    \caption{Data summary of the \ac{abp} and \ac{nbp} measurements for the lags one minute, five minutes, and 15 minutes.}
-    \label{tab:app-mimic-data-summary}
-\end{table}
 
 \subsubsection*{Results}
 
@@ -324,7 +317,7 @@ This aligns with the trending ratios, but the confidence intervals overlap.
 \begin{figure}
     \centering
     \includegraphics{plots/mimic/plot_4q}
-    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, and the lower row contains mean measurements. The columns contain the lags one, five, and 15 minutes.}
+    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, and the lower row contains mean measurements. The columns contain the lags one, five, and 15 minutes.\todo{lag ausgeschrieben}}
     \label{fig:app-mimic-4q}
 \end{figure}
 
@@ -349,7 +342,7 @@ This aligns with the trending ratios, but the confidence intervals overlap.
         \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag15}
         \caption{Lag 15 minutes.}
     \end{subfigure}\hspace{0.01\textwidth}
-    \caption{Conditional trending plot for the systolic and mean blood pressure measurements and the lags one, five, and 15 minutes. \hl{Short interpretation.}}
+    \caption{Conditional trending plot for the systolic and mean blood pressure measurements and the lags one, five, and 15 minutes. \todo{No l = ... in the legend}}
     \label{fig:app-mimic-cond-prob}
 \end{figure}
 
@@ -360,7 +353,7 @@ This aligns with the trending ratios, but the confidence intervals overlap.
 
 The four-quadrant plots contain a considerable number of extreme points.
 Whether these points are due to measurement errors or extreme values is not distinguishable.
-Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile.
+Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile \parencite[see][]{Critchley2010}.
 We do not follow this approach here, as the extreme values are not necessarily measurement errors and could be particularly relevant.
 
 The differences between positive and negative predicted changes are small in this example.
@@ -369,4 +362,5 @@ This aligns with the four-quadrant plots, where no apparent asymmetry is visible
 
 The bootstrap confidence intervals are wide.
 The width is around 0.1 for the trending ratio, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the lag of one minute.
+Thus, more measurements would be of interest for a further trending assessment. 
 
