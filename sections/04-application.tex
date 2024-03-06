@@ -44,8 +44,8 @@ Using the nowcasts, two ensemble methods are constructed using the ensembles' me
 We denote them by ENS-MEAN and ENS-MED.
 \textcite{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study. 
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
-In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not the data from August 8, 2022.
-The nowcasts are resolved with regard to all inhabitants but also with regard to certain geographical and age breakdowns.
+In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not from August 8, 2022.
+The nowcasts are resolved with regard to all inhabitants and specific geographical and age breakdowns.
 We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
 Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
 The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\parencite{Tolksdorf2022}.
@@ -72,8 +72,8 @@ Especially, asymmetries are of interest to assess whether some models are better
 
 In the following, we apply the trending assessment of Section~\ref{sec:trending} to the nowcasts of the seven-day hospitalization rate.
 We report the trending for the lags 1, 7, and 14 days.
-While lag 1 assesses the short-term trending, lags 7 and 14 consider the medium-term trending.
-The lags 7 and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
+While lag one assesses the short-term trending, lags seven and 14 consider the medium-term trending.
+The lags seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
 
 Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different lags.
 Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} provides information on marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
@@ -84,7 +84,7 @@ The 10\%-quantile is used for the exclusion areas in the trending assessment.
 The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the differences.
 Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, for example, $\diffy$ are to be recognized by the nowcast and vice versa.
 
-Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the lag of 7 days.
+Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the lag of seven days.
 The trending ratios without exclusion area range from 0.72 to 0.85 for the lag of seven days.
 The negative trending ratios are higher than the positive trending ratios for all models.
 The confidence intervals for the positive and negative trending ratios do not overlap for all models, indicating that the trending ratios are indeed different.
@@ -146,13 +146,13 @@ RKI is among the best in point evaluation measures but performs worse in trendin
 The assessment of asymmetry in the conditional trending plots is crucial for interpreting the trending ratios, with the RKI model being the most prominent example.
 
 A more extensive training size would be beneficial for assessing the models' performance.
-For the evaluation period of 159 days, the trending ratio confidence intervals overlap, and thus, no conclusions can be drawn from the trending evaluation.
+For the evaluation period of 159 days, the trending ratio confidence intervals overlap; thus, no conclusions can be drawn from the trending evaluation.
 
 \subsection{Forecasting emergency department arrivals}\label{sec:application-eda}
 
 In a second example, we consider the forecasting of the hourly number of arrivals in a large emergency department.
 Forecasting the number of arrivals in an emergency department is crucial for planning staff and resources.
-In the study by \textcite{Rostami-Tabar2023}, several models are used for predicting hourly outcomes.
+Several models are used for predicting hourly outcomes in the study by \textcite{Rostami-Tabar2023}.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 Thus, the management can take measures according to the expected number of arrivals, for example, through redeploying staff and reconfiguring units.
 
@@ -188,9 +188,9 @@ In contrast to their work, we use only the forecast data at least 36 hours ahead
 Table~\ref{tab:app-eda-marginals} analyzes the differences in marginal distributions for the forecasts and true values for the lags of three and seven days.
 Note that the difference definition aligns with Section~\ref{subsec:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the true value is available when issuing the forecast.
 The fraction of positive differences varies between 0.39 and 0.63 for the lag of three days and between 0.37 and 0.63 for the lag of seven days.
-The variability of differences decreases for the larger lag for most models; only for the ETS model it increases.
+The variability of differences decreases for the larger lag for most models; only for the ETS model does it increase.
 The 10\%-quantile of the differences is between zero and one for all models and lags.
-Thus, we exclude only values smaller than one from the trending assessment.
+Thus, we exclude only differences smaller than one from the trending assessment.
 The resulting fraction of included values in the computation is also listed in Table~\ref{tab:app-eda-marginals} and is at least 79\% of the values.
 
 \begin{table}
@@ -205,10 +205,10 @@ The trending ratios range from 0.68 to 0.84 for a lag of three days and from 0.6
 The negative and positive trending ratios differ for all models and lags.
 For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
 The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
-The positive trending ratio is higher for other models than the negative trending ratio.
-The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the lag of 3 and seven days, while Poisson-2 and NBI-2 have the highest negative trending ratio.
+Other models exhibit a higher positive trending ratio than the negative trending ratio.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the lag of three and seven days, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
-Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags 3 and 7 days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
+Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
 The conditional trending plots show similar courses for the two lags, while the curves are shifted downwards for the lag of seven days.
 The model's relative trending ability evolves consistently for the two lags, with the NBI-2 and Poisson-2 models being indistinguishable.
 The GBM-2 model outperforms the qreg-1 model for all $x$.
@@ -216,11 +216,11 @@ The models NBI-2 and Poisson-2 have the highest trending ability for all negativ
 Benchmark-1 lies between the other models for all $x$.
 
 Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
-The \acf{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the lags 3 and 7 days are shown Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+The \acf{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the lags three and seven days are shown in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
 The \acp{bs} are smallest and close for NBI-2 and Poisson-2 for both lags, while the Brier scores for the other models are larger and differ more.
 The qreg-1 model has the highest \ac{bs} for both lags.
-The reliability diagrams of GBM-2 and NBI-2 are also close and show overall a too small fraction of increases for the predicted probability.
-For the other models, the reliability diagrams show rather a too large fraction of increases for the corresponding predicted probability.
+The reliability diagrams of GBM-2 and NBI-2 are also close and show a too-small fraction of increases for the predicted probability overall.
+For the other models, the reliability diagrams show a fraction of increases that are too large for the corresponding predicted probability.
 
 \begin{table}
     \centering
@@ -233,13 +233,13 @@ For the other models, the reliability diagrams show rather a too large fraction 
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_3}
-    \caption{Lag 3 days}
+    \caption{Lag three days}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_7}
-    \caption{Lag 7 days}
+    \caption{Lag seven days}
     \end{subfigure}
-    \caption{Conditional trending plots for the lags 3 and 7 days and the models with the best positive or negative trending ability. The plots of NBI-2 and Poisson-2 are indistinguishable.}
+    \caption{Conditional trending plots for the lags three and seven days and the models with the best positive or negative trending ability. The plots of NBI-2 and Poisson-2 are indistinguishable.}
     \label{fig:app-eda-cond-prob}
 \end{figure}
 
@@ -251,13 +251,13 @@ For the other models, the reliability diagrams show rather a too large fraction 
     \end{subfigure}\hspace{0.01\textwidth}%
     \begin{subfigure}[t]{0.32\textwidth}
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_3}
-    \caption{Reliability diagram for lag 3 days.}\label{fig:app-eda-prob-rel-3}
+    \caption{Reliability diagram for lag three days.}\label{fig:app-eda-prob-rel-3}
     \end{subfigure}\hspace{0.01\textwidth}%
     \begin{subfigure}[t]{0.32\textwidth}
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_7}
-    \caption{Reliability diagram for lag 7 days.}\label{fig:app-eda-prob-rel-7}
+    \caption{Reliability diagram for lag seven days.}\label{fig:app-eda-prob-rel-7}
     \end{subfigure}
-    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags 3 and 7 days.}
+    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags three and seven days.}
     \label{fig:app-eda-prob}
 \end{figure}
 
@@ -270,7 +270,7 @@ The trending differs for all models for positive and negative predicted change d
 While some models, such as GBM-2 and qreg-1, have the highest positive trending ratio, others, such as Poisson-2 and NBI-2, have the highest negative trending ratio.
 Thus, the uncertainty of the model's predicted change has to be assessed differently based on the direction.
 
-The results of probabilistic trending evaluation \todo{Fertig schreiben}
+The results of probabilistic trending evaluation \todo{fertig}
 
 The example shows that trending assessment is detached from standard point evaluation measures.
 While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
@@ -283,15 +283,15 @@ The data is from the MIMIC-III database, including various information on patien
 The data is publicly available and also includes numerical measurement data such as heart rate, blood pressure, and oxygen saturation in a waveform database \parencites[][]{Moody2017}[available through][]{Goldberger2000}.
 
 For some patients, the data includes \ac{abp} and \ac{nbp} measurements.
-For an overview of blood pressure measurement methods, see \textcite{Saugel2014}.
 While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods.
+For an overview of blood pressure measurement methods, see \textcite{Saugel2014}.
 For critical patients, changes in blood pressure can be crucial for the treatment.
 Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, for example, ]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 The database contains 64,168 numerical data records.
 One data record includes all numerical measurements for one patient.
-In general, the measured signals vary in length, frequency and type of measurement.
-Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} at the same time.
+In general, the measured signals vary in length, frequency, and type of measurement.
+Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} simultaneously.
 2,548 include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one measurement of systolic \ac{abp} and \ac{nbp} at the same time; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
 
 We consider the lags of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
@@ -309,22 +309,22 @@ The number of available records with measurements of \ac{abp} and \ac{nbp} for t
 
 Again, we exclude the smallest 10\% of absolute differences in trending assessment.
 The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different lags are shown in Figure~\ref{fig:app-mimic-4q}.
-The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} at the same time for two consecutive times with the specified lags.
+The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} simultaneously for two consecutive times with the specified lags.
 For the systolic measurements, 290, 332, and 442 points are available for the lags of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
 
 The trending ratios, including confidence intervals for the different lags, are listed in Table~\ref{tab:app-mimic-trending-ratios}.
 For the measurements with a lag of one minute, the confidence intervals have lower bounds of 0.5 or slightly above.
 For larger lags, the trending ratio increases.
-The difference between positive and negative trending ratios is small for all types and lags, with overlapping confidence intervals in all cases.
+The difference between positive and negative trending ratios is small for all types and lags, with overlapping confidence intervals.
 
 Figure~\ref{fig:app-mimic-cond-prob} shows the conditional trending plots for the different lags and the systolic and mean blood pressure measurements.
 It becomes apparent that the systolic measurements have a higher trending ability than the mean measurement, except for small negative predicted changes.
-This is in line with the trending ratios, but the confidence intervals overlap.
+This aligns with the trending ratios, but the confidence intervals overlap.
 
 \begin{figure}
     \centering
     \includegraphics{plots/mimic/plot_4q}
-    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements and the lower row mean measurements. The columns contain the lags one, five, and 15 minutes.}
+    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, and the lower row contains mean measurements. The columns contain the lags one, five, and 15 minutes.}
     \label{fig:app-mimic-4q}
 \end{figure}
 
@@ -359,14 +359,14 @@ This is in line with the trending ratios, but the confidence intervals overlap.
 \subsubsection*{Discussion}
 
 The four-quadrant plots contain a considerable number of extreme points.
-It is not clearly distinguishable whether these points are due to measurement errors or actual extreme values.
-Some authors argue to exclude not only the measurements below the 10\%-quantile of the absolute differences but also the points above the 90\%-quantile.
-We do not follow this approach here, as the extreme values are not necessarily measurement errors and could also be particularly relevant.
+Whether these points are due to measurement errors or extreme values is not distinguishable.
+Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile.
+We do not follow this approach here, as the extreme values are not necessarily measurement errors and could be particularly relevant.
 
 The differences between positive and negative predicted changes are small in this example.
 The positive and negative trending ratios have overlapping confidence intervals, and the conditional trending plots do not contain prominent deviations in the course.
-This is in line with the four-quadrant plots, where no clear asymmetry is visible.
+This aligns with the four-quadrant plots, where no apparent asymmetry is visible.
 
 The bootstrap confidence intervals are wide.
-For the trending ratio, the width is around 0.1, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the lag of 1 minute.
+The width is around 0.1 for the trending ratio, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the lag of one minute.
 
