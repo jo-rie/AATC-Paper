@@ -1,7 +1,7 @@
 In this section, we apply the trending assessment to three different applications.
 In the first application in Section~\ref{sec:application-covid}, we consider the nowcasting of the seven-day hospitalization rate for COVID-19 in Germany.
 Section~\ref{sec:application-eda} applies the trending assessment to forecast methods for the number of arrivals in a large emergency department.
-In the last application in Section~\ref{sec:application-measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
+In the last application in Section~\ref{sec:application_measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
 
 \subsection{Covid nowcasting} \label{sec:application-covid}
 
@@ -185,7 +185,7 @@ In contrast to their work, we use only the forecast data at least 36 hours ahead
 \subsubsection*{Results}
 
 Table~\ref{tab:app-eda-marginals} analyzes the differences in marginal distributions for the forecasts and true values for the lags of 3 and 7 days.
-Note that the difference definition aligns with Section~\ref{sec:notation}, defined as the difference between the forecasted mean and true value of 3 and 7 days before, as the true value is available when issuing the forecast.
+Note that the difference definition aligns with Section~\ref{subsec:notation}, defined as the difference between the forecasted mean and true value of 3 and 7 days before, as the true value is available when issuing the forecast.
 The fraction of positive differences varies between 0.39 and 0.63 for the lag of 3 days and between 0.37 and 0.63 for the lag of 7 days.
 The variability of differences decreases for the larger lag for most models; only for the ETS model does it increase.
 The 10\%-quantile of the differences is between zero and one for all models and lags.
