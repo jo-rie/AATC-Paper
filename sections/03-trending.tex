@@ -1,10 +1,9 @@
 
-As described in Section~\ref{sec:introduction}, we refer by trending to the consistency of an observed change with the change issued by another measurement, a nowcast, or a forecast.
+As explained in Section~\ref{sec:introduction}, the term "trending" is used to denote the alignment of a detected true development with the development indicated by another measurement, a nowcast, or a forecast.
 In this section, we want to specify trending and define different methods of measuring and visualizing trending.
-\unsure{ist das Wort "observed" wirklich das was wir meinen? Stichwort: Rauschen}
 In general, trending can be assessed for different lags $l$ separately, and the relevance of the considered lags has to be determined based on the question at hand.
 Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is insignificant.
-Before introducing measures to evaluate trending, we make remarks on the calculation of predicted change and notation in Section~\ref{subsec:notation}.
+Before introducing measures to evaluate trending, we make remarks on the calculation of the predicted change and notation in Section~\ref{subsec:notation}.
 Section~\ref{subsec:trending-basics} introduces the basics of trending and visualizes trending in a synthetic example.
 In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
 The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise}.
@@ -15,8 +14,7 @@ Trending assessment for probabilistic nowcasts and forecasts is treated in Secti
 
 As noted above, trending refers to observed and predicted changes for a time lag $l$.
 The \textit{observed} change is straightforward to compute for all types of signals.
-Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values or gold standard measurements up to time $T$.
-\unsure{Vielleicht schreiben wir hier noch ausfürhlich aus, was dieses y in drei Fällen sein sollte, oder ist das klar nach introduction?}
+Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values for nowcasting or forecasting, or gold standard measurements up to time $T$.
 The sequence of observed change is then given by the differences of values in $\mathbf{y}$ with lag $l$, that is
 \begin{equation}\label{eq:diffy}
     \diffylt = (y_{t+l} - y_t) \quad \text{for}\ t = 1, \dots, T - l.
@@ -35,12 +33,12 @@ Second, in the context of nowcasting or forecasting, several signals for the sam
 Thus, the generation time and forecast time have to be included in the notation of nowcasts and forecasts.
 We use the term \textit{issue time} for the generation time of a signal and \textit{target time} to denote the time the forecast applies to.
 
-For measurement, a test method is usually evaluated against a gold standard to test whether the test method could replace the gold standard.
-If the test method is assessed to be consistent with the gold standard, the gold standard measurement values are not available to compute the predicted change. \unsure{irgendwie für mich nicht klar formuliert: man unteruscht ja bei meausurement nur ob die gemessenen Änderungen von den zwei Methoden konsistent sind oder?}
-Thus, the predicted change is computed on the basis of the test method's values at time $t$ and $t + l$.
+Third, for measurement, a test method is usually evaluated against a gold standard to test whether the test method could replace the gold standard.
+Thus, the gold standard measurements are not available if the quality of the test method is sufficient. \improvement{irgendwie für mich nicht klar formuliert: man unteruscht ja bei meausurement nur ob die gemessenen Änderungen von den zwei Methoden konsistent sind oder?}
+Thus, the predicted change is computed based on the values of the test method at time $t$ and $t + l$.
 
 Taking the three points together, the signal's predicted change is based on the type of signal.
-To account for several signals for a target time $t$ at different issue times $\tau$, we denote those by $x_{t | \tau}$.
+To account for several signals for a target time $t$ at different issue times $\tau$, we denote them by $x_{t | \tau}$.
 For nowcasting, $\tau$ is usually not considerably larger than $t$; while $t$ is usually at least $\tau$ in forecasting. \unsure{Nowcast macht Schätzung i. d. R. so lange, bis der echte Wert bekannt wird oder?}
 For measurements, this distinction is not necessary.
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
@@ -349,7 +347,7 @@ For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 If the forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
 Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
 The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
-The probability $\pc_t$ of a negative change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
+The probability $\pc_t$ of a \textit{negative} change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
 \begin{equation*}
     p^{\star} = \max \{p \in \{1/\pmax, \dots, (\pmax-1) / \pmax\}: q_p \leq y_t\} , \quad \text{if}\ q_{1/\pmax} \leq y_t \leq q_{1 - 1/\pmax}.
 \end{equation*}
@@ -382,4 +380,4 @@ Then, the probability of a negative change can be computed by
 Thereby, the distributions are assumed to be independent.
 As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be computed by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
-If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to gene.
+If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to generate samples for the Monte Carlo approximation.
