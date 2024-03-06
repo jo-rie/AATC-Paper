@@ -5,15 +5,16 @@ In the last application in Section~\ref{sec:application_measurement}, we conside
 
 \subsection{Covid nowcasting} \label{sec:application-covid}
 
-During the COVID-19 pandemic, the need for reliable and timely nowcasts of the pandemic's development has become apparent.
-In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\parencite{RobertKochInstitute2021}.
-The Robert Koch Institute (RKI) provides daily reports on the number of new hospitalizations.
-However, these reports are subject to delays and revisions in two sources.
+Amid the COVID-19 pandemic, the importance of accurate and prompt nowcasts of the pandemic's progression has become evident.
+The pandemic's spread and 
+In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\parencite{RobertKochInstitute2021}. \todo{Name in Citation RKI!}
+The Robert Koch Institute (RKI) provided preliminary daily reports on the seven-day hospitalization rate.
+However, these reports were subject to delays and revisions in two sources.
 The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\parencite{RobertKochInstitute2024}.
 The second, more systematic source is the structure of the seven-day hospitalization rate.
 To a given date, all the cases are allocated whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
-The seven-day hospitalization rate is the average count of cases per $100,000$ inhabitants on the given date and six days before.
-Thus, the final seven-day hospitalization rate can only be reported with a significant delay of up to more than 70 days.
+The seven-day hospitalization rate is the average count of those cases per $100,000$ inhabitants on the given date and six days before.
+Thus, the final seven-day hospitalization rate can only be reported with a significant delay of up to more than 70 days, as the hospitalization of infected inhabitants can occur much later than the first positive test.
 Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
 To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
 The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and other quantiles.
@@ -22,12 +23,12 @@ The nowcasts contain the seven-day hospitalization rate's predictive mean, media
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/covid_nowcast/00_true_data.pdf}
-    \caption{Realisations.}
+    \caption{Realisations.\todo{Capitalize Date}}
     \label{fig:app-covid-true}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/covid_nowcast/00_nowcast_data.pdf}
-    \caption{Same-day nowcasts}
+    \caption{Same-day nowcasts. \todo{Capitalize Forecast Date}}
     \label{fig:app-covid-nowcast}
         \end{subfigure}
     \caption{True and nowcast data of the seven-day-hospitalization in Germany from November 22, 2021, to April 29, 2022 \parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
