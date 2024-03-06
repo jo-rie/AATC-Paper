@@ -348,16 +348,18 @@ For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 
 If the forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
 Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
-Then, the probability $\bar{p}_t$ of a negative change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
+The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
+The probability $\pc_t$ of a negative change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
 \begin{equation*}
-    p^{\star} = \max \{p \in \{1/\pmax, \dots, (p-1) / \pmax\}: q_p \leq y_t\} , \text{if} q_{1/p} \leq y_t \leq q_{1 - 1/p}.
+    p^{\star} = \max \{p \in \{1/\pmax, \dots, (\pmax-1) / \pmax\}: q_p \leq y_t\} , \quad \text{if}\ q_{1/\pmax} \leq y_t \leq q_{1 - 1/\pmax}.
 \end{equation*}
 The quantiles do not determine the location within the interval $[p^{\star}, p^{\star} + 1/\pmax]$.
 Under the assumption of a uniform distribution within the quantile interval, the probability of a negative change is
 \begin{equation*}
     \bar{p}_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
 \end{equation*}
-If $y_t$ is smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile, we assume the probability mass to be uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
+The approach does not assign probabilities for $y_t$ smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile.
+As a simple extension, we assume the probability mass to be uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
 This yields
 \begin{equation*}
 \bar{p}_t = \begin{cases}
@@ -368,16 +370,16 @@ This yields
 \end{equation*}
 The probability of positive change is $p_t = 1 - \bar{p}_t$.
 
-If the true value is unknown at lag $l$, the probabilities $p_t$ can be computed by integration.
+If the true value is given as a distribution because it is yet unknown, the probabilities $p_t$ can be computed by integration.
 Let for two nowcasts the distributions be given by \acp{pdf} $f_{t+l|t+l}$ and $f_{t|t+l}$ with \acp{cdf}  $F_{t+l|t+l}$ and $F_{t|t+l}$.
 Then, the probability of a negative change can be computed by
-\begin{align*}
+\begin{align}
     \bar{p}_t
-        &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \\
-        &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \\
-        &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1.
-\end{align*}
+        &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
+        &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
+        &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.
+\end{align}
 Thereby, the distributions are assumed to be independent.
-As a Monte Carlo approximation, the probability can also be computed by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
+As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be computed by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
-If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or samples can be generated based on the \ac{cdf} or quantiles.
+If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to .
