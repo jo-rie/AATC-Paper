@@ -2,13 +2,14 @@
 
 The introduction of new medical measurement methods requires comprehensive evaluation and comparison with established standard measurement methods in order to ensure their validity and reliability. 
 To detect the systematic difference between one measurement method with a gold standard method, a paired t-test can be performed on the pairwise difference of the two series of measurements to test the null hypothesis that the true mean difference is zero (\cite{watson2010method}).
+
 In addition, various indices such as the interclass correlation coefficient or Lin's concordance correlation, which were originally introduced as a modification of the Pearson correlation, have been proposed in practice to check the reproducibility of the measurement or to compare different measurement methods (\cite{lawrence1989concordance,koo2016guideline}). 
 Furthermore, graphical tools were developed, such as the Bland-Altman diagram, which visualizing the differences between the methods in relation to their mean value (\cite{bland1986statistical}).
 
 One important aspect of testing the consistency of the new method with the gold standard is to adequately validate if the new method is measuring changes in the target variable in the right direction, when the gold standard detects changes during the measurement process. 
 Ideally, the signs of the changes between two consecutive points in time (with a defined time interval) measured by the new method and the gold standard method should always be the same. 
-In this case, we call the new method trending perfect in line with the gold Stadnard method and refer to this type of agreement as trendability. 
-This type of consideration of the trend ability of a measurement method to the gold standard has also recently gained importance in the literature \cite{saugel2015tracking, saugel2018error, hiraishi2021concordance}. 
+In this case, we call the new method trending perfect in line with the gold Standard method and refer to this type of agreement as trendability. 
+This type of consideration of the trend ability of a measurement method to the gold standard has also recently gained importance in the literature (\cite{saugel2015tracking, saugel2018error, hiraishi2021concordance}). 
 
 %In (\cite{hiraishi2021concordance}), the authors proposed a new concordance rate for the four-quadrant diagram, which is based on the multivariate normal distribution and takes into account the correlation between the data of the individual subjects.
 
@@ -34,8 +35,15 @@ A nowcast with strong trending ability provides crucial information on the devel
 
 As outlined above, the ability to take into account the trendability of a method depending on the area of application, be it measurements, predictions and forecasts, is of high importance. 
 However, regardless of the application domain, most conventional method comparisons and evaluations consider local absolute differences in different ways without directly assessing whether the correct direction of change is output. 
-In this paper, we aim to formalize trending and present various methods for measuring and visualizing trending that can be applied to the evaluation of trending ability of methods in measurements, nowcasts and forecasts. 
-The presented methods will be applied to a variety of real data examples. The source code for the replication of the results of our study as well as a ready-to-use code for trendability detection are available in our public repository at [Link will be inserted] available.
+
+\subsection*{Contributions.} 
+The main contributions of this paper are summarized below
+\begin{itemize}
+    \item  we formalize the trending and present various methods for measuring and visualizing trending that can be applied to the evaluation of trending ability of methods in measurements, nowcasts and forecasts. 
+    \item The presented methods will be applied to a variety of real data examples. 
+\item The source code for the replication of the results of our study as well as a ready-to-use code for trendability detection are available in our public repository at [Link will be inserted] available.
+\end{itemize}
+
 
 The remainder of this paper is structured as follows. 
 In Section \ref{sec:trending}, we formalize the concept of trending independently of the application domain and investigate quantification approaches for noise-free and noisy data. 
