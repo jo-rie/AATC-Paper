@@ -323,7 +323,7 @@ The probabilistic trending evaluation is then based on the probabilities $\mathb
 The predictive power of $\mathbf{p}$ for $\mathbf{z}$ can be assessed using probabilistic dichotomous forecast evaluation methods.
 Dichotomous forecasts predict a binary outcome, for example, a positive or negative change.
 Numerical measures for forecast quality are scoring rules.
-
+\unsure{wenn ich hier richtig verstehe, macht man hier quasi aus probabilitsicher Vorhersage zu y eine probabilistische Vorhersage dazu, wie wahrscheinlich die Veränderung positiv ist und dann bewerten. Kann man auch hier auch direkt das dem Bewertungsergbnis schießen, wie gut die Vorhersage auf negative Änderung ist? Wenn ja, vielleicht irgendwie erwähnen oder angeben. }
 The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\parencite{Brier1950}.
 It is defined as
 \begin{equation*}
@@ -344,7 +344,7 @@ Thus, the reliability visualizes the local and overall calibration simultaneousl
 For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 
 If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
-Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
+Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$. \unsure{ist das richtig?}
 The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
 The probability $\pc_t$ of a \textit{negative} change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
 \begin{equation*}
@@ -375,7 +375,7 @@ Then, the probability of a negative change can be computed by
         &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
         &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
         &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.
-\end{align}
+\end{align} \unsure{vielleicht eher d(x,y) wegen einem Integralzeichen?}
 Thereby, the distributions are assumed to be independent.
 As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
