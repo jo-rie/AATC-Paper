@@ -8,7 +8,7 @@ Furthermore, graphical tools were developed, such as the Bland-Altman diagram, w
 One important aspect of testing the consistency of the new method with the gold standard is to adequately validate if the new method is measuring changes in the target variable in the right direction, when the gold standard detects changes during the measurement process. 
 Ideally, the signs of the changes between two consecutive points in time (with a defined time interval) measured by the new method and the gold standard method should always be the same. 
 In this case, we call the new method trending perfect in line with the gold Stadnard method and refer to this type of agreement as trendability. 
-This type of consideration of the trend ability of a measurement method to the gold standard has also recently gained importance in the literature. 
+This type of consideration of the trend ability of a measurement method to the gold standard has also recently gained importance in the literature \cite{saugel2015tracking, hiraishi2021concordance}. 
 In (\cite{hiraishi2021concordance}), the authors proposed a new concordance rate for the four-quadrant diagram, which is based on the multivariate normal distribution and takes into account the correlation between the data of the individual subjects.
 
 The above-described idea of trending is also of fundamental interest for the evaluation and comparison of forecasting and methods. 
@@ -27,6 +27,7 @@ Nowcasting methods use indicators that are related to the target variable but ca
 In medicine, epidemic nowcasting is used during an ongoing epidemic to assess the current situation, taking into account the main pathogenic, epidemiological, clinical, and socio-behavioral factors (\cite{wu2021nowcasting}). 
 The nowcasting method can be used, for example, to correct the daily Covid case numbers for events that have occurred but have not yet been reported before this data has been fully recorded at a central location (\cite{gunther2021nowcasting}). 
 In this context, nowcasting is an estimation procedure in which the value of a target variable (e.g. from today) is estimated on the basis of current preliminary measurements, which is only finalised at a later point in time. 
+At the time of nowcasting, estimates of the target variable can be made for the current time and for a past time; the predicted change in the target variable is then the difference between the two nowcasts.  A nowcast is consistent with the evolution of the target variable if the difference between the actual values at the current time and the actual values at a past time has the same sign as the predicted change.
 
 A nowcast with strong trending ability provides crucial information on the development of the target variable (e.g. the number of cases of an epidemic) and can be a solid basis for decisions on the introduction or cancellation of policy measures. like forecasts, nowcasts are often evaluated and compared in the literature on the basis of performance measures such as the root mean absolute error (\cite{gunther2021nowcasting}) and the aspect of trending ability is not considered in the literature to the best of our knowledge.
 
