@@ -12,18 +12,20 @@ This type of consideration of the trend ability of a measurement method to the g
 In (\cite{hiraishi2021concordance}), the authors proposed a new concordance rate for the four-quadrant diagram, which is based on the multivariate normal distribution and takes into account the correlation between the data of the individual subjects.
 
 The above-described idea of trending is also of fundamental interest for the evaluation and comparison of forecasting and methods. 
-While measurement series are created by recording data using measuring instruments or direct observation, forecasting focuses on predicting the future based on historical data and its patterns. 
+While measurement series are created by recording data using measuring instruments or direct observation, Forecasting is about predicting the future based on historical data and its patterns, taking into account exogenous factors. 
 When forecasting at a specific point in time, the forecast value at the target time corresponds to a prediction of the change in the target variable between the forecast origin and the target time. 
-This predicted change results from the difference between the forecast value at the forecast horizon and the current, actual value of the target variable at the forecast origin. 
+This predicted change results from the difference between the forecast value at the target time and the current, actual value of the target variable at the time of predicting. 
 A forecast is perfectly consistent with the actual development of the target value if the actual change in the target value over this period matches the forecast change. 
 The current practice is that a forecasting method is usually evaluated in terms of its prediction accuracy, which is defined by a certain loss function and measures the difference between the prediction and the actual outcome of the target variable; an overview of the different measures can be found in \cite{hyndman2006another}. 
 Popular measures of this type are scale-dependent measures such as the Root Mean Square Error (RMSE) or measures based on percentage errors such as the Root Mean Square Percentage Error (RMSPE). 
 All of these typical measures are based on the absolute difference between the prediction and the true values, locally or globally, and are not capable of assessing the trendability discussed above.
 
 The evaluation of trending is also interesting for the assessment of nowcasts.
-In contrast to conventional forecasting methods, nowcasting focuses on predicting the current status.
+, nowcasting focuses on predicting the current status.
+
+Nowcasting methods are now widely used in other fields, such as economics and medicine, and focus on predictions for the present, the immediate future, and the recent past (\cite{banbura2013now, bok2018macroeconomic, wolffram2023collaborative}).
 Nowcasting has its origins in meteorology, and the methods were originally developed to describe the current state of the weather in detail and to predict the expected change on a time scale of a few hours (\cite{browning1989nowcasting,schmid2019nowcasting}).
-Nowcasting methods are now widely used in other fields, such as economics and medicine, and focus on predictions for the present, the immediate future, and the recent past (\cite{banbura2013now, bok2018macroeconomic}).
+
 Nowcasting can be used, for example, to predict important statistics such as the current economic situation (e.g. GDP), which are collected with low frequency and are available with a considerable time delay (\cite{banbura2013now}).
 Nowcasting methods use indicators that are related to the target variable but can be collected at a higher frequency and published in a timely manner to produce and update early estimates for the target variable (e.g. GDP from the first quarter of 2024 ) during the relevant period (i.e. from January to March 2024) (\cite{castle2017forecasting}). 
 In medicine, epidemic nowcasting is used during an ongoing epidemic to assess the current situation, taking into account the main pathogenic, epidemiological, clinical, and socio-behavioral factors (\cite{wu2021nowcasting}). 
