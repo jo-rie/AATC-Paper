@@ -376,6 +376,8 @@ Then, the probability of a negative change can be computed by
         &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
         &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.
 \end{align} \unsure{vielleicht eher d(x,y) wegen einem Integralzeichen?}
+
+\unsure{Die Unabhängigkeitsannahme ist nicht zu streng? weil es ist ja eigentlich die Aufgabe von einenm guten Nowcaster diese Abhängigkeit zu modellieren oder?}
 Thereby, the distributions are assumed to be independent.
 As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
