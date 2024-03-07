@@ -1,7 +1,7 @@
 \documentclass[oneside]{article}
 
 % Language setting
-% Replace `english' with e.g. `spanish' to change the document language
+% Replace `englis' with e.g. `spanish' to change the document language
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc} % für Umlaute
 \usepackage{fontenc}
@@ -155,15 +155,22 @@
 \maketitle
 
 \begin{abstract}
-Trending refers to the ability of a signal to predict 
+Trending refers to the ability of a signal to predict the direction of change for the true variable accurately. 
+An appropriate assessment of the trending ability is crucial for measurements, nowcasts, and forecasts for decision-makers. 
+While the current practice of evaluating signals is based on averaging over time-step-separated measures, we review and introduce trending measures that consider time series differences for certain lags. 
+We formalize the concept of trending for all application areas and quantify the trending ability for signals. 
+We review and present new visualization techniques to assess the local trending behaviors and quantify estimation uncertainty by bootstrapping. 
+We apply the methods to three large data applications: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
 \end{abstract}
 
 \listoftodos
 
+We formalize the concept of trending independently of the application domain and investigate quantification approaches for noise-free and noisy data. We introduce a new graphical method for evaluating trending, the conditional trending plot, which can represent the simultaneous evaluation of different intervals and asymmetries. Bootstrap methods for calculating confidence intervals for trending measures are also presented. We show the results of applying our method to several practical examples.
 
 
 
 \section{Introduction}\label{sec:introduction}
+\todo{State that we want to accompany the current evaluation with a new measure, not replace other measures}
 \input{sections/01-introduction}
 
 %\section{Application areas and Notation} \label{sec:notation}
