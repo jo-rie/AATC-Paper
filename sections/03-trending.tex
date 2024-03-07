@@ -252,7 +252,7 @@ The estimators described above give information on the probabilities $P(\diffxrv
 These probabilities draw a general picture but might still be too coarse for local effects.
 More insights might be gained by considering the conditional distribution to assess the local trending ability of a prediction.
 While it would be possible to build analog measures for other intervals, assessing $P(\diffxrv \diffyrv > 0 | \diffx = x)$ graphically eases the simultaneous evaluation of various intervals.
-Furthermore, the graph facilitates the comparison of various methods in a single graph, and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
+Furthermore, the graph facilitates the comparison of various methods in a single graph and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
 We refer to the plot as a conditional trending plot.
 
 A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
@@ -266,8 +266,8 @@ for $x \neq 0$ through a \ac{kde}.
 
 A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages~\parencite[e.g., for  Python in][]{Seabold2010}.
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
-Multivariate \ac{kde} takes as modeling parameters a kernel and a bandwidth selector. 
-The kernel is usually Gaussian, and there are multiple methods for selecting the bandwidth, each with its own advantages and disadvantages.
+Multivariate \ac{kde} takes a kernel and bandwidth selector as modeling parameters. 
+The kernel is usually Gaussian, and there are multiple methods for selecting the bandwidth, each with its advantages and disadvantages.
 Note that for kernels with infinite support, for example, the Gaussian kernel, the plot should be limited to the core values of $\diffx$ without outliers to avoid estimates based on small subsets of the data.
 
 Figure~\ref{fig:trending-cond-prob-bw} shows the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\parencite{Seabold2010}.
@@ -299,13 +299,12 @@ In this section, we extend the trending assessment to probabilistic predictions.
 
 Probabilistic predictions can take the form of a \ac{cdf}, \ac{pdf}, or quantiles.
 The \ac{cdf} is the most general and can be used to derive the others, given they exist.
-Let us first assume that the prediction is a \ac{cdf} and the lag is large enough such that the true value is known when issuing the forecast or nowcast.
+Let us first assume that the prediction is a \ac{cdf} and the lag is large enough to know the true value when issuing the forecast or nowcast.
 See the end of the section for predictions given as quantiles or for unknown true values.
 
 Let $F_{t | \tau} (x)$ denote the predicted \ac{cdf} of forecast time $t$ and issue time $\tau$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
 For trending assessment, we compare the probability of positive change with the occurrence of positive changes. 
-The probability $p_t$ of a positive change is given by one minus the \ac{cdf} of the prediction at the true value. \unsure{Andere Formulierung für: one minus?}
-\unsure{vielleicht sowas: The probability $p_t$ of a positive change is given by the probability that the predicted value at the forecasting time is greater than the known value at the issure time. }
+The probability $p_t$ of a positive change is given by one minus the \ac{cdf} of the prediction at the true value at the issue time. 
 As for the differences in Section~\ref{subsec:notation}, the computation differs slightly for nowcasts and forecasts.
 For nowcasts, the probability is calculated by
 \begin{equation*}
@@ -323,7 +322,6 @@ The probabilistic trending evaluation is then based on the probabilities $\mathb
 The predictive power of $\mathbf{p}$ for $\mathbf{z}$ can be assessed using probabilistic dichotomous forecast evaluation methods.
 Dichotomous forecasts predict a binary outcome, for example, a positive or negative change.
 Numerical measures for forecast quality are scoring rules.
-\unsure{wenn ich hier richtig verstehe, macht man hier quasi aus probabilitsicher Vorhersage zu y eine probabilistische Vorhersage dazu, wie wahrscheinlich die Veränderung positiv ist und dann bewerten. Kann man auch hier auch direkt das dem Bewertungsergbnis schießen, wie gut die Vorhersage auf negative Änderung ist? Wenn ja, vielleicht irgendwie erwähnen oder angeben. }
 The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\parencite{Brier1950}.
 It is defined as
 \begin{equation*}
