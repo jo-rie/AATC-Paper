@@ -11,7 +11,7 @@ In this case, we call the new method trending perfect in line with the gold Stad
 This type of consideration of the trend ability of a measurement method to the gold standard has also recently gained importance in the literature. 
 In (\cite{hiraishi2021concordance}), the authors proposed a new concordance rate for the four-quadrant diagram, which is based on the multivariate normal distribution and takes into account the correlation between the data of the individual subjects.
 
-The above-described idea of trending is also of fundamental interest for the evaluation and comparison of forecasting and nowcasting methods. 
+The above-described idea of trending is also of fundamental interest for the evaluation and comparison of forecasting and methods. 
 While measurement series are created by recording data using measuring instruments or direct observation, forecasting focuses on predicting the future based on historical data and its patterns. 
 When forecasting at a specific point in time (forecast origin), the forecast value at the target time corresponds to a prediction of the change in the target variable between the forecast origin and the target time. 
 This predicted change results from the difference between the forecast value at the forecast horizon and the current, actual value of the target variable at the forecast origin. 
@@ -32,17 +32,16 @@ In this context, nowcasting is an estimation procedure in which the value of a t
 At the time of the forecast, estimates of the target variable can be made for today and possibly for yesterday (if the value for yesterday has not yet been finalised); the predicted change in the target variable is then the difference between the two nowcast values. 
 A nowcast is consistent with the development of the target variable if the difference in the actual value between today and yesterday, which is announced at a later date, has the same sign as the predicted change. 
 It is obvious that a nowcast with strong trend capability provides crucial information on the development of the target variable (e.g. the number of cases of an epidemic) and can be a solid basis for decisions on the introduction or cancellation of policy measures. 
-Unfortunately, like forecasts, nowcasts are often evaluated and compared in the literature on the basis of performance measures such as the root mean absolute error (\cite{gunther2021nowcasting}) and the aspect of trending ability is hardly considered in the literature. 
+Unfortunately, like forecasts, nowcasts are often evaluated and compared in the literature on the basis of performance measures such as the root mean absolute error (\cite{gunther2021nowcasting}) and the aspect of trending ability is not considered in the literature to the best of our knowledge.
 
 As outlined above, the ability to take into account the trendability of a method depending on the area of application, be it measurements, predictions and forecasts, is of high importance. 
 However, regardless of the application domain, most conventional method comparisons and evaluations consider local absolute differences in different ways without directly assessing whether the correct direction of change is output. 
 In this paper, we aim to formalize trending and present various methods for measuring and visualizing trending that can be applied to the evaluation of trending ability of methods in measurements, nowcasts and forecasts. 
-The presented methods will be applied to a variety of real data examples. 
+The presented methods will be applied to a variety of real data examples. The source code for the replication of the results of our study as well as a ready-to-use code for trendability detection are available in our public repository at [Link will be inserted] available.
 
 The paper is structured as follows. 
-In section \ref{sec:trending} we formalize the concept of trending independently of the application domain and investigate quantification approaches for noise-free and noisy data. 
+In Section \ref{sec:trending}, we formalize the concept of trending independently of the application domain and investigate quantification approaches for noise-free and noisy data. 
 In particular, we introduce a new graphical method for evaluating trending, the conditional trending plot, which can represent the simultaneous evaluation of different intervals and asymmetries. 
 Bootstrap methods for calculating confidence intervals for trending measures are also presented. 
 In Section \ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting and nowcasting. 
 We conclude our paper with the last section.
-The source code for the replication of the results of our study as well as a ready-to-use code for trendability detection are available in our public repository at [Link will be inserted] available.
