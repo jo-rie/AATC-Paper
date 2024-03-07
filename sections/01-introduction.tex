@@ -39,11 +39,21 @@ However, regardless of the application domain, most conventional method comparis
 \subsection*{Contributions.} 
 The main contributions of this paper are summarized below
 \begin{itemize}
-    \item  we formalize the trending and present various methods for measuring and visualizing trending that can be applied to the evaluation of trending ability of methods in measurements, nowcasts and forecasts. 
-    \item The presented methods will be applied to a variety of real data examples. 
+
+\item We formalise the concept of trending and show how the predicted changes can be meaningfully computed to assess trendability. 
+
+\item We present different variants of trend measures that consider noiseless data as well as noisy and small non-informative changes.
+
+\item We introduce the conditional trend plot, a new graphical method for assessing local trends.
+
+\item We introduce bootstrap methods for calculating confidence intervals. Confidence intervals for the measurements from the previous sections.
+
+\item We extend the concept of trending to probabilistic predictions.
+
+\item We apply trend evaluation to three different applications: Measurement, nowcasting and prediction data. 
+
 \item The source code for the replication of the results of our study as well as a ready-to-use code for trendability detection are available in our public repository at [Link will be inserted] available.
 \end{itemize}
-
 
 The remainder of this paper is structured as follows. 
 In Section \ref{sec:trending}, we formalize the concept of trending independently of the application domain and investigate quantification approaches for noise-free and noisy data. 
