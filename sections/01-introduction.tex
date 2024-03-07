@@ -1,5 +1,3 @@
-\unsure[inline]{Der Beginn ist jetzt sehr auf Measurement fixiert. Könnte man das vielleicht umdrehen: Analysen von Measurement/Nowcast/Forecast sind im Moment vor allem bezüglich Abstand (RMSE; MAE; aber auch probabilistische Analyse). Wichtige Info ist aber auch auch, wie gut ein Anstieg/Fall vorhergesagt wird. Dann drauf eingehen, wie das bisher in den Bereichen gemacht wird.}
-
 Measurement, prediction, and forecasting methods are becoming increasingly important and sophisticated in a world of fast-developing technologies and increasing data availability. While introducing new medical measurement methods requires a comprehensive evaluation and comparison with established standard measurement methods to ensure their validity and reliability, it is generally essential for forecasts and nowcasting methods to assess the extent to which the predictions correspond to the development of reality. Conventionally, the methods are evaluated using distance measures that take aggregated local absolute differences between predictions (or measurements) and target values into account. For example, the continuously ranked probability score (CRPS) can be used to evaluate the accuracy of probabilistic predictions. It is also based on the integrated squared differences between the cumulative distribution function (CDF) of the prediction and the Heaviside jump function. These measures all fail to consider whether the right direction of change is being taken, which can often be highly relevant in practice. The information about whether an estimator, be it a measurement device, forecast, or nowcast, can accurately predict an increase or decrease is crucial when taking decisions based  on  the estimator's prediction results. In the following, we first provide an overview of the characteristics and evaluations of the three areas: Measurement, Prediction and Nowcasting and their relationship with Trending.
  
 Measurement aims to obtain accurate and reliable data about the current state of a system. Often, a parameter or variable is measured at regular intervals over a certain period. In addition to using a paired t-test to determine systematic differences between two measurement series (\cite{watson2010method}), various indices such as the interclass correlation coefficient or Lin's concordance correlation have been proposed in practice to check the reproducibility of the measurement or to compare different measurement methods (\cite{lawrence1989concordance,koo2016guideline}). Furthermore, graphical tools were developed, such as the Bland-Altman diagram, visualizing the differences between the methods in relation to their mean value (\cite{bland1986statistical}). As already described above, one important aspect of testing the consistency of the new method with the gold standard is to adequately validate if the new method is measuring changes in the target variable in the right direction when the gold standard detects changes during the measurement process. 
@@ -31,21 +29,14 @@ At the time of nowcasting, estimates of the target variable can be made for the 
 As outlined above, trending evaluation is crucial for measurements, predictions, and forecasts. 
 However, regardless of the application domain, most conventional method comparisons and evaluations consider local absolute differences in different ways without directly assessing whether the correct direction of change is output. 
 
-\textbf{Contributions.} The main contributions of this paper are summarized below
+The main contributions of this paper are summarized below
 \begin{itemize}
-
-\item We formalise the concept of trending and show how the predicted changes can be meaningfully computed to assess trendability. 
-
-\item We present different variants of trending measures that consider noiseless data as well as noisy and small non-informative changes.
-
+\item We formalize trending and show how the predicted changes can be computed to assess trending for practical relevance. 
+\item We present different variants of trending measures that consider either noiseless data or data with noise and small non-informative changes.
 \item We introduce the conditional trending plot, a new graphical method for assessing local trends.
-
-\item We introduce bootstrap methods for calculating  confidence intervals for the presented treding ratios.
-
+\item We introduce bootstrap methods for calculating confidence intervals for the presented treding ratios.
 \item We extend the concept of trending to probabilistic predictions.
-
-\item We apply trending evaluation to three different applications: Measurement, nowcasting and prediction data. 
-
+\item We apply trending evaluation to three applications: Measurement, nowcasting, and forecasting data. 
 \item We provide a ready-to-use code for trending detection. The code and the source code to replicate the results of our study are available in our public repository at ... .
 \end{itemize}
 
@@ -53,5 +44,5 @@ The remainder of this paper is structured as follows.
 In Section \ref{sec:trending}, we formalize the concept of trending independently of the application domain and investigate quantification approaches for noise-free and noisy data. Noisy data refers to data where noise or unsystematic effects are present in the true values or predictions.
 In particular, we introduce a new graphical method for evaluating trending, the conditional trending plot, which can represent the simultaneous evaluation of different intervals and asymmetries. 
 Bootstrap methods for calculating confidence intervals for trending measures are also presented. 
-In Section \ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting and nowcasting. 
+In Section \ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting, and nowcasting. 
 We conclude our paper with the last section.
