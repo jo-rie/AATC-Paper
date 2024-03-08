@@ -65,7 +65,7 @@ $ \\
 $\\
         \bottomrule
     \end{tabularx}
-    \caption{Computation of the predicted change in the different applications. Signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. Note the different relations between the issue and target time for nowcasts and forecasts. }
+    \caption{Computation of the predicted change in the different applications. Signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. Note the different relations between the issue and target time for nowcasts and forecasts. \todo{$T-l$}}
     \label{tab:notation}
 \end{table}
 
@@ -128,12 +128,12 @@ The standard estimator for $P(\diffxrv \diffyrv > 0)$ is
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
-We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{1, \dots, T-l\}$.
+We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{1, \dots, T-l\}$. \todo{Durchwalken; nennen, warum ratio; Anteil concordant points an allen, deswegen nennen wir es ratio}
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
 Such a $2 \times 2$ table of counts is called a contingency table.
 It is often used in other scientific areas for evaluation, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
 There, a wide range of other methods are usually used to analyze further characteristics of contingency tables.
-Two simple measures that focus on specific areas of interest are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
+Two simple measures that focus on specific areas of interest \todo{welche areas} are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
 They are defined as
 \begin{align}
     \accp (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0}} \label{eq:accp}\\
@@ -151,12 +151,13 @@ There are various adapted measures for unbalanced outcomes, for example, Cohen's
 Cohen's $\kappa$ is usually used to measure inter-rater agreement and considers the ratio of occurred agreement and the probability of agreement by chance.
 Cohen's $\kappa$ reduces to rescaling the trending ratio for a $2\times2$-table and balanced outcomes.
 
-All measures can also be evaluated as a rolling estimate to detect changes in performance over time.
+All measures can also be evaluated as a rolling estimate to detect changes in performance over time. \todo{Klarer, warum man das soll. Wir wollen eigentlich trending ratio jetzt wissen. }
 A rolling estimate is a sequence of estimates, each computed on a length-$w$-window of the data.
-For the trending ratio, a rolling estimate with a backward-looking window is given by
+For the trending ratio, a rolling estimate with a backward-looking \todo{Klarer, was heißt backward-looking} window is given by
 \begin{equation*}
     \acc_t (\diffx, \diffy) \coloneqq \frac{\sum_{t^\star = t-w + 1}^{t} \ind{\diffxt[t^\star] \diffyt[t^\star] > 0}}{w}, \quad t = w-1, \dots, T.\label{eq:acc_rolling}
 \end{equation*}
+\todo{Was heißt w? Großes w weniger fokussiert auf current situation; kleines w lokaler}
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction trending ratio can be detected.
 The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
