@@ -95,7 +95,7 @@ In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from b
 The lag is always one time step.
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
-However, they lack the four-quadrant plot's clarity and intuition, without adding more information on trending~\parencite{Saugel2015}.
+However, they lack the four-quadrant plot's clarity and intuition without adding more information on trending~\parencite{Saugel2015}.
 
 \begin{figure}
 \centering
@@ -182,7 +182,7 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
 
 In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
 We refer to time steps for which either signal or true values or both are unavailable as missing values.
-Pairs of data with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
+Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
 However, systematical missing values could lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
 In this case, measures should be interpreted cautiously, and
 inspection of missing data should accompany applications with missing data, for example, through a visual assessment.
@@ -192,7 +192,7 @@ In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:applica
 
 The above measures use only information on a point's quadrant and neglect further details on its location within the quadrant.
 However, points close to the zero point have intuitively less explanatory power or are less reliable.
-Suppose there are noise or non-systematic effects present in the true values or predictions. In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
+Suppose noise or non-systematic effects are present in the true values or predictions. In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
 This happens more frequently for points with at least one small coordinate.
 
 Using an exclusion area around the zero point is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures}.
@@ -370,14 +370,14 @@ Let for two nowcasts the distributions be given by \acp{pdf} $f_{t+l|t+l}$ and $
 Then, the probability of a negative change can be computed by
 \begin{align}
     \bar{p}_t
-        &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
+        &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: (x_1, x_2) \nonumber\\
         &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
         &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.
 \end{align} \unsure{vielleicht eher d(x,y) wegen einem Integralzeichen?}
 
 \unsure{Die Unabhängigkeitsannahme ist nicht zu streng? weil es ist ja eigentlich die Aufgabe von einenm guten Nowcaster diese Abhängigkeit zu modellieren oder?}
 Thereby, the distributions are assumed to be independent.
-If the nowcasts have the form of a multivariate distribution including the dependence of the 
+If the nowcasts have the form of a multivariate distribution, including the dependence of the two \acp{pdf}, $f_{t+l|t+l} (x_2)$ has to be replaced by the \ac{pdf} conditional on $x_1$.
 As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
 If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to generate samples for the Monte Carlo approximation.
