@@ -377,6 +377,7 @@ Then, the probability of a negative change can be computed by
 
 \unsure{Die Unabhängigkeitsannahme ist nicht zu streng? weil es ist ja eigentlich die Aufgabe von einenm guten Nowcaster diese Abhängigkeit zu modellieren oder?}
 Thereby, the distributions are assumed to be independent.
+If the nowcasts have the form of a multivariate distribution including the dependence of the 
 As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
 If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to generate samples for the Monte Carlo approximation.
