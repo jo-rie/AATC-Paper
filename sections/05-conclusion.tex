@@ -1,0 +1,20 @@
+
+
+\begin{itemize}
+  \item Summary of work
+  \item highlight important general remarks of section trending / application
+  \item points for further research/other methods: imbalances in the number of positive and negative changes; sequential dependence of the differences
+\end{itemize}
+
+
+
+\subsection{Modeling remarks}
+
+
+
+Using these estimators could encourage predictors to exploit imbalances in the number of positive and negative changes. 
+A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t \in \mathcal{T}} \ind{\diffyt < 0}$ is unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data. 
+However, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
+There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
+Cohen's $\kappa$ is usually used to measure inter-rater agreement and considers the ratio of occurred agreement and the probability of agreement by chance.
+Cohen's $\kappa$ reduces to rescaling the trending ratio for a $2\times2$-table and balanced outcomes.

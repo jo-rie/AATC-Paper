@@ -56,7 +56,17 @@ The four-quadrant plots for the sample realizations of the data generation schem
     \label{fig:appendix_dgps}
 \end{figure}
 
-\subsection{Simulation study on bootstrapping confidence intervals}\label{subsec:app-trending-bootstrap}
+\subsection{Simulation study on bootstrapping confidence intervals}\label{subsec:appendix-trending-bootstrap}
+
+
+We examine three methods for bootstrapping: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
+In the \textit{percentile} approach, the confidence interval for the level $\alpha$ is built directly from the empirical distribution of the bootstrap estimators.
+The \textit{basic} approach computes the confidence interval based on the non-bootstrap estimate using the bootstrapped quantile deviations~\parencite{Davison1997}.
+The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\parencite{Efron1987}.
+Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but requires smaller datasets for reasonable confidence intervals.
+The basic approach balances these two objectives.
+We compare the approaches in a small synthetic data study on their small-dataset behavior and computation time.
+
 We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
 The considered datasets are outlined in Appendix~\ref{subsec:app-trending-data-generation}, the first dataset with asymmetric dependence.
 In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\parencite{Virtanen2020}.
@@ -67,6 +77,9 @@ The computation times per method and dataset are shown in Figure~\ref{fig:trendi
 For the small sample sizes up to $T = 168$, only the \ac{bca} method keeps the confidence interval size and yields slightly wider confidence intervals.
 The method's results do not differ for the larger sample sizes.
 The computation time for the \ac{bca} method is slightly larger than for the other methods, but all methods have a moderate computation time.
+\Ac{bca} is the only method that maintains the confidence level also for small datasets while increasing the computation time only moderately for larger datasets.
+Therefore, we use the \ac{bca} method for confidence intervals in the applications in Section~\ref{sec:application}.
+
 
 \begin{table}
     \centering
@@ -82,6 +95,9 @@ The computation time for the \ac{bca} method is slightly larger than for the oth
     \label{tab:trending_bootstrap}
 \end{table}
 
+
+\subsection{Visualization of different bandwidth selectors in multivariate \ac{kde}}\label{subsec:appendix-kde}
+
 \begin{figure}
     \centering
     \begin{subfigure}{0.48\textwidth}
@@ -95,4 +111,47 @@ The computation time for the \ac{bca} method is slightly larger than for the oth
     \caption{Boxplot of the computation time of the different bootstrapping method and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
     \label{fig:trending_bootstrap_time}
 \end{figure}
+
+
+\subsection{Probabilistic trending evaluation}
+
+If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
+Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$. \unsure{ist das richtig?}
+The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
+The probability $\pc_t$ of a \textit{negative} change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
+\begin{equation*}
+    p^{\star} = \max \{p \in \{1/\pmax, \dots, (\pmax-1) / \pmax\}: q_p \leq y_t\} , \quad \text{if}\ q_{1/\pmax} \leq y_t \leq q_{1 - 1/\pmax}.
+\end{equation*}
+Quantiles do not determine the location within the interval $[p^{\star}, p^{\star} + 1/\pmax]$.
+Under the assumption of a uniform distribution within the quantile interval, the probability of a negative change is
+\begin{equation*}
+    \bar{p}_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
+\end{equation*}
+The approach does not assign probabilities for $y_t$ smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile.
+As a simple extension, we assume that the probability mass is uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
+This yields
+\begin{equation*}
+\bar{p}_t = \begin{cases}
+    \max \{\frac{1}{\pmax} - \frac{q_{p^\star} - y_t}{\pmax (q_{p2/\pmax} - q_{1/\pmax})}, 0\} &, \text{if } y_t < q_{1/p}, \\
+    \min \{\frac{1}{\pmax} - \frac{y_t - q_{(\pmax-1)/\pmax}}{\pmax (q_{(\pmax-1)/\pmax} - q_{(\pmax-2)/\pmax})}, 1\} &, \text{if } y_t > q_{1 - 1/p}, \\
+    \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star} &, \text{otherwise.}
+\end{cases}
+\end{equation*}
+The probability of positive change is $p_t = 1 - \bar{p}_t$.
+
+If the true value is given as a distribution because it is still unknown, the probabilities $p_t$ can be computed by integration.
+Let for two nowcasts the distributions be given by \acp{pdf} $f_{t+l|t+l}$ and $f_{t|t+l}$ with \acp{cdf}  $F_{t+l|t+l}$ and $F_{t|t+l}$.
+Then, the probability of a negative change can be computed by
+\begin{align}
+    \bar{p}_t
+        &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: (x_1, x_2) \nonumber\\
+        &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
+        &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.
+\end{align}
+Thereby, the distributions are assumed to be independent.
+If the nowcasts have the form of a multivariate distribution, including the dependence of the two \acp{pdf}, $f_{t+l|t+l} (x_2)$ has to be replaced by the \ac{pdf} conditional on $x_1$.
+As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
+For forecasts, the indexes have to be shifted.
+If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to generate samples for the Monte Carlo approximation.
+
 

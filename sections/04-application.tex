@@ -71,49 +71,49 @@ Especially, asymmetries are of interest to assess whether some models are better
 \subsubsection*{Results}
 
 In the following, we apply the trending assessment of Section~\ref{sec:trending} to the nowcasts of the seven-day hospitalization rate.
-We report the trending for the lags 1, 7, and 14 days.
-While lag one assesses the short-term trending, lags seven and 14 consider the medium-term trending.
-The lags seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
+We report the trending for the horizons 1, 7, and 14 days.
+While horizon one assesses the short-term trending, horizons seven and 14 consider the medium-term trending.
+The horizons seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
 
-Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different lags.
+Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different horizons.
 Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} provides information on marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
-Overall, the variability and general level of differences grow with the lag.
-The standard deviation increases from roughly 300 for lag one to 1,200 for lag seven and 2,000 for lag 14 days.
+Overall, the variability and general level of differences grow with the horizon.
+The standard deviation increases from roughly 300 for horizon one to 1,200 for horizon seven and 2,000 for horizon 14 days.
 Similarly, the 10\%-quantile of differences increases.
 The 10\%-quantile is used for the exclusion areas in the trending assessment.
 The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the differences.
 Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, for example, $\diffy$ are to be recognized by the nowcast and vice versa.
 
-Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the lag of seven days.
-The trending ratios without exclusion area range from 0.72 to 0.85 for the lag of seven days.
+Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the horizon of seven days.
+The trending ratios without exclusion area range from 0.72 to 0.85 for the horizon of seven days.
 The negative trending ratios are higher than the positive trending ratios for all models.
 The confidence intervals for the positive and negative trending ratios do not overlap for all models, indicating that the trending ratios are indeed different.
 The 10\%-quantile exclusion areas have, at most, an influence of 0.03 on the ratios.
 The model with the highest trending ratio is the ILM model, and the model with the lowest is the RKI model.
 The confidence intervals between all models overlap.
 The positive trending ratio implies a similar ranking of the models, while the negative ratio is second best for the RKI model.
-For the lags of one and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
+For the horizons of one and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
 
-Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the lag seven days; the respective plots for the lags one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
+Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the horizon seven days; the respective plots for the horizons one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
 Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots readable.
 If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
 The opposite is the case for a nowcasted hospitalization rate increase, and the difference between the models' performance is higher.
-Similar observations can be made for the lag of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
-For a lag of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
+Similar observations can be made for the horizon of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
+For a horizon of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
 The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
 The curves cross for an issued fall, with ENS-MED being on top for issued falls above 250.
 
 The trending ratios for various exclusion areas are shown in Figure~\ref{fig:app-covid-trending-ratio-7}.
 In general, the trending ratio increases with larger exclusion areas.
 While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
-For the lag of one day, the RKI trending ratio decreases with increasing exclusion area size while the other models rise (see Figure~\ref{fig:app-covid-trending-ratio-1}).
-For the lag of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
+For the horizon of one day, the RKI trending ratio decreases with increasing exclusion area size while the other models rise (see Figure~\ref{fig:app-covid-trending-ratio-1}).
+For the horizon of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
 
 \begin{table}
     \centering
     \tiny
     \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models with and without exclusion areas for the lag seven days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\%-quantile of the absolute values of nowcast and true values. }
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models with and without exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\%-quantile of the absolute values of nowcast and true values. }
     \label{tab:app-covid-trending-ratios-lag-7}
 \end{table}
 
@@ -128,7 +128,7 @@ For the lag of 14 days, all trending ratio curves increase with the exclusion ar
     \includegraphics{plots/covid_nowcast/40_acc_eps_lag_7}
     \caption{Trending ratio over exclusion area size in $\diffx$.}\label{fig:app-covid-trending-ratio-7}
     \end{subfigure}
-    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the lag seven days.}
+    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days.}
     \label{fig:app-covid-cond-prob-trending-ratio-7}
 \end{figure}
 
@@ -136,7 +136,7 @@ For the lag of 14 days, all trending ratio curves increase with the exclusion ar
 
 \subsubsection*{Discussion}
 
-For all lags, the influence of the exclusion area on the 10\%-quantile level is negligible.
+For all horizons, the influence of the exclusion area on the 10\%-quantile level is negligible.
 For example, the trending ratio changes at most by 0.03 for the EPI model with $\accm[14]$.
 The exclusion areas are thus not crucial for the trending assessment in the case of the nowcasts of the seven-day hospitalization rate.
 The lower bound of confidence intervals is at least 0.68 for all models, indicating that they perform better than random guessing the trend.
@@ -169,7 +169,7 @@ The trending perspective is easy for the management to understand and implement,
 If, for example, the staff was near capacity in the last shift and an increase in the number of arrivals is expected, the management can take measures to adjust the workload.
 
 The number of arrivals has a strong weekly and daily pattern.
-Thus, we consider the lags of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day.
+Thus, we consider the horizons of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day.
 Table~\ref{tab:app-eda-point-evaluation} lists the point evaluation measures and the count of available forecasts.
 The best-performing models regarding RMSE and MAE are the NBI-2 and Poisson-2 models.
 More than 8,600 forecasts are available for all models, with differences in the number due to missing values on four afternoons in 2018.
@@ -185,47 +185,47 @@ In contrast to their work, we use only the forecast data at least 36 hours ahead
 
 \subsubsection*{Results}
 
-Table~\ref{tab:app-eda-marginals} analyzes the differences in marginal distributions for the forecasts and true values for the lags of three and seven days.
+Table~\ref{tab:app-eda-marginals} analyzes the differences in marginal distributions for the forecasts and true values for the horizons of three and seven days.
 Note that the difference definition aligns with Section~\ref{subsec:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the true value is available when issuing the forecast.
-The fraction of positive differences varies between 0.39 and 0.63 for the lag of three days and between 0.37 and 0.63 for the lag of seven days.
-The variability of differences decreases for the larger lag for most models; only for the ETS model does it increase.
-The 10\%-quantile of the differences is between zero and one for all models and lags.
+The fraction of positive differences varies between 0.39 and 0.63 for the horizon of three days and between 0.37 and 0.63 for the horizon of seven days.
+The variability of differences decreases for the larger horizon for most models; only for the ETS model does it increase.
+The 10\%-quantile of the differences is between zero and one for all models and horizons.
 Thus, we exclude only differences smaller than one from the trending assessment.
 The resulting fraction of included values in the computation is also listed in Table~\ref{tab:app-eda-marginals} and is at least 79\% of the values.
 
 \begin{table}
     \centering
     \input{plots/ed_arrival/10_marginal_analysis}
-    \caption{Marginal analysis of the nowcast and true differences. The column (1) shows the fraction of values greater than zero for lag $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
+    \caption{Marginal analysis of the nowcast and true differences. The column (1) shows the fraction of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
     \label{tab:app-eda-marginals}
 \end{table}
 
-Table~\ref{tab:app-eda-trending-ratios} lists the trending ratios for all models for three and seven-day lags.
-The trending ratios range from 0.68 to 0.84 for a lag of three days and from 0.68 to 0.82 for seven days.
-The negative and positive trending ratios differ for all models and lags.
+Table~\ref{tab:app-eda-trending-ratios} lists the trending ratios for all models for three and seven-day horizons.
+The trending ratios range from 0.68 to 0.84 for a horizon of three days and from 0.68 to 0.82 for seven days.
+The negative and positive trending ratios differ for all models and horizons.
 For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
 The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
 Other models exhibit a higher positive trending ratio than the negative trending ratio.
-The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for three and seven days lag, while Poisson-2 and NBI-2 have the highest negative trending ratio.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for three and seven days horizon, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
-Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
-The conditional trending plots show similar courses for the two lags, while the curves are shifted downwards for the lag of seven days.
-The model's relative trending ability evolves consistently for the two lags, with the NBI-2 and Poisson-2 models being indistinguishable.
+Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
+The conditional trending plots show similar courses for the two horizons, while the curves are shifted downwards for the horizon of seven days.
+The model's relative trending ability evolves consistently for the two horizons, with the NBI-2 and Poisson-2 models being indistinguishable.
 The GBM-2 model outperforms the qreg-1 model for all $x$.
 The models NBI-2 and Poisson-2 have the highest trending ability for all negative values of $x$ and the lowest trending ability for all positive values of $x$.
 Benchmark-1 lies between the other models for all $x$.
 
 Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
-The \acf{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the lags three and seven days are shown in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
-The \acp{bs} are smallest and close for NBI-2 and Poisson-2 for both lags, while the Brier scores for the other models are larger and differ more.
-The qreg-1 model has the highest \ac{bs} for both lags.
+The \acf{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days are shown in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+The \acp{bs} are smallest and close for NBI-2 and Poisson-2 for both horizons, while the Brier scores for the other models are larger and differ more.
+The qreg-1 model has the highest \ac{bs} for both horizons.
 The reliability diagrams of GBM-2 and NBI-2 are also close and show a too-small fraction of increases for the predicted probability overall.
 For the other models, the reliability diagrams show a fraction of increases that are too large for the corresponding predicted probability.
 
 \begin{table}
     \centering
     \input{plots/ed_arrival/50_trending_ratio}
-    \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with the exclusion of zero-containing points for the lags 72 hours and seven days.}
+    \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with the exclusion of zero-containing points for the horizons 72 hours and seven days.}
     \label{tab:app-eda-trending-ratios}
 \end{table}
 
@@ -233,13 +233,13 @@ For the other models, the reliability diagrams show a fraction of increases that
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_3}
-    \caption{Lag three days}
+    \caption{Horizon three days}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_7}
-    \caption{Lag seven days}
+    \caption{Horizon seven days}
     \end{subfigure}
-    \caption{Conditional trending plots for the lags three and seven days and the models with the best positive or negative trending ability. The plots of NBI-2 and Poisson-2 are indistinguishable.}
+    \caption{Conditional trending plots for the horizons three and seven days and the models with the best positive or negative trending ability. The plots of NBI-2 and Poisson-2 are indistinguishable.}
     \label{fig:app-eda-cond-prob}
 \end{figure}
 
@@ -247,24 +247,24 @@ For the other models, the reliability diagrams show a fraction of increases that
     \begin{subfigure}{0.32\textwidth}
     \tiny
     \input{plots/ed_arrival/70_brier_scores}
-    \caption{Brier Scores for the different models and lags.}\label{fig:app-eda-prob-brier}
+    \caption{Brier Scores for the different models and horizons.}\label{fig:app-eda-prob-brier}
     \end{subfigure}\hspace{0.01\textwidth}%
     \begin{subfigure}[t]{0.32\textwidth}
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_3}
-    \caption{Reliability diagram for lag three days.}\label{fig:app-eda-prob-rel-3}
+    \caption{Reliability diagram for horizon three days.}\label{fig:app-eda-prob-rel-3}
     \end{subfigure}\hspace{0.01\textwidth}%
     \begin{subfigure}[t]{0.32\textwidth}
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_7}
-    \caption{Reliability diagram for lag seven days.}\label{fig:app-eda-prob-rel-7}
+    \caption{Reliability diagram for horizon seven days.}\label{fig:app-eda-prob-rel-7}
     \end{subfigure}
-    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the lags three and seven days.}
+    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days.}
     \label{fig:app-eda-prob}
 \end{figure}
 
 \subsubsection*{Discussion}
 
-The trending ability is consistent for the two lags, with the models' relative trending ability evolving similarly for the two lags.
-The models' trending ability is generally higher for the smaller lag, but the differences are minor, and confidence intervals overlap.
+The trending ability is consistent for the two horizons, with the models' relative trending ability evolving similarly for the two horizons.
+The models' trending ability is generally higher for the smaller horizon, but the differences are minor, and confidence intervals overlap.
 
 The trending differs for all models for positive and negative predicted change directions.
 While some models, such as GBM-2 and qreg-1, have the highest positive trending ratio, others, such as Poisson-2 and NBI-2, have the highest negative trending ratio.
@@ -295,35 +295,35 @@ The measured signals vary in length, frequency, and type of measurement.
 Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} simultaneously.
 2,548 include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one measurement of systolic \ac{abp} and \ac{nbp} at the same time; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
 
-We consider the lags of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
+We consider the horizons of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
 
 \subsubsection*{Results}
 
 Again, we exclude the smallest 10\% of absolute differences in trending assessment.
-The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different lags are shown in Figure~\ref{fig:app-mimic-4q}.
-The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} simultaneously for two consecutive times with the specified lags.
-For the systolic measurements, 290, 332, and 442 points are available for the lags of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
+The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different horizons are shown in Figure~\ref{fig:app-mimic-4q}.
+The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} simultaneously for two consecutive times with the specified horizons.
+For the systolic measurements, 290, 332, and 442 points are available for the horizons of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
 
-The trending ratios, including confidence intervals for the different lags, are listed in Table~\ref{tab:app-mimic-trending-ratios}.
-For the measurements with a lag of one minute, the confidence intervals have lower bounds of 0.5 or slightly above.
-For larger lags, the trending ratio increases.
-The difference between positive and negative trending ratios is small for all types and lags, with overlapping confidence intervals.
+The trending ratios, including confidence intervals for the different horizons, are listed in Table~\ref{tab:app-mimic-trending-ratios}.
+For the measurements with a horizon of one minute, the confidence intervals have lower bounds of 0.5 or slightly above.
+For larger horizons, the trending ratio increases.
+The difference between positive and negative trending ratios is small for all types and horizons, with overlapping confidence intervals.
 
-Figure~\ref{fig:app-mimic-cond-prob} shows the conditional trending plots for the different lags and the systolic and mean blood pressure measurements.
+Figure~\ref{fig:app-mimic-cond-prob} shows the conditional trending plots for the different horizons and the systolic and mean blood pressure measurements.
 It becomes apparent that the systolic measurements have a higher trending ability than the mean measurement, except for small negative predicted changes.
 This aligns with the trending ratios, but the confidence intervals overlap.
 
 \begin{figure}
     \centering
     \includegraphics{plots/mimic/plot_4q}
-    \caption{Four-quadrant plots for the different lags and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, and the lower row contains mean measurements. The columns contain the lags one, five, and 15 minutes.}
+    \caption{Four-quadrant plots for the different horizons and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, and the lower row contains mean measurements. The columns contain the horizons one, five, and 15 minutes.}
     \label{fig:app-mimic-4q}
 \end{figure}
 
 \begin{table}
     \centering
     \input{plots/mimic/trending_ratio}
-    \caption{Trending ratios for the different lags and the systolic and mean blood pressure measurements.}
+    \caption{Trending ratios for the different horizons and the systolic and mean blood pressure measurements.}
     \label{tab:app-mimic-trending-ratios}
 \end{table}
 
@@ -331,17 +331,17 @@ This aligns with the trending ratios, but the confidence intervals overlap.
     \centering
     \begin{subfigure}[t]{.32\textwidth}
         \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag1}
-        \caption{Lag one minute.}
+        \caption{Horizon one minute.}
     \end{subfigure}\hspace{0.01\textwidth}
     \begin{subfigure}[t]{.32\textwidth}
         \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag5}
-        \caption{Lag five minutes.}
+        \caption{Horizon five minutes.}
     \end{subfigure}\hspace{0.01\textwidth}
     \begin{subfigure}[t]{.32\textwidth}
         \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag15}
-        \caption{Lag 15 minutes.}
+        \caption{Horizon 15 minutes.}
     \end{subfigure}\hspace{0.01\textwidth}
-    \caption{Conditional trending plot for the systolic and mean blood pressure measurements and the lags one, five, and 15 minutes. }
+    \caption{Conditional trending plot for the systolic and mean blood pressure measurements and the horizons one, five, and 15 minutes. }
     \label{fig:app-mimic-cond-prob}
 \end{figure}
 
@@ -360,6 +360,6 @@ The positive and negative trending ratios have overlapping confidence intervals,
 This aligns with the four-quadrant plots, where no apparent asymmetry is visible.
 
 The bootstrap confidence intervals are wide.
-The width is around 0.1 for the trending ratio, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the lag of one minute.
+The width is around 0.1 for the trending ratio, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the horizon of one minute.
 Thus, more measurements would be of interest for a further trending assessment. 
 
