@@ -154,7 +154,7 @@ For the trending ratio, a rolling estimate with a backward-looking window of len
     \acc_{t; w} (\diffx, \diffy) \coloneqq \frac{\sum_{t^\star = t-w + 1}^{t} \ind{\diffxt[t^\star] \diffyt[t^\star] > 0}}{w}.\label{eq:acc_rolling}
 \end{equation*}
 Backward-looking windows provide an estimate at a time $t$ considering the $w$ time steps before time $t$.
-The window length $w$ controls the smoothing of the estimate, a larger $w$ gives smoother results, while a small $w$ focus on local variations.
+The window length $w$ controls the smoothing of the estimate; a larger $w$ gives smoother results, while a small $w$ focuses on local variations.
 Plotting the rolling estimates for $t = w-1, \dots, T$ yields an estimate of the trending ability over time.
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction trending ratio can be detected.
@@ -180,7 +180,7 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
 \end{figure} 
 
 In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
-We refer to time steps for which either signal or true values or both are unavailable as missing values.
+We refer to time steps for either signal or true values, or both are unavailable as missing values.
 Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
 However, systematical missing values could lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
 In this case, measures should be interpreted cautiously, and inspection of missing data should accompany applications with missing data, for example, through a visual assessment.
@@ -188,13 +188,13 @@ In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:applica
 
 \subsection{Accounting for noise and non-informative small changes and bootstrap confidence intervals}\label{subsec:trending-noise}
 
-The above measures can be extended to account for information on the points location within the quadrant.
+The above measures can be extended to account for information on the point's location within the quadrant.
 For example, points close to the zero point may have less explanatory power or are less reliable than points far away from zero on one of the diagonals.
 Suppose noise or non-systematic effects are present in the true values or predictions. 
 In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
 This happens more frequently for points with at least one small coordinate.
 
-Using an exclusion area around the zero point as further defined below is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures}.
+Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures}.
 Points within that area are neither plotted in the four-quadrant plot nor included in the calculation of the measures.
 In general, it is likely that the prediction models have a noise component and should thus be part of the exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
@@ -216,7 +216,7 @@ A cross-shaped exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \l
 For these two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
 
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
-The size estimation can also be based on a proportion of the total variance or the total range of the data, for example, the points with at least one coordinate in the smallest 10\% of absolute values are excluded.
+The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the points with at least one coordinate in the smallest 10\% of absolute values are excluded.
 A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
 For examples on those plots, see Section~\ref{sec:application-covid}.
 
@@ -224,7 +224,7 @@ Confidence intervals can account for the estimation uncertainty of the measures 
 Bootstrap confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
 New samples are drawn with replacement from the dataset and are not based on parametric assumptions as classical confidence intervals are.
 The confidence interval is then computed based on those bootstrap samples.
-We use the \ac{bca} approach for bootstrapping in the following, as it hold the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
+We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
 
 
 \subsection{The conditional trending plot}\label{subsec:trending-cond-prob}
@@ -242,7 +242,7 @@ for $x \neq 0$ through a \ac{kde}.
 A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages~\parencite[e.g., for  Python in][]{Seabold2010}.
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
 Multivariate \ac{kde} takes a kernel and bandwidth selector as modeling parameters. 
-We advise using a Gaussian kernel and the cross-validation maximum likelihood as bandwith selector (see Appendix~\ref{subsec:appendix-kde}).
+We advise using a Gaussian kernel and the cross-validation maximum likelihood as bandwidth selector (see Appendix~\ref{subsec:appendix-kde}).
 
 Assessing $P(\diffxrv \diffyrv > 0 | \diffx = x)$ graphically eases the simultaneous evaluation of various intervals.
 Furthermore, the graph facilitates the comparison of various methods in a single graph and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
@@ -252,15 +252,15 @@ We refer to the plot as a conditional trending plot.
 
 \subsection{Probabilistic Evaluation}\label{subsec:probabilistic}
 
-In nowcasting and forecasting, probabilistic predictions become more popular in the recent years (see, for example, Sections~\ref{sec:application-covid} and~\ref{sec:application-eda} or the review in~\cite{Gneiting2014}).
+In nowcasting and forecasting, probabilistic predictions have become more prevalent in recent years (see, for example, Sections~\ref{sec:application-covid} and~\ref{sec:application-eda} or the review in~\cite{Gneiting2014}).
 Probabilistic predictions include a point estimate and information on the forecast uncertainty and quantiles simultaneously.
 For trending analysis, probabilistic predictions also contain a probability of a positive or negative change.
 In this section, we extend the trending assessment to probabilistic predictions.
 
 Probabilistic predictions can take the form of a \ac{cdf}, \ac{pdf}, or quantiles.
 The \ac{cdf} is the most general and can be used to derive the others, given they exist.
-Let us first assume that the prediction is a \ac{cdf} and the horizon is large enough to know the true value when issuing the forecast or nowcast.
-In the appendix, we extend the analysis for predictions given as quantiles or for unknown true values.
+Let us first assume that the prediction is a \ac{cdf}, and the horizon is large enough to know the true value when issuing the forecast or nowcast.
+In the appendix, we extend the analysis for predictions given as quantiles or unknown true values.
 
 Let $F_{t | t-l} (x)$ denote the predicted \ac{cdf} of forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
 For trending assessment, we compare the probability of positive change with the occurrence of positive changes. 
@@ -290,7 +290,7 @@ It is defined as
 \end{equation*}
 The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\parencite{Ranjan2010,Mitchell2011}.
 Calibration refers to the statistical consistency of forecasts and observations, while sharpness measures the spread of the forecast distribution.
-A smaller spread, and thus, higher sharpness, is preferable, as it indicates greater confidence in the prediction.
+A smaller spread, thus, higher sharpness, is preferable, as it indicates greater confidence in the prediction.
 The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\parencite{Gneiting2014}.
 
 These two conflicting aspects cannot be distinguished in the scoring rule.
