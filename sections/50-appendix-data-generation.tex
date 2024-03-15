@@ -9,14 +9,13 @@ First, the $\diffxt$ are sampled as a sum of a standard normal random number and
 \end{equation*}
 Subsequently, the $\diffy$ are simulated for a constant trending ratio $k$ by
 \begin{equation*}
-    \diffyt = \diffxt \cdot n_t * b_t,
+    \diffyt = \diffxt \cdot n_t \cdot b_t,
 \end{equation*}
 where $n_t$ is a truncated normal distribution with mean 1 and standard deviation 0.5, truncated at 0 and a symmetric Bernoulli random variable with parameter $k$.
 For a time-varying trending ratio, the parameter $k$ is modified to have a wave-shape over time, that is,
 \begin{equation*}
-    k_t = 0.75 + \sin(t / 365.25 \cdot 2 \pi) / 4,
+    k_t = 0.75 + \sin(t / 365.25 \cdot 2 \pi) / 4.
 \end{equation*}
-where $T^\star$ is $T$ divided by the number of oscillations; in this case, 4.
 For the asymmetric trending ratio, $k$ is a function of $\diffxt$,
 \begin{equation*}
     k(x) = 0.5 + \min \left\{ \max \left\{ \frac{x + 5}{10}, 0  \right\} , 1 \right\} / 2.
@@ -28,7 +27,7 @@ In the second approach, $\diffyt$ and $\diffxt$ are modelled to be multivariate 
 \end{equation*}
 Thus, the conditional probability of trending can be calculated by a conditional normal distribution to
 \begin{equation*}
-    P(\diffyrv \diffxrv > 0 | \diffxrv = x) = \Phi \left( \frac{3}{4 \sqrt{7}} x \right),
+    P(\diffyrv \diffxrv > 0 | \diffxrv = x) = \Phi \left( \frac{3}{2 \sqrt{7}} x \right),
 \end{equation*}
 where $\Phi$ is a standard normal \ac{cdf}.
 
@@ -95,9 +94,6 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
     \label{tab:trending_bootstrap}
 \end{table}
 
-
-\subsection{Visualization of different bandwidth selectors in multivariate \ac{kde}}\label{subsec:appendix-kde}
-
 \begin{figure}
     \centering
     \begin{subfigure}{0.48\textwidth}
@@ -113,6 +109,31 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
 \end{figure}
 
 
+\subsection{Visualization of different bandwidth selectors in multivariate \ac{kde}}\label{subsec:appendix-kde}
+
+We examine the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\parencite{Seabold2010} in Figure~\ref{fig:trending-cond-prob-bw}.
+While the rule-of-thumb is based only on the covariance matrix, the other two numerically optimize the bandwidth with a hold-one-out least squares or likelihood objective function.
+The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
+The second method, cross-validation least squares, requires long computation times while yielding small or no bandwidth results, even for two relatively small datasets.
+The rule-of-thumb and cross-validation maximum likelihood methods yield reasonable results at moderate computation times. 
+Further examples, including comparisons between methods regarding their trending ability, are available in Section~\ref{sec:application}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.48\textwidth}
+        \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_asym_butterfly}
+        \caption{First dataset with asymmetric dependence.}
+    \end{subfigure}
+    \begin{subfigure}{.48\textwidth}
+        \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_normal}
+        \caption{Second dataset. }
+    \end{subfigure}
+    \caption{Resulting conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time. It does not converge for the first data set and yields a bandwidth too small for the second data set. The rule of thumb is the fastest method but tends to oversmooth. The cross-validation maximum likelihood method yields a more reasonable bandwidth with moderate computation time. $\varepsilon$ specifies an exclusion area $E = \{(x, y) \in \R^2: (-\varepsilon \leq x \leq \varepsilon)\}$ in $\diffx$-direction.}\label{fig:trending-cond-prob-bw}
+\end{figure}
+
+
+
+
 \subsection{Probabilistic trending evaluation}
 
 If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
@@ -125,25 +146,25 @@ The probability $\pc_t$ of a \textit{negative} change is between $p^{\star}$ and
 Quantiles do not determine the location within the interval $[p^{\star}, p^{\star} + 1/\pmax]$.
 Under the assumption of a uniform distribution within the quantile interval, the probability of a negative change is
 \begin{equation*}
-    \bar{p}_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
+    \pc_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
 \end{equation*}
 The approach does not assign probabilities for $y_t$ smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile.
 As a simple extension, we assume that the probability mass is uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
 This yields
 \begin{equation*}
-\bar{p}_t = \begin{cases}
+\pc_t = \begin{cases}
     \max \{\frac{1}{\pmax} - \frac{q_{p^\star} - y_t}{\pmax (q_{p2/\pmax} - q_{1/\pmax})}, 0\} &, \text{if } y_t < q_{1/p}, \\
     \min \{\frac{1}{\pmax} - \frac{y_t - q_{(\pmax-1)/\pmax}}{\pmax (q_{(\pmax-1)/\pmax} - q_{(\pmax-2)/\pmax})}, 1\} &, \text{if } y_t > q_{1 - 1/p}, \\
     \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star} &, \text{otherwise.}
 \end{cases}
 \end{equation*}
-The probability of positive change is $p_t = 1 - \bar{p}_t$.
+The probability of positive change is $p_t = 1 - \pc_t$.
 
 If the true value is given as a distribution because it is still unknown, the probabilities $p_t$ can be computed by integration.
 Let for two nowcasts the distributions be given by \acp{pdf} $f_{t+l|t+l}$ and $f_{t|t+l}$ with \acp{cdf}  $F_{t+l|t+l}$ and $F_{t|t+l}$.
 Then, the probability of a negative change can be computed by
 \begin{align}
-    \bar{p}_t
+    \pc_t
         &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: (x_1, x_2) \nonumber\\
         &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
         &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.

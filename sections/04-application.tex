@@ -1,4 +1,4 @@
-In this section, we apply the trending assessment to three different applications.
+In this section, we evalute the trending in three different applications.
 In the first application in Section~\ref{sec:application-covid}, we consider the nowcasting of the seven-day hospitalization rate for COVID-19 in Germany.
 Section~\ref{sec:application-eda} applies the trending assessment to forecast methods for the number of arrivals in a large emergency department.
 In the last application in Section~\ref{sec:application_measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
@@ -14,7 +14,7 @@ The first source is technical delays in the reporting process, for example, due 
 The second, more systematic source is the structure of the seven-day hospitalization rate.
 To a given date, all the cases are allocated whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
 The seven-day hospitalization rate is the average number of those cases per $100,000$ inhabitants on the given date and six days before.
-Thus, the final seven-day hospitalization rate can only be reported with a significant delay of up to more than 70 days, as the hospitalization of infected inhabitants can occur much later than the first positive test.
+Thus, the final seven-day hospitalization rate can only be reported with a significant delay of more than 70 days, as the hospitalization of infected inhabitants can occur much later than the first positive test.
 Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
 To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
 The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and other quantiles.
@@ -44,11 +44,12 @@ Using the nowcasts, two ensemble methods are constructed using the ensembles' me
 We denote them by ENS-MEAN and ENS-MED.
 \textcite{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study. 
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
-In contrast to~\textcite{Wolffram2023}, we use the newest data available on the true values, not from August 8, 2022.
+For the true values, we use the data from February 8, 2024.
 The nowcasts are resolved with regard to all inhabitants and specific geographical and age breakdowns.
 We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
 Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
 The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\parencite{Tolksdorf2022}.
+
 Table~\ref{tab:app-covid-rmse} summarizes the point evaluation measures for the issued mean of the different models.
 The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\parencite[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}.
 The best-performing models in terms of RMSE and MAE are the ILM and RKI models.
@@ -76,12 +77,12 @@ While horizon one assesses the short-term trending, horizons seven and 14 consid
 The horizons seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
 
 Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different horizons.
-Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} provides information on marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
+Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} presents marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
 Overall, the variability and general level of differences grow with the horizon.
 The standard deviation increases from roughly 300 for horizon one to 1,200 for horizon seven and 2,000 for horizon 14 days.
 Similarly, the 10\%-quantile of differences increases.
 The 10\%-quantile is used for the exclusion areas in the trending assessment.
-The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the differences.
+The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the absolute differences.
 Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, for example, $\diffy$ are to be recognized by the nowcast and vice versa.
 
 Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the horizon of seven days.
@@ -95,7 +96,7 @@ The positive trending ratio implies a similar ranking of the models, while the n
 For the horizons of one and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
 
 Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the horizon seven days; the respective plots for the horizons one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
-Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots readable.
+Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots easily readable.
 If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
 The opposite is the case for a nowcasted hospitalization rate increase, and the difference between the models' performance is higher.
 Similar observations can be made for the horizon of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
@@ -113,7 +114,7 @@ For the horizon of 14 days, all trending ratio curves increase with the exclusio
     \centering
     \tiny
     \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models with and without exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\%-quantile of the absolute values of nowcast and true values. }
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models with and without exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. }
     \label{tab:app-covid-trending-ratios-lag-7}
 \end{table}
 
@@ -137,7 +138,7 @@ For the horizon of 14 days, all trending ratio curves increase with the exclusio
 \subsubsection*{Discussion}
 
 For all horizons, the influence of the exclusion area on the 10\%-quantile level is negligible.
-For example, the trending ratio changes at most by 0.03 for the EPI model with $\accm[14]$.
+For example, the trending ratio changes at most by 0.03 for the EPI model with $\accml[14]$.
 The exclusion areas are thus not crucial for the trending assessment in the case of the nowcasts of the seven-day hospitalization rate.
 The lower bound of confidence intervals is at least 0.68 for all models, indicating that they perform better than random guessing the trend.
 
@@ -145,18 +146,21 @@ Trending assessment evaluates the models differently from point evaluation measu
 RKI is among the best in point evaluation measures but performs worse in trending assessment.
 The assessment of asymmetry in the conditional trending plots is crucial for interpreting the trending ratios, with the RKI model being the most prominent example.
 
+Figure~\ref{fig:app-covid-trending-ratio-7} shows that the trending ratio increases with larger exclusion areas. 
+This indicates that if the model predicts a large change, the direction is indeed better than when a small change is predicted.
+
 A more extensive training size would be beneficial for assessing the models' performance.
 For the evaluation period of 159 days, the trending ratio confidence intervals overlap; thus, no conclusions can be drawn from the trending evaluation.
 
 \subsection{Forecasting emergency department arrivals}\label{sec:application-eda}
 
-In a second example, we consider the forecasting of the hourly number of arrivals in a large emergency department.
-Forecasting the number of arrivals in an emergency department is crucial for planning staff and resources.
-Several models are used for predicting hourly outcomes in the study by \textcite{Rostami-Tabar2023}.
+In a second example, we consider forecasting the hourly number of arrivals in a large emergency department.
+Good forecasts are crucial for planning staff and resources.
+Several models are used for predicting hourly outcomes in a study by \textcite{Rostami-Tabar2023}.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 Thus, the management can take measures according to the expected number of arrivals, for example, through redeploying staff and reconfiguring units.
 
-\textcite{Rostami-Tabar2023} publish probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
+\textcite{Rostami-Tabar2023} publish means and probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
 The models are trained on data from April 1, 2014, to February 28, 2018, and evaluated on data from March 1, 2018, to February 28, 2019.
 For further notes on the models and the evaluation, we refer to \textcite{Rostami-Tabar2023}.
 From the issued forecasts, we use the mean as a point forecast for the trending assessment and evaluate the probabilistic trending subsequently.
@@ -205,7 +209,6 @@ The trending ratios range from 0.68 to 0.84 for a horizon of three days and from
 The negative and positive trending ratios differ for all models and horizons.
 For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
 The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
-Other models exhibit a higher positive trending ratio than the negative trending ratio.
 The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for three and seven days horizon, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
 Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
@@ -216,8 +219,8 @@ The models NBI-2 and Poisson-2 have the highest trending ability for all negativ
 Benchmark-1 lies between the other models for all $x$.
 
 Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
-The \acf{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days are shown in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
-The \acp{bs} are smallest and close for NBI-2 and Poisson-2 for both horizons, while the Brier scores for the other models are larger and differ more.
+The \acfp{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days are shown in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+The \acp{bs} are smallest for NBI-2 and Poisson-2 for both horizons, while the \acp{bs} for the other models are larger and differ more.
 The qreg-1 model has the highest \ac{bs} for both horizons.
 The reliability diagrams of GBM-2 and NBI-2 are also close and show a too-small fraction of increases for the predicted probability overall.
 For the other models, the reliability diagrams show a fraction of increases that are too large for the corresponding predicted probability.
@@ -287,7 +290,7 @@ For some patients, the data includes \ac{abp} and \ac{nbp} measurements.
 While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods.
 For an overview of blood pressure measurement methods, see \textcite{Saugel2014}.
 For critical patients, changes in blood pressure can be crucial for the treatment.
-Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, for example, ]{Mostafa2020}.
+Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, for example, ][]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 The database contains 64,168 numerical data records.
 One data record includes all numerical measurements for one patient.
@@ -302,6 +305,7 @@ We consider the horizons of one minute, five minutes, and 15 minutes for the tre
 Again, we exclude the smallest 10\% of absolute differences in trending assessment.
 The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different horizons are shown in Figure~\ref{fig:app-mimic-4q}.
 The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} simultaneously for two consecutive times with the specified horizons.
+Thus, we use the \ac{nbp} measurements as test method and the \ac{abp} measurements as gold standard.
 For the systolic measurements, 290, 332, and 442 points are available for the horizons of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
 
 The trending ratios, including confidence intervals for the different horizons, are listed in Table~\ref{tab:app-mimic-trending-ratios}.

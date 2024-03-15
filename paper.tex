@@ -76,6 +76,7 @@
 \DeclareAcronym{nbp}{short=NBP, long=non-invasive blood pressure}
 \DeclareAcronym{abp}{short=ABP, long=invasive arterial blood pressure}
 \DeclareAcronym{bs}{short=BS, long=Brier score}
+\DeclareAcronym{rmse}{short=RMSE, long=root mean square error}
 
 
 %%%% ---- Own Commands
@@ -157,7 +158,7 @@
 \begin{abstract}
 Trending refers to the ability of a signal to predict the direction of change for the true variable accurately. 
 An appropriate assessment of the trending ability is crucial for measurements, nowcasts, and forecasts for decision-makers. 
-While the current practice of evaluating signals is based on averaging over time-step-separated measures, we review and introduce trending measures that consider time series differences for certain lags. 
+While the current practice of evaluating signals is based on averaging over time-step-separated measures, we review and introduce trending measures that consider whether the direction of development fits the quantity of interest. 
 We formalize the concept of trending for all application areas and quantify the trending ability for signals. 
 We review and present new visualization techniques to assess the local trending behaviors and quantify estimation uncertainty by bootstrapping. 
 We apply the methods to three large data applications: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
@@ -168,7 +169,6 @@ We apply the methods to three large data applications: COVID-19-nowcasting, emer
 
 
 \section{Introduction}\label{sec:introduction}
-\todo{State that we want to accompany the current evaluation with a new measure, not replace other measures}
 \input{sections/01-introduction}
 
 %\section{Application areas and Notation} \label{sec:notation}

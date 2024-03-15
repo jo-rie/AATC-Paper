@@ -1,20 +1,36 @@
 
+In this paper, we examine various methods to analyze trending, the statistical consistency of observed and predicted change direction.
+While the computation of predicted change varies between the application areas measurement (see Section~\ref{subsec:notation}), nowcasting and forecasting, the assessment of trending using the computed predicted and observed change is similar.
+The evaluation of trending can accompany other evaluation techniques such as measures of deviation or probabilistic scoring rules.
 
-\begin{itemize}
-  \item Summary of work
-  \item highlight important general remarks of section trending / application
-  \item points for further research/other methods: imbalances in the number of positive and negative changes; sequential dependence of the differences
-\end{itemize}
+Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:trending-four-quadrant-plot}).
+The trending ratio, that is, the ratio of change directions predicted correctly over all changes, numerically evaluates trending.
+Visually, it is the ratio of concordant points over all points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
+The positive and negative trending ratio analyze the trending ratio given the predicted change is positive or negative, respectively.
+Thus, they quantify the credibility of the respective predictions. 
+The applications of Section~\ref{sec:application_measurement} show, that models, in general, indeed have different positive and negative trending abilities and that they add valuable information to the trending ratio.
+In the applications, the bootstrap condfidence intervals of Section~\ref{subsec:trending-measures} are used to quantify the estimation uncertainty of the trending measures.
+The width of the confidence intervals is around 0.1 for around 100 samples, while it is around 0.01 for 8000 samples.
+For reasonably well trending models, 100 samples are thus sufficient to differentiate from random guessing or models with high trending differences, 1000 samples enable a more precise differentiation.
 
+A conditional trending plot visualizes the probability of correct trending over the predicted change of the signal (see Section\ref{subsec:trending-cond-prob}).
+It is based on a multivariate \acf{kde} of predicted and observed change.
+In the application, it gives reasonable insights into local effects of the trending ability.
+Section~\ref{subsec:trending-probabilistic} adapts measures of probabilistic forecast evaluation to the trending evaluation of probabilistic forecasts and nowcasts.
+The \acf{bs} as numerical assessment of probabilistic trending is introduced and reliability diagrams are used to visualize the local trending ability of probabilistic forecasts.
 
+The methods of trending assessment are applied to COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements in Section~\ref{sec:application}.
+While trending evaluation is not the only aspect of evaluation, it is a valuable addition to the evaluation of nowcasts, forecasts, and measurements.
+For models with very different accuracies, these are usually replicated in trending evaluation, but the trending evaluation can differentiate between models with similar accuracies.
+As in the application in Section~\ref{sec:application-covid}, models with average point forecast evaluation measures can have the most meaningful positive trending ability.
 
-\subsection{Modeling remarks}
+Throughout this paper, we did not expand on two modeling aspects, which we leave for further research.
+In the estimation, we did not consider sequential correlation.
+The computation of differences is a standard procedure in time series analysis to remove sequential dependence, but, in general, the trending measures could be adapted to consider sequential correlation.
+Similarly, the bootstrap confidence intervals could be adapted to consider sequential correlation by using time series bootstrap methods~\parencite{Hardle2003,Kreiss2012}.
 
-
-
-Using these estimators could encourage predictors to exploit imbalances in the number of positive and negative changes. 
-A large difference in $\sum_{t \in \mathcal{T}} \ind{\diffyt > 0}$ and $\sum_{t \in \mathcal{T}} \ind{\diffyt < 0}$ is unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data. 
-However, if the number of positive and negative $\diffy$ differs widely, the use of unbalanced-data-aware measures should be considered.
+The estimators of Section~\ref{subsec:trending-measures} could encourage predictors to exploit imbalances in the number of observed positive and negative changes.
+A large difference in the number of observed positive and negative changes is unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data.
+In addition, we do not advise assessing signals solely on their trending ability and, thus, provide an incentive for the exploitation of estimator characteristics.
+However, if the number of positive and negative observed changes differs widely, the use of unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
-Cohen's $\kappa$ is usually used to measure inter-rater agreement and considers the ratio of occurred agreement and the probability of agreement by chance.
-Cohen's $\kappa$ reduces to rescaling the trending ratio for a $2\times2$-table and balanced outcomes.
