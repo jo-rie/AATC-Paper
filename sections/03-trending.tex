@@ -1,13 +1,13 @@
 
 As discussed in Section~\ref{sec:introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by another measurement, a nowcast, or a forecast.
 In this section, we want to specify trending and define different methods of measuring and visualizing trending.
-Development always has respect to a time horizon, that is, the amount of time passed. 
+Development always has respect to a time horizon, that is, the amount of time that has passed. 
 In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the question at hand.
 Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is insignificant.
 Before introducing measures to evaluate trending, we remark on calculating the predicted change and notation in Section~\ref{subsec:notation}.
 Section~\ref{subsec:trending-four-quadrant-plot} introduces trending basics and visualizes trending in a synthetic example.
 In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
-The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise} and bootstrap methods for computing confidence intervals for the measures in the previous sections are briefly introduced.
+The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise}, and bootstrap methods for computing confidence intervals for the measures in the previous sections are briefly introduced.
 Section~\ref{subsec:trending-cond-prob} introduces a new graphical method for local trending assessment.
 Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:trending-probabilistic}.
 
@@ -16,7 +16,7 @@ Trending assessment for probabilistic nowcasts and forecasts is treated in Secti
 As noted above, trending refers to observed and predicted changes over a time horizon $l$.
 The \textit{observed} change is straightforward to compute for all types of signals.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values for nowcasting or forecasting, or gold standard measurements up to time $T$.
-The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is
+The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
 \begin{equation}\label{eq:diffy}
     \diffylt = (y_{t} - y_{t-l}) \quad \text{for}\ t = l, \dots, T.
 \end{equation}
@@ -44,7 +44,7 @@ $ \\
 \end{table}
 
 
-The definition of the predicted change depends on the context.
+The definition of the \textit{predicted} change depends on the context.
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
 For nowcasting, let $x_{t | \tau}$ denote the nowcast for time $t$ computed with the knowledge of time $\tau$. 
 We call $t$ the \textit{forecast time} and $\tau$ the \textit{issue time}.
@@ -57,14 +57,14 @@ We compute the predicted change by
 \end{cases} \label{eq:diffxl_nowcasting}
 \end{equation}
 When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet. 
-Thus, the predicted can be computed with the knowledge of time $t$, and the trending assessment can be used in practice at time $t$.
+Thus, the predicted change can be computed with the knowledge of time $t$, and the trending assessment can be used in practice at time $t$.
 
 The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$. 
 The predicted change is computed by 
 \begin{equation} \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l} \label{eq:diffxl_forecasting}
 \end{equation}
 The indices are chosen to be consistent with $\diffyl$. 
-If the true value $y_{t-l}$ is not known at time $t-l$, a similar modification can be made as in Equation~\eqref{eq:diffxl_nowcasting}.
+If the true value $y_{t-l}$ is not known at time $t-l$, a similar modification as in Equation~\eqref{eq:diffxl_nowcasting} can be made.
 
 
 The distinction between forecast and issue time is unnecessary in measurement analysis, as the measurement is typically available with a very short time lag. 
@@ -82,8 +82,8 @@ The trending assessment is the same for all three application areas, given the n
 In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$ as defined in Table~\ref{tab:notation}.
 As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
-A simple yet insightful method is the four-quadrant plot~\parencite[see, e.g., ][]{Saugel2015,perrino1998intraoperative}. 
-In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = 1, \dots, T$.
+A simple yet insightful method is the four-quadrant plot~\parencite[see, e.g., ][]{perrino1998intraoperative,Saugel2015}. 
+In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
 
@@ -95,9 +95,9 @@ The four-quadrant plot resembles a butterfly-like shape, with more data in the u
 
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the date in the point color.
-In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$.
-The horizon is always one time step.
+In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, $(\diffyt[l], \diffxt)$
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
+
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
 However, they lack the four-quadrant plot's clarity and intuition without adding more information on trending~\parencite{Saugel2015}.
 
