@@ -215,12 +215,12 @@ A point is only included if no component is likely to be driven by noise.
 For these two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
 
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
-The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the size is twice the 10\% quantile of absolute values in each component and thus excludes approximately the smallest 10 \% of points.
+The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the 10\% smallest absolute values in each component determine the exclusion area size.
 A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
-For examples on those plots, see Section~\ref{sec:application-covid}.
+For examples on such plots, see Section~\ref{sec:application-covid}.
 
 Confidence intervals can account for the estimation uncertainty of the measures above.
-Bootstrap confidence intervals are a nonparametric technique based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
+Bootstrap confidence intervals are based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
 New samples are drawn with replacement from the dataset and are not based on parametric assumptions as classical confidence intervals are.
 The confidence interval is then computed based on those bootstrap samples.
 We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
@@ -262,7 +262,7 @@ The \ac{cdf} is the most general and can be used to derive the others, given the
 Let us first assume that the prediction is a \ac{cdf}, and the horizon is large enough to know the true value when issuing the forecast or nowcast.
 In the appendix, we extend the analysis for predictions given as quantiles or unknown true values.
 
-Let $F_{t | t-l} (x)$ denote the predicted \ac{cdf} of forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
+Let $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
 For trending assessment, we compare the probability of positive change with the observed occurrence of positive changes. 
 For the prediction, a positive change is predicted for any value at $t$ larger than the true value $y_{t-l}$. 
 As for the differences in Section~\ref{subsec:notation}, the computation differs slightly for nowcasts and forecasts.
@@ -292,11 +292,10 @@ Calibration refers to the statistical consistency of forecasts and observations,
 A smaller spread, thus, higher sharpness, is preferable, as it indicates greater confidence in the prediction.
 The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\parencite{Gneiting2014}.
 
-These two aspects cannot be distinguished in the scoring rule.
 Graphical methods are a standard tool for evaluating solely the calibration of probabilistic forecasts.
 In dichotomous forecasting, the reliability diagram is frequently used~\parencite{Ranjan2010}.
 The reliability diagram plots the observed frequency of the positive outcome against the predicted probability.
-Thus, it visualizes the observed frequency of a positive change given a probability for positive change of, for example, 0.6, is predicted.
+Thus, it visualizes the observed frequency of a positive change given a predicted probability for positive change of, for example, approximately 0.6.
 Ideally, the predicted probability equals the observed frequency, and the reliability diagram is a 45-degree line.
 Local deviations from the 45-degree line indicate a miscalibration of the forecast for specific probabilities.
 Thus, the reliability visualizes the local and overall calibration simultaneously.
