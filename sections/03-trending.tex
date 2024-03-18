@@ -132,11 +132,11 @@ Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
 The numerator counts the number of same-sign-changes, while the denominator is the number of considered pairs $(\diffyt, \diffxt)$.
-Thus, $\acc$ is the ratio of concordant changes over all changes.
+Thus, $\acc$ is the proportion of concordant changes on all changes.
 We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{l, \dots, T\}$. 
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
-Similar evaluations are used in other scientific areas, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
-There, a wide range of other methods are usually used to analyze further characteristics of such count tables.
+Similar evaluations are used in other scientific areas, for example, with contingency tables in dichotomous forecasting or with confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
+Many other measures can be adapted from those fields to deepen the trending analysis.
 Two simple measures that focus on either a positive or negative predicted change are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
 They are defined as
 \begin{align}
@@ -179,7 +179,7 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
 In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
 We refer to time steps for which either signal or true values, or both, are unavailable as missing values.
 Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
-However, systematical missing values could lead to a biased estimate of the trending ratio and missing data should be inspected for any underlying patterns.
+However, systematical missing values could lead to a biased estimate of the trending ratio, and missing data should be inspected for any underlying patterns.
 In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}, only a few missing values occur, and we provide information on the missing data by inspecting the missing data as lists.
 
 \subsection{Accounting for noise and non-informative small changes and bootstrap confidence intervals}\label{subsec:trending-noise}
@@ -191,8 +191,8 @@ In that case, a point's assignment to a quadrant can be driven by noise instead 
 This happens more frequently for points with at least one small coordinate.
 
 Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} \parencite[see, e.g.,][]{Saugel2015,Critchley2010}.
-Points within that area are ommited in the four-quadrant plot and in the calculation of the measures.
-In particular, the prediction models are likely to have a noise component and, thus, $\diffx$ should be subject to an exclusion area.
+Points within that area are omitted in the four-quadrant plot and the calculation of the measures.
+In particular, the prediction models are likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
 \begin{align}
     \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}},\label{eq:acceps}\\
@@ -204,9 +204,8 @@ The measures are then estimators for the probability of trending, given that the
 
 The estimators accept various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes examples of exclusion area shapes.
-A rectangular exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ 
- ($\varepsilon_x, \varepsilon_y > 0$), leaves out points that are small in both components and, therefore, likely to be driven by noise.
-Points where the true value or signal is unlikely to be noise-driven, are included.
+A rectangular exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ ($\varepsilon_x, \varepsilon_y > 0$), leaves out points that are small in both components and, therefore, likely to be driven by noise.
+Points where the true value or signal is unlikely to be noise-driven are included.
 In the example graph in Figure~\ref{fig:trending_basic_4q_excl_box}, only point 1 is excluded.
 An exclusion area along one axis, for example, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
 This particularly suits signals where small amounts of noise are inevitable.
@@ -217,7 +216,7 @@ For these two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
 The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the 10\% smallest absolute values in each component determine the exclusion area size.
 A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
-For examples on such plots, see Section~\ref{sec:application-covid}.
+For examples of such plots, see Section~\ref{sec:application-covid}.
 
 Confidence intervals can account for the estimation uncertainty of the measures above.
 Bootstrap confidence intervals are based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
@@ -263,7 +262,7 @@ Let us first assume that the prediction is a \ac{cdf}, and the horizon is large 
 In the appendix, we extend the analysis for predictions given as quantiles or unknown true values.
 
 Let $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
-For trending assessment, we compare the probability of positive change with the observed occurrence of positive changes. 
+For trending assessment, we compare the predicted probability of positive change with the occurrence of positive changes. 
 For the prediction, a positive change is predicted for any value at $t$ larger than the true value $y_{t-l}$. 
 As for the differences in Section~\ref{subsec:notation}, the computation differs slightly for nowcasts and forecasts.
 For nowcasts, the probability is calculated by
@@ -280,7 +279,7 @@ Let $z_t$ denote the indicator that the observed change at time $t$ is positive,
 \end{equation*}
 The probabilistic trending evaluation is then based on the probabilities $\mathbf{p} = (p_t)_{t=l}^{T}$ and the observed changes $\mathbf{z} = (z_t)_{t=l}^{T}$.
 The predictive power of $\mathbf{p}$ for $\mathbf{z}$ can be assessed using probabilistic dichotomous forecast evaluation methods.
-Dichotomous forecasts predict a binary outcome, as here, a positive or negative change.
+Dichotomous forecasts predict a binary outcome, such as a positive or negative change.
 Numerical measures for forecast quality are scoring rules.
 
 The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\parencite{Brier1950} and is defined as
@@ -292,7 +291,7 @@ Calibration refers to the statistical consistency of forecasts and observations,
 A smaller spread, thus, higher sharpness, is preferable, as it indicates greater confidence in the prediction.
 The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\parencite{Gneiting2014}.
 
-Graphical methods are a standard tool for evaluating solely the calibration of probabilistic forecasts.
+Graphical methods are a standard tool for evaluating the calibration of probabilistic forecasts in detail.
 In dichotomous forecasting, the reliability diagram is frequently used~\parencite{Ranjan2010}.
 The reliability diagram plots the observed frequency of the positive outcome against the predicted probability.
 Thus, it visualizes the observed frequency of a positive change given a predicted probability for positive change of, for example, approximately 0.6.

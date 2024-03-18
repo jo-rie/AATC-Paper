@@ -5,7 +5,7 @@ The evaluation of trending can accompany other evaluation techniques, such as me
 
 Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:trending-four-quadrant-plot}).
 The trending ratio, the ratio of change directions predicted correctly over the total number of changes, numerically evaluates trending.
-Visually, it is the ratio of concordant points over all points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
+Visually, it is the proportion of concordant points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
 The positive and negative trending ratio analyze the trending ratio given the predicted change is positive or negative, respectively.
 Thus, they quantify the credibility of the respective predictions. 
 The applications of Section~\ref{sec:application_measurement} show that models, in general, indeed have different positive and negative trending abilities and that they add valuable information to the trending ratio.
@@ -21,7 +21,7 @@ The \acf{bs} as numerical assessment of probabilistic trending is introduced, an
 
 The methods of trending assessment are applied to COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements in Section~\ref{sec:application}.
 While trending evaluation should not be the only aspect, it is a valuable addition to evaluating nowcasts, forecasts, and measurements.
-Models with very different accuracies are usually scored similiar in trending evaluation, but trending evaluation can differentiate between models with similar accuracies.
+Models with very different accuracies are usually scored similarly in trending evaluation, but trending evaluation can differentiate between models with similar accuracies.
 As in the application in Section~\ref{sec:application-covid}, models with average point forecast evaluation measures can have the most meaningful positive trending ability.
 
 We did not expand on two modeling aspects throughout this paper, which we leave for further research.
@@ -29,7 +29,7 @@ In the estimation, we did not consider sequential correlation.
 The computation of differences is a standard procedure in time series analysis to remove sequential dependence, but, in general, some could remain, and the estimators could account for it.
 Similarly, the bootstrap confidence intervals could be adapted to consider sequential correlation using time-series bootstrap methods~\parencite{Hardle2003,Kreiss2012}.
 
-The estimators of Section~\ref{subsec:trending-measures} do not account for imbalances in the number of observed positive and negative changes. \todo{Jolliffe hinzufügen}
-Large differences in the number of observed positive and negative changes are unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data and occur, for example, if the true value contains a few high jumps in one direction and many smaller jumps in the other. 
+The estimators of Section~\ref{subsec:trending-measures} do not account for imbalances in the number of observed positive and negative changes \parencite[for a theoretical analysis, see][Chapter 3]{Jolliffe2012}.
+Significant differences in the number of observed positive and negative changes are unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data and occur, for example, if the true value contains a few high jumps in one direction and many smaller jumps in the other. 
 However, if the number of positive and negative observed changes differs widely, unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
