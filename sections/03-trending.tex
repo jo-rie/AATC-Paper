@@ -95,7 +95,7 @@ The four-quadrant plot resembles a butterfly-like shape, with more data in the u
 
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the date in the point color.
-In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, $(\diffyt[l], \diffxt)$
+In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
@@ -127,8 +127,7 @@ However, they lack the four-quadrant plot's clarity and intuition without adding
 
 Analyzing the number of points in the green versus red quadrants is a standard approach in the trending assessment of measurement data \parencite{Critchley2010,Saugel2015}. 
 With that, we mainly estimate the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes.
-Note that $z_1 z_2 > 0$ if and only if $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$).
-The standard estimator for $P(\diffxrv \diffyrv > 0)$ is
+Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$), the standard estimator for $P(\diffxrv \diffyrv > 0)$ is
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
@@ -137,12 +136,12 @@ Thus, $\acc$ is the ratio of concordant changes over all changes.
 We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{l, \dots, T\}$. 
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
 Similar evaluations are used in other scientific areas, for example, in dichotomous forecasting or as a confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
-There, a wide range of other methods are usually used to analyze further characteristics of contingency tables.
+There, a wide range of other methods are usually used to analyze further characteristics of such count tables.
 Two simple measures that focus on either a positive or negative predicted change are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
 They are defined as
 \begin{align}
     \accp (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0}},\ \text{and} \label{eq:accp}\\
-    \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}\label{eq:accm}
+    \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}.\label{eq:accm}
 \end{align}
 They give the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, respectively, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
 
@@ -151,13 +150,13 @@ For the trending ratio, a rolling estimate with a backward-looking window of len
 \begin{equation*}
     \acc_{t; w} (\diffx, \diffy) \coloneqq \frac{\sum_{t^\star = t-w + 1}^{t} \ind{\diffxt[t^\star] \diffyt[t^\star] > 0}}{w}.\label{eq:acc_rolling}
 \end{equation*}
-Backward-looking windows provide an estimate at a time $t$ considering the $w$ time steps before time $t$.
+Backward-looking windows estimate the trending ratio at a time $t$ considering the $w$ time steps before time $t$.
 The window length $w$ controls the smoothing of the estimate; a larger $w$ gives smoother results, while a small $w$ focuses on local variations.
 Plotting the rolling estimates for $t = w-1, \dots, T$ yields an estimate of the trending ability over time.
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction trending ratio can be detected.
 The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
-This seasonal behavior cannot be distinguished in the two four-quadrant plots or the trending ratio.
+This seasonal behavior cannot be distinguished in the two four-quadrant plots or the overall trending ratio.
 
 
 \begin{figure}
@@ -178,10 +177,9 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
 \end{figure} 
 
 In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
-We refer to time steps for either signal or true values, or both are unavailable as missing values.
+We refer to time steps for which either signal or true values, or both, are unavailable as missing values.
 Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
-However, systematical missing values could lead to a biased estimate of the trending ratio, for example, if signal data is omitted in times of high change and thus uncertainty.
-In this case, measures should be interpreted cautiously, and inspection of missing data should accompany applications with missing data, for example, through a visual assessment.
+However, systematical missing values could lead to a biased estimate of the trending ratio and missing data should be inspected for any underlying patterns.
 In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}, only a few missing values occur, and we provide information on the missing data by inspecting the missing data as lists.
 
 \subsection{Accounting for noise and non-informative small changes and bootstrap confidence intervals}\label{subsec:trending-noise}
@@ -194,28 +192,30 @@ This happens more frequently for points with at least one small coordinate.
 
 Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} \parencite[see, e.g.,][]{Saugel2015,Critchley2010}.
 Points within that area are ommited in the four-quadrant plot and in the calculation of the measures.
-In particular the prediction models are likely to have a noise component and, thus, $\diffx$ should have an exclusion area.
+In particular, the prediction models are likely to have a noise component and, thus, $\diffx$ should be subject to an exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
 \begin{align}
-    \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}}\label{eq:acceps}\\
-    \accpeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}} \label{eq:accpeps}\\
-    \accmeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}\label{eq:accmeps}
+    \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}},\label{eq:acceps}\\
+    \accpeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}}, \ \text{and} \label{eq:accpeps}\\
+    \accmeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}. \label{eq:accmeps}
 \end{align}
 The additional argument $(\diffyt, \diffxt) \notin E$ in the indicator ensures that only points not lying in the exclusion are evaluated when computing the measures.
-The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $E$, that is, for $\acceps$, $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$.
+The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $E$, that is, $\acceps$ is an estimator for $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$.
+
 The estimators accept various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes examples of exclusion area shapes.
 A rectangular exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ 
  ($\varepsilon_x, \varepsilon_y > 0$), leaves out points that are small in both components and, therefore, likely to be driven by noise.
-Points where at least the true value or signal is unlikely to be zero are not excluded.
+Points where the true value or signal is unlikely to be noise-driven, are included.
 In the example graph in Figure~\ref{fig:trending_basic_4q_excl_box}, only point 1 is excluded.
 An exclusion area along one axis, for example, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
 This particularly suits signals where small amounts of noise are inevitable.
 A cross-shaped exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for the sign reversal in both components.
+A point is only included if no component is likely to be driven by noise.
 For these two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
 
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
-The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the size is twice the 10\% quantile of absolute values in each component and thus excludes the smallest 10 \% of points.
+The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the size is twice the 10\% quantile of absolute values in each component and thus excludes approximately the smallest 10 \% of points.
 A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
 For examples on those plots, see Section~\ref{sec:application-covid}.
 
