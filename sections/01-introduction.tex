@@ -1,16 +1,16 @@
-The evaluation of measurement, prediction, and forecasting methods become increasingly important and sophisticated as technologies and data availability enable their application in more and more areas. 
-Conventionally, methods are evaluated using distance measures that take aggregated local absolute differences between predictions (or measurements) and target values into account. 
+The evaluation of measurement, prediction, and forecasting methods becomes increasingly important and sophisticated as technologies and data availability enable their application in more and more fields. 
+Conventionally, methods are evaluated using distance measures of local differences between predictions (or measurements) and target values into account. 
 These measures fail to consider whether the right direction of change is predicted or measured correctly.
-The information about whether a signal, be it a measurement device, forecast, or nowcast, can accurately predict an increase or decrease is crucial when making decisions based on the estimator's prediction results. 
-In the following, we provide an overview over the characteristics and current evaluation schemes of the three application areas, measurement, forecasting, and nowcasting methods.
+The information about whether an increase or decrease is predicted correctly is crucial when making decisions based on the estimator's prediction results. 
+In the following, we provide an overview of the characteristics and current evaluation schemes of the three application areas: measurement, forecasting, and nowcasting.
 We highlight why trending evaluation is highly relevant in the respective fields.
 
 Measurement aims to obtain accurate and reliable data about the current state of a system. 
-A parameter or variable is can be measured regularly over a certain period to evaluate the systems development.
-When introducing new measurement methods they are evaluated against current measurement techniques, called gold standard, by measuring the same quantity in different settings, for example, different individuals or environments.
+A parameter or variable can be measured regularly over a certain period to evaluate the system's development.
+When introducing new measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as individuals or environments.
 In addition to using a paired t-test to determine systematic differences between two measurement series (\cite{watson2010method}), various indices such as the interclass correlation coefficient or Lin's concordance correlation have been proposed in practice to check the reproducibility of the measurement or to compare different measurement methods (\cite{lawrence1989concordance,koo2016guideline}). 
 Furthermore, graphical tools were developed, such as the Bland-Altman diagram, visualizing the differences between the methods in relation to their mean value (\cite{bland1986statistical}). 
-Trending considerations, that is the consistency of the test methods development with the gold standard, have already gained importance in literature (\cite{Saugel2015,saugel2018error,hiraishi2021concordance}). 
+Trending considerations, that is, the consistency of the test methods development with the gold standard, have already gained importance in literature (\cite{Saugel2015,saugel2018error,hiraishi2021concordance}). 
 In this paper, we build upon the existing methods and extend them with new functionality.
 
 The above-described trending idea is also of fundamental interest for evaluating and comparing forecasting methods. 
