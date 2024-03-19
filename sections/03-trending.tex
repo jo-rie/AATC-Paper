@@ -80,7 +80,7 @@ It is computed purely by the test method without the gold standard $y_t$ to anal
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-four-quadrant-plot}
 
 The trending assessment is the same for all three application areas, given the notation for the respective application of Section~\ref{subsec:notation}.
-In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$ as defined in Table~\ref{tab:notation}.
+In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
 As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
 A simple yet insightful method is the four-quadrant plot~\parencite[see, e.g., ][]{perrino1998intraoperative,Saugel2015}. 
@@ -95,7 +95,7 @@ Data generation is described in Appendix~\ref{subsec:app-trending-data-generatio
 The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
 
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
-It can be extended by including information on the date in the point color.
+It can be extended by including information on the time index in the point color to reveal effects over time.
 In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 
@@ -134,7 +134,7 @@ Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_
 \end{equation}
 The numerator counts the number of same-sign-changes, while the denominator is the number of considered pairs $(\diffyt, \diffxt)$.
 Thus, $\acc$ is the proportion of concordant changes on all changes.
-We refer to this estimator as the trending ratio of the prediction and set $\mathcal{T} = \{l, \dots, T\}$. 
+We refer to this estimator as the \textit{trending ratio} of the prediction and set $\mathcal{T} = \{l, \dots, T\}$. 
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
 Similar evaluations are used in other scientific areas, for example, with contingency tables in dichotomous forecasting or with confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
 Many other measures can be adapted from those fields to deepen the trending analysis.
@@ -144,7 +144,7 @@ They are defined as
     \accp (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0}},\ \text{and} \label{eq:accp}\\
     \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}.\label{eq:accm}
 \end{align}
-They give the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, respectively, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
+They give the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
 
 Rolling estimates of the above measures detect changes in performance over time and can give a sharper estimate of the current trending ability.
 For the trending ratio, a rolling estimate with a backward-looking window of length $w$ at time $t$ is given by
@@ -181,15 +181,14 @@ In applications, signal data are often not available for all time steps, for exa
 We refer to time steps for which either signal or true values, or both, are unavailable as missing values.
 Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
 However, systematical missing values could lead to a biased estimate of the trending ratio, and missing data should be inspected for any underlying patterns.
-In the applications in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}, only a few missing values occur, and we provide information on the missing data by inspecting the missing data as lists.
 
 \subsection{Accounting for noise and non-informative small changes and bootstrap confidence intervals}\label{subsec:trending-noise}
 
 The above measures can be extended to account for information on the point's location within the quadrant.
-For example, points close to the zero point may have less explanatory power or are less reliable than points far away from zero on one of the diagonals.
+For example, points close to the zero point may have less explanatory power or may be less reliable than points far away from zero on one of the diagonals.
 Suppose noise or non-systematic effects are present in the true values or predictions. 
 In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
-This happens more frequently for points with at least one small coordinate.
+This is more likely for points with at least one small coordinate.
 
 Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} \parencite[see, e.g.,][]{Saugel2015,Critchley2010}.
 Points within that area are omitted in the four-quadrant plot and the calculation of the measures.
@@ -206,7 +205,7 @@ The measures are then estimators for the probability of trending, given that the
 The estimators accept various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes examples of exclusion area shapes.
 A rectangular exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ ($\varepsilon_x, \varepsilon_y > 0$), leaves out points that are small in both components and, therefore, likely to be driven by noise.
-Points where the true value or signal is unlikely to be noise-driven are included.
+Points are included if the true value or signal is unlikely to be noise-driven.
 In the example graph in Figure~\ref{fig:trending_basic_4q_excl_box}, only point 1 is excluded.
 An exclusion area along one axis, for example, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
 This particularly suits signals where small amounts of noise are inevitable.
@@ -220,9 +219,8 @@ A third approach is to visualize the trending ratio for different sizes of $E$ a
 For examples of such plots, see Section~\ref{sec:application-covid}.
 
 Confidence intervals can account for the estimation uncertainty of the measures above.
-Bootstrap confidence intervals are based on resampling~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
-New samples are drawn with replacement from the dataset and are not based on parametric assumptions as classical confidence intervals are.
-The confidence interval is then computed based on those bootstrap samples.
+Bootstrap confidence intervals are based on resampling and not on parametric assumptions as classical confidence intervals are~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
+New samples are drawn with replacement from the dataset and the confidence interval is then computed based on those bootstrap samples.
 We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
 
 
@@ -239,7 +237,7 @@ P(\diffxrv \diffyrv > 0 | \diffxrv = x) = \begin{cases}
 \end{cases}
 \end{align*}
 for $x \neq 0$ through a \ac{kde}.
-A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages~\parencite[e.g., for  Python in][]{Seabold2010}.
+A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages, for example in the \verb|statsmodels| in Python~\parencite{Seabold2010}.
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
 Multivariate \ac{kde} takes a kernel and bandwidth selector as modeling parameters. 
 We advise using a Gaussian kernel and the cross-validation maximum likelihood as bandwidth selector (see Appendix~\ref{subsec:appendix-kde}).
@@ -253,7 +251,7 @@ We refer to the plot as a \textit{conditional trending plot}.
 \subsection{Probabilistic Evaluation}\label{subsec:trending-probabilistic}
 
 In nowcasting and forecasting, probabilistic predictions have become more prevalent in recent years (see, for example, Sections~\ref{sec:application-covid} and~\ref{sec:application-eda} or the review in~\cite{Gneiting2014}).
-Probabilistic predictions include a point estimate and information on the forecast uncertainty and quantiles simultaneously.
+Probabilistic predictions include a point estimate and information on the prediction uncertainty and quantiles simultaneously.
 For trending analysis, probabilistic predictions thus also contain a probability of a positive or negative change.
 In this section, we extend the trending assessment to probabilistic predictions.
 
@@ -288,14 +286,14 @@ The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecast
     BS (\mathbf{p}, \mathbf{z}) = \frac{1}{T-l+1} \sum_{t=l}^{T} (p_t - z_t)^2.
 \end{equation*}
 The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\parencite{Ranjan2010,Mitchell2011}.
-Calibration refers to the statistical consistency of forecasts and observations, while sharpness measures the spread of the forecast distribution.
-A smaller spread, thus, higher sharpness, is preferable, as it indicates greater confidence in the prediction.
+Calibration refers to the statistical consistency of forecasts and observations; that is, the event occurs with the issued probability.
+Sharpness refers to the spread of the forecast; that is, higher probabilities are preferable as they convey a higher certainty.
 The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\parencite{Gneiting2014}.
 
 Graphical methods are a standard tool for evaluating the calibration of probabilistic forecasts in detail.
 In dichotomous forecasting, the reliability diagram is frequently used~\parencite{Ranjan2010}.
-The reliability diagram plots the observed frequency of the positive outcome against the predicted probability.
-Thus, it visualizes the observed frequency of a positive change given a predicted probability for positive change of, for example, approximately 0.6.
+The reliability diagram plots the observed frequency of the positive outcome against the (binned) predicted probability.
+For example, it shows the proportion of observed increases, given the predicted probability of increase was approximately $0.7$.
 Ideally, the predicted probability equals the observed frequency, and the reliability diagram is a 45-degree line.
 Local deviations from the 45-degree line indicate a miscalibration of the forecast for specific probabilities.
 Thus, the reliability visualizes the local and overall calibration simultaneously.
