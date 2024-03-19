@@ -1,7 +1,7 @@
 
 As discussed in Section~\ref{sec:introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by another measurement, a nowcast, or a forecast.
 In this section, we want to specify trending and define different methods of measuring and visualizing trending.
-Development always has respect to a time horizon, that is, the amount of time that has passed. 
+The development in trending assessment always has respect to a time horizon, that is, the amount of time that has passed. 
 In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the question at hand.
 Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is insignificant.
 Before introducing measures to evaluate trending, we remark on calculating the predicted change and notation in Section~\ref{subsec:notation}.
@@ -44,11 +44,11 @@ $ \\
 \end{table}
 
 
-The definition of the \textit{predicted} change depends on the context.
+The definition of the \textit{predicted} change depends on the context;
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
 For nowcasting, let $x_{t | \tau}$ denote the nowcast for time $t$ computed with the knowledge of time $\tau$. 
 We call $t$ the \textit{forecast time} and $\tau$ the \textit{issue time}.
-We compute the predicted change by
+The predicted change is computed by
 \begin{equation}
   \diffxl =
 \begin{cases}
@@ -57,12 +57,13 @@ We compute the predicted change by
 \end{cases} \label{eq:diffxl_nowcasting}
 \end{equation}
 When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet. 
-Thus, the predicted change can be computed with the knowledge of time $t$, and the trending assessment can be used in practice at time $t$.
+Thus, the predicted change can be computed with the knowledge of time $t$. Therefore, the trending information of the following section can be used in practice at time $t$.
 
 The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$. 
 The predicted change is computed by 
-\begin{equation} \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l} \label{eq:diffxl_forecasting}
+\begin{equation} \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l}\label{eq:diffxl_forecasting}
 \end{equation}
+with the same structure as in the nowcasting case. 
 The indices are chosen to be consistent with $\diffyl$. 
 If the true value $y_{t-l}$ is not known at time $t-l$, a similar modification as in Equation~\eqref{eq:diffxl_nowcasting} can be made.
 
@@ -74,7 +75,7 @@ The computation
   (x_{t} - x_{t-l})_{t=l}^T \label{eq:diffxl_measure}
 \end{equation}
 yields the change by the test method. 
-It is computed purely by the test method without the gold standard $y_t$ to analyze whether the gold standard and test method changes are consistent.
+It is computed purely by the test method without the gold standard $y_t$ to analyze whether the gold standard and test method changes are consistent within themselves.
 
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-four-quadrant-plot}
 

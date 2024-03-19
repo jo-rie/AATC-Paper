@@ -25,18 +25,16 @@ The aspect of trending ability is not considered in the literature to the best o
 However, trending evaluation adds valuable information on the methods' capability of predicting the development of the target variable, for example, the number of cases of an epidemic.
 The epidemic's development, in turn, can be the foundation of decisions on introducing or canceling policy measures. 
 
-Measurement aims to obtain accurate and reliable data about the current state of a system. 
-
+Measurement is more technical and aims to obtain accurate and reliable data about the current state of a system based on sensors. 
 A parameter or variable can be measured regularly over a certain period to evaluate the system's development.
-When introducing new measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as individuals or environments.
+When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as individuals or environments.
 Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods \parencite{lawrence1989concordance,koo2016guideline} in addition to paired t-tests to determine systematic differences between two measurement series \parencite{watson2010method}. 
-Furthermore, graphical tools were developed, such as the Bland-Altman diagram, visualizing the differences between the methods in relation to their mean value \parencite{bland1986statistical}. 
-Trending considerations, that is, the consistency of the test methods development with the gold standard, is a field of active research in the last years \parencite{Saugel2015,saugel2018error,hiraishi2021concordance}. 
-In this paper, we build upon the existing methods and extend them with new functionality.
+Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value \parencite{bland1986statistical}. 
+Trending considerations, that is, the consistency of the test method's development with the gold standard, is a field of active research in the last years \parencite{Saugel2015,saugel2018error,hiraishi2021concordance}. 
 
 As outlined above, trending evaluation is crucial for measurements, predictions, and forecasts. 
-However, regardless of the application area, most conventional method comparisons and assessments consider local absolute deviations without assessing whether the correct direction of change is being predicted or measured. 
-In this paper, we develop trending evaluation methods that complement current evaluation measures with trending measurements.
+We apply the existing trending methods from measurement evaluation to the other fields and extend their functionality.
+In this paper, we develop trending evaluation methods that complement the current evaluation with trending measurements.
 
 The main contributions of this paper are manifold.
 \begin{itemize}
@@ -49,6 +47,6 @@ The main contributions of this paper are manifold.
 
 The remainder of this paper is structured as follows. 
 Section \ref{sec:trending} formalizes trending and investigates several extensions, such as noise-aware methods, confidence intervals, and probabilistic forecasts and nowcasts. 
-In particular, we introduce a new graphical method for evaluating trending, the conditional trending plot, which can represent the simultaneous evaluation of different intervals and asymmetries. 
+We introduce a new graphical method for evaluating trending, the conditional trending plot, which can simultaneously assess different intervals and asymmetries. 
 In Section \ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting, and nowcasting. 
 We conclude the paper in Section~\ref{sec:conclusion}.
