@@ -57,7 +57,7 @@ The predicted change is computed by
 \end{cases} \label{eq:diffxl_nowcasting}
 \end{equation}
 When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet. 
-Thus, the predicted change can be computed with the knowledge of time $t$. Therefore, the trending information of the following section can be used in practice at time $t$.
+Thus, the predicted change can be computed with the knowledge of time $t$. Therefore, the trending information in the following section can be used in practice at time $t$.
 
 The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$. 
 The predicted change is computed by 
@@ -220,7 +220,7 @@ For examples of such plots, see Section~\ref{sec:application-covid}.
 
 Confidence intervals can account for the estimation uncertainty of the measures above.
 Bootstrap confidence intervals are based on resampling and not on parametric assumptions as classical confidence intervals are~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
-New samples are drawn with replacement from the dataset and the confidence interval is then computed based on those bootstrap samples.
+New samples are drawn with replacement from the dataset, and the confidence interval is then computed based on those bootstrap samples.
 We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
 
 
@@ -237,7 +237,7 @@ P(\diffxrv \diffyrv > 0 | \diffxrv = x) = \begin{cases}
 \end{cases}
 \end{align*}
 for $x \neq 0$ through a \ac{kde}.
-A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages, for example in the \verb|statsmodels| in Python~\parencite{Seabold2010}.
+A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages, for example, in the \verb|statsmodels| in Python~\parencite{Seabold2010}.
 The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
 Multivariate \ac{kde} takes a kernel and bandwidth selector as modeling parameters. 
 We advise using a Gaussian kernel and the cross-validation maximum likelihood as bandwidth selector (see Appendix~\ref{subsec:appendix-kde}).
@@ -287,7 +287,7 @@ The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecast
 \end{equation*}
 The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\parencite{Ranjan2010,Mitchell2011}.
 Calibration refers to the statistical consistency of forecasts and observations; that is, the event occurs with the issued probability.
-Sharpness refers to the spread of the forecast; that is, higher probabilities are preferable as they convey a higher certainty.
+Sharpness refers to the spread of the forecast; higher probabilities are preferable as they convey a higher certainty.
 The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\parencite{Gneiting2014}.
 
 Graphical methods are a standard tool for evaluating the calibration of probabilistic forecasts in detail.
