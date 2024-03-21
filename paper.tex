@@ -1,14 +1,15 @@
-\documentclass[oneside]{article}
-
+%\documentclass[referee,sn-mathphys-ay,pdflatex]{sn-jnl}
+%\documentclass[sn-mathphys-ay,pdflatex]{sn-jnl}
+\documentclass[pdflatex]{sn-jnl}
 % Language setting
 % Replace `englis' with e.g. `spanish' to change the document language
 \usepackage[english]{babel}
-\usepackage[utf8]{inputenc} % für Umlaute
+\usepackage[utf8]{inputenc} % fuer Umlaute
 \usepackage{fontenc}
 
 % Set page size and margins
 % Replace `letterpaper' with`a4paper' for UK/EU standard size
-\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+%\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 
 %%%% ---- Useful packages
 
@@ -35,12 +36,14 @@
 \usepackage{bbm} % for blackboard 1
 \usepackage[linesnumbered,lined,algo2e,figure,boxed]{algorithm2e}
 \usepackage[short]{optidef} % for aligning linear programs
-\usepackage{nccmath} % for fleqn environment
+%\usepackage{nccmath} % for fleqn environment
 
 %%% --- Other
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 %\usepackage[hidelinks]{hyperref}
-\usepackage[style=authoryear,backend=biber]{biblatex}
+\usepackage[style=authoryear,backend=biber,natbib=true]{biblatex}
+%\usepackage{natbib}
+%\bibliographystyle{
 \addbibresource{library.bib}
 \addbibresource{library-jonas.bib}
 \usepackage{csquotes}
@@ -149,13 +152,20 @@
 %\hspace{-2.5pt}}
 %\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
 
-\title{Trending assessment for nowcasts, measurements, and forecasts}
-\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
-
 \begin{document}
-\maketitle
 
-\begin{abstract}
+\title{Trending assessment for nowcasts, measurements, and forecasts}
+%\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
+\author[1]{Oliver Grothe}
+\equalcont{These authors contributed equally to this work.}
+\author[1]{Bolin Liu}
+\equalcont{These authors contributed equally to this work.}
+\author*[1]{Jonas Rieger}
+\equalcont{These authors contributed equally to this work.}
+
+\affil*[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
+
+\abstract{
 An intuitive and easily interpretable information on a quantity measured over time is whether it increases or decreases.
 Trending refers to the ability to predict or measure the direction of change for a true variable accurately. 
 An appropriate assessment of the trending ability is crucial for measurements, nowcasts, and forecasts for decision-makers, as it enables them to assess the method's credibility accurately.
@@ -164,9 +174,13 @@ We formalize the concept of trending for all application areas and present quant
 Using bootstrap confidence intervals and exclusion areas, we provide extensions for noisy data and estimation uncertainty.
 We review and present new visualization techniques to assess the local trending behavior and enlarge the scope to probabilistic nowcasts and forecasts. 
 We apply the methods to three large data applications: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
-\end{abstract}
+}
 
+\keywords{}
+
+\maketitle
 % \listoftodos
+
 
 
 
@@ -192,6 +206,7 @@ We apply the methods to three large data applications: COVID-19-nowcasting, emer
 \input{sections/05-conclusion.tex}
 
 \printbibliography
+%\bibliography{library,library-jonas}
 
 \appendix
 
