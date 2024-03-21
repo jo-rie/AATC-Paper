@@ -7,16 +7,16 @@ In the last application in Section~\ref{sec:application_measurement}, we conside
 
 Amid the COVID-19 pandemic, the importance of accurate and prompt nowcasts of the pandemic's progression has become evident.
 Various indicators measured the pandemic's spread and severity. 
-In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\parencite{RobertKochInstitute2021}. 
+In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\citep{RobertKochInstitute2021}. 
 The Robert Koch Institute (RKI) provided preliminary daily reports on the seven-day hospitalization rate.
 However, these reports were subject to severe delays and revisions in two sources.
-The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\parencite{RobertKochInstitute2024}.
+The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\citep{RobertKochInstitute2024}.
 The second, more systematic source is the structure of the seven-day hospitalization rate.
 To a given date, all the cases are allocated whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
 The seven-day hospitalization rate is the average number of those cases per $100,000$ inhabitants on the given date and six days before.
 Thus, the final seven-day hospitalization rate can only be reported with a significant delay of more than 70 days, as the hospitalization of infected inhabitants can occur much later than the first positive test.
 Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
-To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
+To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
 The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and other quantiles.
 
 \begin{figure}
@@ -31,7 +31,7 @@ The nowcasts contain the seven-day hospitalization rate's predictive mean, media
     \caption{Same-day nowcasts.}
     \label{fig:app-covid-nowcast}
         \end{subfigure}
-    \caption{True and nowcast data of the seven-day-hospitalization in Germany from November 22, 2021, to April 29, 2022 \parencite{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
+    \caption{True and nowcast data of the seven-day-hospitalization in Germany from November 22, 2021, to April 29, 2022 \citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
     The outliers in the RKI model of values above $10^8$ are removed before the following analysis.}
     \label{fig:app-covid-true-nowcast}
 \end{figure}
@@ -39,19 +39,19 @@ The nowcasts contain the seven-day hospitalization rate's predictive mean, media
 The data contains eight nowcasts from scientific and public institutions, nowcast communities, and a newspaper, using different input variables, calendar data, and length of training data.
 The model structures are diverse, including Bayesian models, generalized additive models, and parametric bootstrapping.
 Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the respective names in the COVID19-Nowcasting-Hub.
-For information on the model design, we refer to~\textcite{Wolffram2023}.
+For information on the model design, we refer to~\citet{Wolffram2023}.
 Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
-\textcite{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study. 
+\citet{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study. 
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
 For the true values, we use the data from February 8, 2024.
 The nowcasts are resolved with regard to all inhabitants and specific geographical and age breakdowns.
 We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
 Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
-The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\parencite{Tolksdorf2022}.
+The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\citep{Tolksdorf2022}.
 
 Table~\ref{tab:app-covid-rmse} summarizes the point evaluation measures for the issued mean of the different models.
-The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\parencite[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}.
+The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}.
 The best-performing models in terms of RMSE and MAE are the ILM and RKI models.
 The ensemble methods perform worse than the best models regarding the mean location.
 The performance of the models is diverse, with more than twice as high RMSE values for the worst models compared to the best models.
@@ -156,13 +156,13 @@ For the evaluation period of 159 days, the trending ratio confidence intervals o
 
 In a second example, we consider forecasting the hourly number of arrivals in a large emergency department.
 Good forecasts are crucial for planning staff and resources.
-Several models are used for predicting hourly outcomes in a study by \textcite{Rostami-Tabar2023}.
+Several models are used for predicting hourly outcomes in a study by \citet{Rostami-Tabar2023}.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 Thus, the management can take measures according to the expected number of arrivals, for example, through redeploying staff and reconfiguring units.
 
-\textcite{Rostami-Tabar2023} publish means and probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
+\citet{Rostami-Tabar2023} publish means and probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
 The models are trained on data from April 1, 2014, to February 28, 2018, and evaluated on data from March 1, 2018, to February 28, 2019.
-For further notes on the models and the evaluation, we refer to \textcite{Rostami-Tabar2023}.
+For further notes on the models and the evaluation, we refer to \citet{Rostami-Tabar2023}.
 From the issued forecasts, we use the mean as a point forecast for the trending assessment and evaluate the probabilistic trending subsequently.
 We use the forecasts issued at the first time point for every target time.
 Thus, the forecasts are issued 36 to 48 hours ahead of the target time, and the emergency department management has time to adjust the measures according to the expected number of arrivals.
@@ -177,7 +177,7 @@ Thus, we consider the horizons of 72 hours, the last already observed shift of t
 Table~\ref{tab:app-eda-point-evaluation} lists the point evaluation measures and the count of available forecasts.
 The best-performing models regarding RMSE and MAE are the NBI-2 and Poisson-2 models.
 More than 8,600 forecasts are available for all models, with differences in the number due to missing values on four afternoons in 2018.
-Note that the reported values for the RMSE differ from those in \textcite{Rostami-Tabar2023}.
+Note that the reported values for the RMSE differ from those in \citet{Rostami-Tabar2023}.
 In contrast to their work, we use only the forecast data at least 36 hours ahead and not the entire forecast data for evaluation.
 
 \begin{table}
@@ -284,13 +284,13 @@ While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high tre
 
 In the last briefer example, we consider the trending assessment of measurement data.
 The data is from the MIMIC-III database, including various information on patients in critical care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}).
-The data is publicly available and also includes numerical measurement data such as heart rate, blood pressure, and oxygen saturation in a waveform database \parencites[][]{Moody2017}[available through][]{Goldberger2000}.
+The data is publicly available and also includes numerical measurement data such as heart rate, blood pressure, and oxygen saturation in a waveform database \citetext{\citealp{Moody2017}; available through \citealp{Goldberger2000}}.
 
 For some patients, the data includes \ac{abp} and \ac{nbp} measurements.
 While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods.
-For an overview of blood pressure measurement methods, see \textcite{Saugel2014}.
+For an overview of blood pressure measurement methods, see \citet{Saugel2014}.
 For critical patients, changes in blood pressure can be crucial for the treatment.
-Thus, trending assessment can be performed in addition to standard accuracy analysis~\parencite[see, for example, ][]{Mostafa2020}.
+Thus, trending assessment can be performed in addition to standard accuracy analysis~\citep[see, for example, ][]{Mostafa2020}.
 Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
 The database contains 64,168 numerical data records.
 One data record includes all numerical measurements for one patient.
@@ -356,7 +356,7 @@ This aligns with the trending ratios, but the confidence intervals overlap.
 
 The four-quadrant plots contain a considerable number of extreme points.
 Whether these points are due to measurement errors or extreme values is not distinguishable.
-Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile \parencite[see][]{Critchley2010}.
+Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile \citep[see][]{Critchley2010}.
 We do not follow this approach here, as the extreme values are not necessarily measurement errors and could be particularly relevant.
 
 The differences between positive and negative predicted changes are small in this example.

@@ -60,15 +60,15 @@ The four-quadrant plots for the sample realizations of the data generation schem
 
 We examine three methods for bootstrapping: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
 In the \textit{percentile} approach, the confidence interval for the level $\alpha$ is built directly from the empirical distribution of the bootstrap estimators.
-The \textit{basic} approach computes the confidence interval based on the non-bootstrap estimate using the bootstrapped quantile deviations~\parencite{Davison1997}.
-The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\parencite{Efron1987}.
+The \textit{basic} approach computes the confidence interval based on the non-bootstrap estimate using the bootstrapped quantile deviations~\citep{Davison1997}.
+The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\citep{Efron1987}.
 Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but requires smaller datasets for reasonable confidence intervals.
 The basic approach balances these two objectives.
 We compare the approaches in a small synthetic data study on their small-dataset behavior and computation time.
 
 We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
 The considered datasets are the first dataset with asymmetric dependence and the second dataset outlined in Appendix~\ref{subsec:app-trending-data-generation}.
-In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\parencite{Virtanen2020}.
+In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\citep{Virtanen2020}.
 The prescribed confidence level is 90 \%, and the number of bootstrap samples is $10,000$.
 The share of confidence intervals covering the true values per method and $T$ are shown in Table~\ref{tab:trending_bootstrap}.
 The true values of the accuracy are computed based on a dataset of size $10^8$, yielding 0.7501 and 0.7700 for the two datasets.
@@ -111,7 +111,7 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
 
 \subsection{Visualization of different bandwidth selectors in multivariate \ac{kde}}\label{subsec:appendix-kde}
 
-We examine the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\parencite{Seabold2010} in Figure~\ref{fig:trending-cond-prob-bw}.
+We examine the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\citep{Seabold2010} in Figure~\ref{fig:trending-cond-prob-bw}.
 While the rule-of-thumb is based only on the covariance matrix, the other two numerically optimize the bandwidth with a hold-one-out least squares or likelihood objective function.
 The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
 The second method, cross-validation least squares, requires long computation times while yielding small or no bandwidth results, even for two relatively small datasets.

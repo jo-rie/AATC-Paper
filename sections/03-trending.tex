@@ -83,7 +83,7 @@ The trending assessment is the same for all three application areas, given the n
 In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
 As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
-A simple yet insightful method is the four-quadrant plot~\parencite[see, e.g., ][]{perrino1998intraoperative,Saugel2015}. 
+A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{perrino1998intraoperative,Saugel2015}. 
 In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
@@ -100,7 +100,7 @@ In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from b
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
-However, they lack the four-quadrant plot's clarity and intuition without adding more information on trending~\parencite{Saugel2015}.
+However, they lack the four-quadrant plot's clarity and intuition without adding more information on trending~\citep{Saugel2015}.
 
 \begin{figure}
 \centering
@@ -126,7 +126,7 @@ However, they lack the four-quadrant plot's clarity and intuition without adding
 
 \subsection{Trending ratio and other measures}\label{subsec:trending-measures}
 
-Analyzing the number of points in the green versus red quadrants is a standard approach in the trending assessment of measurement data \parencite{Critchley2010,Saugel2015}. 
+Analyzing the number of points in the green versus red quadrants is a standard approach in the trending assessment of measurement data \citep{Critchley2010,Saugel2015}. 
 With that, we mainly estimate the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes.
 Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$), the standard estimator for $P(\diffxrv \diffyrv > 0)$ is
 \begin{equation}
@@ -136,7 +136,7 @@ The numerator counts the number of same-sign-changes, while the denominator is t
 Thus, $\acc$ is the proportion of concordant changes on all changes.
 We refer to this estimator as the \textit{trending ratio} of the prediction and set $\mathcal{T} = \{l, \dots, T\}$. 
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
-Similar evaluations are used in other scientific areas, for example, with contingency tables in dichotomous forecasting or with confusion matrix in classification analysis~\parencites(see, e.g., the introductions in)()[Ch. 4]{James2021}[Ch. 3]{Jolliffe2012}.
+Similar evaluations are used in other scientific areas, for example, with contingency tables in dichotomous forecasting or with confusion matrix in classification analysis~\citetext{see, e.g., the introductions in \citealt{James2021}, Ch. 4, and \citealp{Jolliffe2012}, Ch. 3}.
 Many other measures can be adapted from those fields to deepen the trending analysis.
 Two simple measures that focus on either a positive or negative predicted change are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
 They are defined as
@@ -190,7 +190,7 @@ Suppose noise or non-systematic effects are present in the true values or predic
 In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
 This is more likely for points with at least one small coordinate.
 
-Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} \parencite[see, e.g.,][]{Saugel2015,Critchley2010}.
+Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} \citep[see, e.g.,][]{Saugel2015,Critchley2010}.
 Points within that area are omitted in the four-quadrant plot and the calculation of the measures.
 In particular, the prediction models are likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
@@ -281,17 +281,17 @@ The predictive power of $\mathbf{p}$ for $\mathbf{z}$ can be assessed using prob
 Dichotomous forecasts predict a binary outcome, such as a positive or negative change.
 Numerical measures for forecast quality are scoring rules.
 
-The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\parencite{Brier1950} and is defined as
+The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\citep{Brier1950} and is defined as
 \begin{equation*}
     BS (\mathbf{p}, \mathbf{z}) = \frac{1}{T-l+1} \sum_{t=l}^{T} (p_t - z_t)^2.
 \end{equation*}
-The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\parencite{Ranjan2010,Mitchell2011}.
+The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\citep{Ranjan2010,Mitchell2011}.
 Calibration refers to the statistical consistency of forecasts and observations; that is, the event occurs with the issued probability.
 Sharpness refers to the spread of the forecast; higher probabilities are preferable as they convey a higher certainty.
-The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\parencite{Gneiting2014}.
+The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\citep{Gneiting2014}.
 
 Graphical methods are a standard tool for evaluating the calibration of probabilistic forecasts in detail.
-In dichotomous forecasting, the reliability diagram is frequently used~\parencite{Ranjan2010}.
+In dichotomous forecasting, the reliability diagram is frequently used~\citep{Ranjan2010}.
 The reliability diagram plots the observed frequency of the positive outcome against the (binned) predicted probability.
 For example, it shows the proportion of observed increases, given the predicted probability of increase was approximately $0.7$.
 Ideally, the predicted probability equals the observed frequency, and the reliability diagram is a 45-degree line.

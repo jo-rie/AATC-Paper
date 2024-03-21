@@ -27,9 +27,9 @@ As in the application in Section~\ref{sec:application-covid}, models with averag
 We did not expand on two modeling aspects throughout this paper, which we leave for further research.
 In the estimation, we did not consider sequential correlation.
 The computation of differences is a standard procedure in time series analysis to remove sequential dependence, but, in general, some could remain, and the estimators could account for it.
-Similarly, the bootstrap confidence intervals could be adapted to consider sequential correlation using time-series bootstrap methods~\parencite{Hardle2003,Kreiss2012}.
+Similarly, the bootstrap confidence intervals could be adapted to consider sequential correlation using time-series bootstrap methods~\citep{Hardle2003,Kreiss2012}.
 
-The estimators of Section~\ref{subsec:trending-measures} do not account for imbalances in the number of observed positive and negative changes \parencite[for a theoretical analysis, see][Chapter 3]{Jolliffe2012}.
+The estimators of Section~\ref{subsec:trending-measures} do not account for imbalances in the number of observed positive and negative changes \citep[for a theoretical analysis, see][Chapter 3]{Jolliffe2012}.
 Significant differences in the number of observed positive and negative changes are unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data and occur, for example, if the true value contains a few high jumps in one direction and many smaller jumps in the other. 
 However, if the number of positive and negative observed changes differs widely, unbalanced-data-aware measures should be considered.
-There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \parencite{Cohen1960} or those listed in \textcite[Table 3.3]{Jolliffe2012}.
+There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \citep{Cohen1960} or those listed in \citet[Table 3.3]{Jolliffe2012}.
