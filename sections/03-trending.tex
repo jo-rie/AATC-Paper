@@ -24,7 +24,7 @@ The sequence of observed changes is then given by the differences of values in $
 \begin{table}
     \centering
     \scriptsize
-    \begin{tabularx}{0.75\textwidth}{l X}
+    \begin{tabular}{l l}
         \toprule
         Application & Predicted change computation \\
         \midrule
@@ -38,7 +38,7 @@ The sequence of observed changes is then given by the differences of values in $
 $ \\
         Forecasting & $ \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l}$\\
         \bottomrule
-    \end{tabularx}
+    \end{tabular}
     \caption{Computation of the predicted change in the different applications. For nowcasting and forecasting, signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. For measurement, $x_t$ denotes the test device measurement at time $t$.}
     \label{tab:notation}
 \end{table}
@@ -285,6 +285,7 @@ The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecast
 \begin{equation*}
     BS (\mathbf{p}, \mathbf{z}) = \frac{1}{T-l+1} \sum_{t=l}^{T} (p_t - z_t)^2.
 \end{equation*}
+Lower values indicate a higher probabilistic trending ability of the method.
 The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\citep{Ranjan2010,Mitchell2011}.
 Calibration refers to the statistical consistency of forecasts and observations; that is, the event occurs with the issued probability.
 Sharpness refers to the spread of the forecast; higher probabilities are preferable as they convey a higher certainty.
