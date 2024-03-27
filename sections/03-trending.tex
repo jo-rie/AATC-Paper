@@ -1,9 +1,8 @@
 
-As discussed in Section~\ref{sec:introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by another measurement, a nowcast, or a forecast.
+As discussed in Section~\ref{sec:introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by a measurement, a nowcast, or a forecast.
 In this section, we want to specify trending and define different methods of measuring and visualizing trending.
-The development in trending assessment always has respect to a time horizon, that is, the amount of time that has passed. 
-In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the question at hand.
-Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is insignificant.
+In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the task.
+Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is irrelevant.
 Before introducing measures to evaluate trending, we remark on calculating the predicted change and notation in Section~\ref{subsec:notation}.
 Section~\ref{subsec:trending-four-quadrant-plot} introduces trending basics and visualizes trending in a synthetic example.
 In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
@@ -57,7 +56,7 @@ The predicted change is computed by
 \end{cases} \label{eq:diffxl_nowcasting}
 \end{equation}
 When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet. 
-Thus, the predicted change can be computed with the knowledge of time $t$. Therefore, the trending information in the following section can be used in practice at time $t$.
+Through the computation in Equation~\eqref{eq:diffxl_nowcasting}, the predicted change can be computed with the knowledge of the nowcaster at time $t$. 
 
 The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$. 
 The predicted change is computed by 
@@ -75,11 +74,12 @@ The computation
   (x_{t} - x_{t-l})_{t=l}^T \label{eq:diffxl_measure}
 \end{equation}
 yields the change by the test method. 
-It is computed purely by the test method without the gold standard $y_t$ to analyze whether the gold standard and test method changes are consistent within themselves.
+It is computed purely by the test method without the gold standard $y_t$ to analyze whether the gold standard and test method changes are consistent.
+Accordingly, $y_{t-l}$ is not used in the computation even if known at time $t$ in contrast to forecasting and nowcasting. 
 
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-four-quadrant-plot}
 
-The trending assessment is the same for all three application areas, given the notation for the respective application of Section~\ref{subsec:notation}.
+Formally, the trending assessment is the same for all three application areas, given the notation for the respective application of Section~\ref{subsec:notation}.
 In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
 As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
@@ -96,7 +96,7 @@ The four-quadrant plot resembles a butterfly-like shape, with more data in the u
 
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the time index in the point color to reveal effects over time.
-In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
+In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, more recent values; $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 
 There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
@@ -132,7 +132,7 @@ Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
-The numerator counts the number of same-sign-changes, while the denominator is the number of considered pairs $(\diffyt, \diffxt)$.
+Here, the numerator counts the number of same-sign-changes, while the denominator is the number of considered pairs $(\diffyt, \diffxt)$.
 Thus, $\acc$ is the proportion of concordant changes on all changes.
 We refer to this estimator as the \textit{trending ratio} of the prediction and set $\mathcal{T} = \{l, \dots, T\}$. 
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
@@ -144,7 +144,7 @@ They are defined as
     \accp (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0}},\ \text{and} \label{eq:accp}\\
     \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}.\label{eq:accm}
 \end{align}
-They give the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
+They estimate the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
 
 Rolling estimates of the above measures detect changes in performance over time and can give a sharper estimate of the current trending ability.
 For the trending ratio, a rolling estimate with a backward-looking window of length $w$ at time $t$ is given by
@@ -157,7 +157,7 @@ Plotting the rolling estimates for $t = w-1, \dots, T$ yields an estimate of the
 Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
 Thus, the yearly course of the prediction trending ratio can be detected.
 The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
-This seasonal behavior cannot be distinguished in the two four-quadrant plots or the overall trending ratio.
+While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sample_color}, illustrate ongoing overall drifts in the trending ability, seasonal aspects are only revealed in rolling window estimates. 
 
 
 \begin{figure}
@@ -174,7 +174,7 @@ This seasonal behavior cannot be distinguished in the two four-quadrant plots or
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are delayed as the windows look backward.}
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward.}
 \end{figure} 
 
 In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
@@ -182,7 +182,7 @@ We refer to time steps for which either signal or true values, or both, are unav
 Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
 However, systematical missing values could lead to a biased estimate of the trending ratio, and missing data should be inspected for any underlying patterns.
 
-\subsection{Accounting for noise and non-informative small changes and bootstrap confidence intervals}\label{subsec:trending-noise}
+\subsection{Accounting for noise and non-informative small changes and bootstrapping confidence intervals}\label{subsec:trending-noise}
 
 The above measures can be extended to account for information on the point's location within the quadrant.
 For example, points close to the zero point may have less explanatory power or may be less reliable than points far away from zero on one of the diagonals.
@@ -190,17 +190,17 @@ Suppose noise or non-systematic effects are present in the true values or predic
 In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
 This is more likely for points with at least one small coordinate.
 
-Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} \citep[see, e.g.,][]{Saugel2015,Critchley2010}.
+Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} accounting for such effects\citep[see, e.g.,][]{Saugel2015,Critchley2010}.
 Points within that area are omitted in the four-quadrant plot and the calculation of the measures.
 In particular, the prediction models are likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
 \begin{align}
     \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}},\label{eq:acceps}\\
-    \accpeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, , (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}}, \ \text{and} \label{eq:accpeps}\\
+    \accpeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}}, \ \text{and} \label{eq:accpeps}\\
     \accmeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}. \label{eq:accmeps}
 \end{align}
 The additional argument $(\diffyt, \diffxt) \notin E$ in the indicator ensures that only points not lying in the exclusion are evaluated when computing the measures.
-The measures are then estimators for the probability of trending, given that the change is not in the exclusion area $E$, that is, $\acceps$ is an estimator for $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$.
+The measures are then estimators for the probability of trending, given that the point's location is not driven by noise or non-informative changes. 
 
 The estimators accept various shapes of the exclusion area.
 Figure~\ref{fig:trending_4q} visualizes examples of exclusion area shapes.
@@ -211,39 +211,41 @@ An exclusion area along one axis, for example, $E = \{(x, y) \in \R^2: (-\vareps
 This particularly suits signals where small amounts of noise are inevitable.
 A cross-shaped exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for the sign reversal in both components.
 A point is only included if no component is likely to be driven by noise.
-For these two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
+For the latter two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
 
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
-The size estimation can also be based on a proportion of the total variance or the total range of the data; for example, the 10\% smallest absolute values in each component determine the exclusion area size.
+The size determination can also be based on a proportion of the total variance or the total range of the data; for example, the 10\% smallest absolute values in each component determine the exclusion area size.
 A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
 For examples of such plots, see Section~\ref{sec:application-covid}.
 
 Confidence intervals can account for the estimation uncertainty of the measures above.
 Bootstrap confidence intervals are based on resampling and not on parametric assumptions as classical confidence intervals are~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
-New samples are drawn with replacement from the dataset, and the confidence interval is then computed based on those bootstrap samples.
+Many new samples are drawn with replacement from the dataset, and the statistic of interest is computed for each sample, yielding an estimate for the distribution of the statistic of interest. 
+Based on the derived \enquote{new} samples of the statistic, the confidence intervals can be derived through differently sophisticated bootstrapping methods.
 We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
 
 
 \subsection{The conditional trending plot}\label{subsec:trending-cond-prob}
 
 The estimators described above give information on the probabilities $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin E)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin E)$.
-A still more fine and local analysis might be gained by considering the conditional distribution $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ to assess the local trending ability of a prediction.
-$P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ denotes the probability of a correct trending given a predicted change of $x$. 
-A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
+A still finer analysis might be gained by considering the conditional distribution $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ to assess the trending ability of a prediction for a certain change size $\diffxrv = \xcond$ of the signal.
+Thereby, $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ denotes the probability of a correct trending given a predicted change of $\xcond$. 
+Thus, if a change of $\xcond$ is observed in practice, one can directly assess the credibility of this specific signal.
+A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
 \begin{align*}
-P(\diffxrv \diffyrv > 0 | \diffxrv = x) = \begin{cases}
-                                              \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \ \textrm{d} \: y & \text{if } x < 0, \\
-                                              \int_{0}^{\infty} \frac{f_{\diffxrv, \diffyrv}(x, y)}{f_{\diffxrv}(x)} \ \textrm{d} \: y & \text{if } x > 0, \\
+P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond) = \begin{cases}
+                                              \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(\xcond, y)}{f_{\diffxrv}(\xcond)} \ \textrm{d} \: y & \text{if } \xcond < 0, \\
+                                              \int_{0}^{\infty} \frac{f_{\diffxrv, \diffyrv}(\xcond, y)}{f_{\diffxrv}(\xcond)} \ \textrm{d} \: y & \text{if } \xcond > 0, \\
 \end{cases}
 \end{align*}
-for $x \neq 0$ through a \ac{kde}.
+for $\xcond \neq 0$ through a \ac{kde}.
 A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages, for example, in the \verb|statsmodels| in Python~\parencite{Seabold2010}.
-The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ for all values of $x \in \R$.
+The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ for all values of $\xcond \in \R$.
 Multivariate \ac{kde} takes a kernel and bandwidth selector as modeling parameters. 
 We advise using a Gaussian kernel and the cross-validation maximum likelihood as bandwidth selector (see Appendix~\ref{subsec:appendix-kde}).
 
-Assessing $P(\diffxrv \diffyrv > 0 | \diffxrv = x)$ graphically eases the simultaneous evaluation of various $x$.
-Furthermore, the graph facilitates the comparison of various methods in a single graph and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = x)$ with respect to $x$ in the trending ability can be detected.
+Assessing $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ graphically by drawing $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ against $\xcond$ eases the simultaneous evaluation of various $\xcond$.
+Furthermore, the graph facilitates the comparison of various methods in a single graph, and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = \xcond)$ with respect to $x$ in the trending ability can be detected.
 We refer to the plot as a \textit{conditional trending plot}.
 
 
@@ -251,27 +253,32 @@ We refer to the plot as a \textit{conditional trending plot}.
 \subsection{Probabilistic Evaluation}\label{subsec:trending-probabilistic}
 
 In nowcasting and forecasting, probabilistic predictions have become more prevalent in recent years (see, for example, Sections~\ref{sec:application-covid} and~\ref{sec:application-eda} or the review in~\cite{Gneiting2014}).
-Probabilistic predictions include a point estimate and information on the prediction uncertainty and quantiles simultaneously.
+In this section, we develop trending measures for probabilistic signals.
+Probabilistic predictions issue a probability distribution for the quantity of interest based on their available information and, thus, include a point estimate and information on the prediction uncertainty and quantiles simultaneously.
 For trending analysis, probabilistic predictions thus also contain a probability of a positive or negative change.
 In this section, we extend the trending assessment to probabilistic predictions.
 
 Probabilistic predictions can take the form of a \ac{cdf}, \ac{pdf}, or quantiles.
 The \ac{cdf} is the most general and can be used to derive the others, given they exist.
-Let us first assume that the prediction is a \ac{cdf}, and the horizon is large enough to know the true value when issuing the forecast or nowcast.
+Let us first assume that the prediction is a \ac{cdf}, and that $y_{t-l}$ is known at time $t$ (see Table~\ref{tab:notation}).
 In the appendix, we extend the analysis for predictions given as quantiles or unknown true values.
 
-Let $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
-For trending assessment, we compare the predicted probability of positive change with the occurrence of positive changes. 
-For the prediction, a positive change is predicted for any value at $t$ larger than the true value $y_{t-l}$. 
+Let for a forecast $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
+Thereby, $F_{t | t-l} (x)$ yields the probability that the quantity of interest is at most $x$.
+For trending assessment, we compare the predicted probability of positive change, denoted by $p_t$, with the occurrence of positive changes. 
+A positive change occurs for any value at $t$ larger than the true value $y_{t-l}$, as then the change compared to $y_{t-l}$ is positive.
+The \ac{cdf} $F_{t | t-l} (y_{t-l})$ yields the predicted probability of any value at most $y_{t-l}$, a negative change.
+Thus, $1 - F_{t | t-l} (y_{t-l})$ is the probability of a positive change.
 As for the differences in Section~\ref{subsec:notation}, the computation differs slightly for nowcasts and forecasts.
 For nowcasts, the probability is calculated by
 \begin{equation*}
-    p_t = 1 - F_{t | t} (y_{t-l})\quad t = l, \dots, T;
+    p_t = 1 - F_{t | t-l} (y_{t-l})\quad t = l, \dots, T;
 \end{equation*}
-while for forecasts, it is given by
+while for nowcasts it is given by
 \begin{equation*}
-    p_t = 1 - F_{t | t-l} (y_{t-l})\quad t = l, \dots, T.
+    p_t = 1 - F_{t | t} (y_{t-l})\quad t = l, \dots, T,
 \end{equation*}
+with analogous derivations as above.
 Let $z_t$ denote the indicator that the observed change at time $t$ is positive, that is,
 \begin{equation*}
     z_t = \ind{\diffyt > 0} \quad t = l, \dots, T.
@@ -281,15 +288,15 @@ The predictive power of $\mathbf{p}$ for $\mathbf{z}$ can be assessed using prob
 Dichotomous forecasts predict a binary outcome, such as a positive or negative change.
 Numerical measures for forecast quality are scoring rules.
 
-The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\citep{Brier1950} and is defined as
+The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\citep{Brier1950}.
+In our context, it is
 \begin{equation*}
     BS (\mathbf{p}, \mathbf{z}) = \frac{1}{T-l+1} \sum_{t=l}^{T} (p_t - z_t)^2.
 \end{equation*}
-Lower values indicate a higher probabilistic trending ability of the method.
+Thereby, lower values indicate a higher probabilistic trending ability of the considered method.
 The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\citep{Ranjan2010,Mitchell2011}.
 Calibration refers to the statistical consistency of forecasts and observations; that is, the event occurs with the issued probability.
 Sharpness refers to the spread of the forecast; higher probabilities are preferable as they convey a higher certainty.
-The basic paradigm of probabilistic forecasting is to maximize sharpness, subject to calibration~\citep{Gneiting2014}.
 
 Graphical methods are a standard tool for evaluating the calibration of probabilistic forecasts in detail.
 In dichotomous forecasting, the reliability diagram is frequently used~\citep{Ranjan2010}.

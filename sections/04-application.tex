@@ -1,7 +1,11 @@
-In this section, we evalute the trending in three different applications.
+In this section, we evaluate the trending in three different applications.
 In the first application in Section~\ref{sec:application-covid}, we consider the nowcasting of the seven-day hospitalization rate for COVID-19 in Germany.
 Section~\ref{sec:application-eda} applies the trending assessment to forecast methods for the number of arrivals in a large emergency department.
 In the last application in Section~\ref{sec:application_measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
+
+The examples illustrate the use of the methods of Section~\ref{sec:trending} and yield further insights into the measures and plots.  
+All code used to generate the analysis is available online.
+
 
 \subsection{Covid nowcasting} \label{sec:application-covid}
 
@@ -44,7 +48,7 @@ Using the nowcasts, two ensemble methods are constructed using the ensembles' me
 We denote them by ENS-MEAN and ENS-MED.
 \citet{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study. 
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
-For the true values, we use the data from February 8, 2024.
+We use the data from February 8, 2024, for the true values.
 The nowcasts are resolved with regard to all inhabitants and specific geographical and age breakdowns.
 We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
 Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
@@ -60,7 +64,7 @@ Note that the high values for the EPI model could be driven by an exceptionally 
 In addition to close inspection of the point evaluation measures, assessing the trending of the nowcasts is crucial.
 To assess the impact of taken measures and the direction of the curve, it is essential to distinguish between rising and falling hospitalization rates.
 If hospitalization rates rise, measures should be tightened, while falling rates might allow for loosening measures.
-Especially, asymmetries are of interest to assess whether some models are better at recognizing a fall than a rise or vice versa.
+Asymmetries are especially of interest in assessing whether some models are better at recognizing a fall than a rise or vice versa.
 
 \begin{table}[]
     \centering
@@ -114,7 +118,7 @@ For the horizon of 14 days, all trending ratio curves increase with the exclusio
     \centering
     \tiny
     \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models with and without exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. }
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models without and with exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. The measures with the exclusion area are denoted with the subscript $q_{0.1}$. }
     \label{tab:app-covid-trending-ratios-lag-7}
 \end{table}
 
@@ -149,16 +153,16 @@ The assessment of asymmetry in the conditional trending plots is crucial for int
 Figure~\ref{fig:app-covid-trending-ratio-7} shows that the trending ratio increases with larger exclusion areas. 
 This indicates that if the model predicts a large change, the direction is indeed better than when a small change is predicted.
 
-A more extensive training size would be beneficial for assessing the models' performance.
-For the evaluation period of 159 days, the trending ratio confidence intervals overlap; thus, no conclusions can be drawn from the trending evaluation.
+A more extensive data size would be beneficial for assessing the models' performance.
+For the evaluation period of 159 days, the trending ratio confidence intervals overlap; thus, no conclusions can be drawn from the trending evaluation comparing the models.
 
 \subsection{Forecasting emergency department arrivals}\label{sec:application-eda}
 
-In a second example, we consider forecasting the hourly number of arrivals in a large emergency department.
+In a second example, we consider forecasting the number of arrivals in a large emergency department per hour.
 Good forecasts are crucial for planning staff and resources.
 Several models are used for predicting hourly outcomes in a study by \citet{Rostami-Tabar2023}.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
-Thus, the management can take measures according to the expected number of arrivals, for example, through redeploying staff and reconfiguring units.
+Thus, management can take measures according to the expected number of arrivals, for example, by redeploying staff and reconfiguring units.
 
 \citet{Rostami-Tabar2023} publish means and probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
 The models are trained on data from April 1, 2014, to February 28, 2018, and evaluated on data from March 1, 2018, to February 28, 2019.
@@ -170,7 +174,7 @@ Considering only the forecasts of at least 36 hours ahead, we restrict the evalu
 
 In this setup, trending assessment is a simple and intuitive way to assess the models' performance.
 The trending perspective is easy for the management to understand and implement, as simple comparisons of the expected workload to a recent shift can be made.
-If, for example, the staff was near capacity in the last shift and an increase in the number of arrivals is expected, the management can take measures to adjust the workload.
+If, for example, the staff was near capacity during the last shift and an increase in the number of arrivals is expected, management can take measures to adjust the workload.
 
 The number of arrivals has a strong weekly and daily pattern.
 Thus, we consider the horizons of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day.
@@ -178,7 +182,7 @@ Table~\ref{tab:app-eda-point-evaluation} lists the point evaluation measures and
 The best-performing models regarding RMSE and MAE are the NBI-2 and Poisson-2 models.
 More than 8,600 forecasts are available for all models, with differences in the number due to missing values on four afternoons in 2018.
 Note that the reported values for the RMSE differ from those in \citet{Rostami-Tabar2023}.
-In contrast to their work, we use only the forecast data at least 36 hours ahead and not the entire forecast data for evaluation.
+In contrast to their work, we use only the forecast data at least 36 hours ahead rather than the entire forecast data for evaluation.
 
 \begin{table}
 \centering
@@ -189,19 +193,20 @@ In contrast to their work, we use only the forecast data at least 36 hours ahead
 
 \subsubsection*{Results}
 
-Table~\ref{tab:app-eda-marginals} analyzes the differences in marginal distributions for the forecasts and true values for the horizons of three and seven days.
-Note that the difference definition aligns with Section~\ref{subsec:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the true value is available when issuing the forecast.
+We start by analyzing the marginal distributions for the changes of forecasts and true values for the horizons of three and seven days in Table~\ref{tab:app-eda-marginals}, again.
+Thereby, the computed difference aligns with Section~\ref{subset:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the true value is available when issuing the forecast.
 The fraction of positive differences varies between 0.39 and 0.63 for the horizon of three days and between 0.37 and 0.63 for the horizon of seven days.
 The variability of differences decreases for the larger horizon for most models; only for the ETS model does it increase.
 The 10\%-quantile of the differences is between zero and one for all models and horizons.
 Thus, we exclude only differences smaller than one from the trending assessment.
 The resulting fraction of included values in the computation is also listed in Table~\ref{tab:app-eda-marginals} and is at least 79\% of the values.
+\todo{Schwer verstaendlich (Auch Abbildung~\ref{tab:app-eda-marginals})}
 
 \begin{table}
     \centering
     \tiny
     \input{plots/ed_arrival/10_marginal_analysis}
-    \caption{Marginal analysis of the nowcast and true differences. The column (1) shows the fraction of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
+    \caption{Marginal analysis of the nowcast and true differences. The column (1) shows the fraction of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values. Column (2) shows the fraction of values not in the exclusion area of size one.}
     \label{tab:app-eda-marginals}
 \end{table}
 
@@ -210,7 +215,7 @@ The trending ratios range from 0.68 to 0.84 for a horizon of three days and from
 The negative and positive trending ratios differ for all models and horizons.
 For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
 The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
-The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for three and seven days horizon, while Poisson-2 and NBI-2 have the highest negative trending ratio.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the three and seven-day horizon, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
 Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
 The conditional trending plots show similar courses for the two horizons, while the curves are shifted downwards for the horizon of seven days.
@@ -220,9 +225,10 @@ The models NBI-2 and Poisson-2 have the highest trending ability for all negativ
 Benchmark-1 lies between the other models for all $x$.
 
 Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
-The \acfp{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days are shown in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+The \acfp{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+Remember that low a \ac{bs} and a plot along the diagonal are signs for good trending.
 The \acp{bs} are smallest for NBI-2 and Poisson-2 for both horizons, while the \acp{bs} for the other models are larger and differ more.
-The qreg-1 model has the highest \ac{bs} for both horizons.
+The qreg-1 model has both horizons' highest \ac{bs}.
 The reliability diagrams of GBM-2 and NBI-2 are also close and show a too-small fraction of increases for the predicted probability overall.
 For the other models, the reliability diagrams show a fraction of increases that are too large for the corresponding predicted probability.
 
@@ -252,7 +258,7 @@ For the other models, the reliability diagrams show a fraction of increases that
     \begin{subfigure}{0.32\textwidth}
     \tiny
     \input{plots/ed_arrival/70_brier_scores}
-    \caption{Brier Scores for the different models and horizons.}\label{fig:app-eda-prob-brier}
+    \caption{BS for the different models and horizons.}\label{fig:app-eda-prob-brier}
     \end{subfigure}\hspace{0.01\textwidth}%
     \begin{subfigure}[t]{0.32\textwidth}
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_3}
@@ -262,7 +268,7 @@ For the other models, the reliability diagrams show a fraction of increases that
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_7}
     \caption{Reliability diagram for horizon seven days.}\label{fig:app-eda-prob-rel-7}
     \end{subfigure}
-    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days.}
+    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days. The \acl{bs} in Figure~\ref{fig:app-eda-prob-brier} evaluates the calibration and sharpness of the probabilistic trending simultaneously, while the two plots on the right assess solely the calibration, that is, whether the predicted probability of increase occurs empirically. Probabilistic trending by the \ac{bs} is best for the models NBI-2 and Poisson-2 for both lags.}
     \label{fig:app-eda-prob}
 \end{figure}
 
@@ -279,7 +285,7 @@ The results of the probabilistic trending evaluation endorse the point trending 
 The reliability diagrams show that they underestimate the fraction of increases slightly. 
 
 The example shows that trending assessment is detached from standard point evaluation measures.
-While the models with the lowest RMSE, NBI-2 and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
+While the models with the lowest RMSE, NBI-2, and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
 
 
 \subsection{Invasive and non-invasive blood pressure monitoring} \label{sec:application_measurement}
@@ -307,11 +313,11 @@ We consider the horizons of one minute, five minutes, and 15 minutes for the tre
 Again, we exclude the smallest 10\% of absolute differences in trending assessment.
 The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different horizons are shown in Figure~\ref{fig:app-mimic-4q}.
 The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} simultaneously for two consecutive times with the specified horizons.
-Thus, we use the \ac{nbp} measurements as test method and the \ac{abp} measurements as gold standard.
+Thus, we use the \ac{nbp} measurements as the test method and the \ac{abp} measurements as the gold standard.
 For the systolic measurements, 290, 332, and 442 points are available for the horizons of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
 
 The trending ratios, including confidence intervals for the different horizons, are listed in Table~\ref{tab:app-mimic-trending-ratios}.
-For the measurements with a horizon of one minute, the confidence intervals have lower bounds of 0.5 or slightly above.
+The confidence intervals have lower bounds of 0.5 or slightly above for the measurements with a horizon of one minute.
 For larger horizons, the trending ratio increases.
 The difference between positive and negative trending ratios is small for all types and horizons, with overlapping confidence intervals.
 
@@ -367,5 +373,5 @@ This aligns with the four-quadrant plots, where no apparent asymmetry is visible
 
 The bootstrap confidence intervals are wide.
 The width is around 0.1 for the trending ratio, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the horizon of one minute.
-Thus, more measurements would be of interest for a further trending assessment. 
+Thus, the confidence intervals cover 0.5 for systolic measurement and the horizon of one minute, and the equality to random guessing cannot be excluded.
 

@@ -41,7 +41,7 @@
 %%% --- Other
 %\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 %\usepackage[hidelinks]{hyperref}
-\usepackage[style=authoryear,backend=bibtex,natbib=true]{biblatex}
+\usepackage[style=authoryear,backend=biber,natbib=true]{biblatex}
 %\usepackage{natbib}
 %\bibliographystyle{
 \addbibresource{library.bib}
@@ -52,10 +52,10 @@
 % \DeclareAcronym{pdf}{short=PDF, long={probability distribution function}}
 
 %%% --- Commenting, Todonotes
-%\usepackage[colorinlistoftodos,prependcaption]{todonotes}
+\usepackage[colorinlistoftodos,prependcaption]{todonotes}
 %\usepackage{comment, soul}
 %\newcommand{\ar}{$\rightarrow$}
-%\presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
+\presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
 %\newcommand{\hl}[1]{\textcolor{Aquamarine}{#1}}
 
 %\usepackage{xargs,ifthen} % Use optional arguements in commands
@@ -138,6 +138,8 @@
 \newcommand{\pmax}{\hat{p}} % Notation for the grid resolution in quantiles
 \newcommand{\pc}{p^c}
 
+\newcommand{\xcond}{\chi}
+
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
 
@@ -165,7 +167,7 @@
 \author*[1]{Jonas Rieger}
 \equalcont{These authors contributed equally to this work.}
 
-\affil*[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
+\affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 
 \abstract{
 An intuitive and easily interpretable information on a quantity measured over time is whether it increases or decreases.
@@ -181,7 +183,7 @@ We apply the methods to three large medical data applications: COVID-19-nowcasti
 \keywords{}
 
 \maketitle
-% \listoftodos
+ \listoftodos
 
 
 
