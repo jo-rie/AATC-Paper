@@ -99,3 +99,25 @@
     \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the lag seven days.}
     \label{fig:app-covid-cond-prob-trending-ratio-1-14}
 \end{figure}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.48\textwidth}
+        \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_7}
+        \caption{Reliability diagram for horizon seven days.} \label{fig:app-covid-reliability-7}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+        \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_14}
+        \caption{Reliability diagram for horizon 14 days.} \label{fig:app-covid-reliability-14}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \includegraphics{plots/covid_nowcast/70_prob_hist}
+        \caption{Count histogram of the predicted probabilities for the horizon one, seven, and 14 days.} \label{fig:app-covid-prob-hist}
+    \end{subfigure}
+    \caption{The reliability diagram for the models ILM, RIVM, RKI, and ENS-MED for the horizon seven and 14 days.
+    Additionally, the count of predicted probabilities for the horizons is shown.
+        The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
+    As the models issue small or large probabilities of increase for the higher horizons, little information on the accuracy of moderate probability predictions is available.}
+    \label{fig:}
+\end{figure}

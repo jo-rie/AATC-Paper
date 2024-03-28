@@ -44,9 +44,9 @@ The data contains eight nowcasts from scientific and public institutions, nowcas
 The model structures are diverse, including Bayesian models, generalized additive models, and parametric bootstrapping.
 Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the respective names in the COVID19-Nowcasting-Hub.
 For information on the model design, we refer to~\citet{Wolffram2023}.
-Using the nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
+In addition to those nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
-\citet{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study. 
+\citet{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study.
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
 We use the data from February 8, 2024, for the true values.
 The nowcasts are resolved with regard to all inhabitants and specific geographical and age breakdowns.
@@ -64,7 +64,7 @@ Note that the high values for the EPI model could be driven by an exceptionally 
 In addition to close inspection of the point evaluation measures, assessing the trending of the nowcasts is crucial.
 To assess the impact of taken measures and the direction of the curve, it is essential to distinguish between rising and falling hospitalization rates.
 If hospitalization rates rise, measures should be tightened, while falling rates might allow for loosening measures.
-Asymmetries are especially of interest in assessing whether some models are better at recognizing a fall than a rise or vice versa.
+Asymmetries are especially relevant for assessing whether some models are better at recognizing a fall than a rise or vice versa.
 
 \begin{table}[]
     \centering
@@ -80,7 +80,7 @@ We report the trending for the horizons 1, 7, and 14 days.
 While horizon one assesses the short-term trending, horizons seven and 14 consider the medium-term trending.
 The horizons seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
 
-Before stating the results, we provide background information on the marginal distributions of the true values and nowcasts for the different horizons.
+Before stating the results, we provide background information on the marginal distributions of the actual values and nowcasts for the different horizons.
 Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} presents marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
 Overall, the variability and general level of differences grow with the horizon.
 The standard deviation increases from roughly 300 for horizon one to 1,200 for horizon seven and 2,000 for horizon 14 days.
@@ -88,6 +88,14 @@ Similarly, the 10\%-quantile of differences increases.
 The 10\%-quantile is used for the exclusion areas in the trending assessment.
 The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the absolute differences.
 Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, for example, $\diffy$ are to be recognized by the nowcast and vice versa.
+
+\begin{table}
+    \centering
+    \tiny
+    \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models without and with exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. The subscript $q_{0.1}$ denotes the measures with exclusion area. }
+    \label{tab:app-covid-trending-ratios-lag-7}
+\end{table}
 
 Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the horizon of seven days.
 The trending ratios without exclusion area range from 0.72 to 0.85 for the horizon of seven days.
@@ -98,29 +106,6 @@ The model with the highest trending ratio is the ILM model, and the model with t
 The confidence intervals between all models overlap.
 The positive trending ratio implies a similar ranking of the models, while the negative ratio is second best for the RKI model.
 For the horizons of one and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
-
-Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the horizon seven days; the respective plots for the horizons one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
-Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots easily readable.
-If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
-The opposite is the case for a nowcasted hospitalization rate increase, and the difference between the models' performance is higher.
-Similar observations can be made for the horizon of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
-For a horizon of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
-The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
-The curves cross for an issued fall, with ENS-MED being on top for issued falls above 250.
-
-The trending ratios for various exclusion areas are shown in Figure~\ref{fig:app-covid-trending-ratio-7}.
-In general, the trending ratio increases with larger exclusion areas.
-While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
-For the horizon of one day, the RKI trending ratio decreases with increasing exclusion area size while the other models rise (see Figure~\ref{fig:app-covid-trending-ratio-1}).
-For the horizon of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
-
-\begin{table}
-    \centering
-    \tiny
-    \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models without and with exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. The measures with the exclusion area are denoted with the subscript $q_{0.1}$. }
-    \label{tab:app-covid-trending-ratios-lag-7}
-\end{table}
 
 \begin{figure}
     \centering
@@ -137,6 +122,53 @@ For the horizon of 14 days, all trending ratio curves increase with the exclusio
     \label{fig:app-covid-cond-prob-trending-ratio-7}
 \end{figure}
 
+Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the horizon seven days; the respective plots for the horizons one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
+Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots easily readable.
+If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
+The opposite is the case for a nowcasted hospitalization rate increase, and the difference between the models' performance is higher.
+Similar observations can be made for the horizon of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
+For a horizon of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
+The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
+The curves cross for an issued fall, with ENS-MED being on top for issued falls above 250.
+
+The trending ratios for various exclusion areas are shown in Figure~\ref{fig:app-covid-trending-ratio-7}.
+In general, the trending ratio increases with larger exclusion areas.
+While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
+For the horizon of one day, the RKI trending ratio decreases with increasing exclusion area size while the other models rise (see Figure~\ref{fig:app-covid-trending-ratio-1}).
+For the horizon of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
+
+Figure~\ref{fig:app-covid-prob} shows the \acf{bs} and reliability diagrams for the same subset of models, the ILM, RKI, RIVM, and ENS-MED.
+The probabilities of increase for the different models are computed using the nowcast quantiles.
+For each horizon $l$, $10,000$ samples of the forecast date $t$ and the forecast date $t-l$ based on the nowcasts of issue date $t$ are generated, and the proportion of positive changes is computed (see Appendix~\ref{subsec:app-probabilistic-trending-evaluation}).
+Remember that low a \ac{bs} and a plot along the diagonal are signs of good trending.
+The \ac{bs} is the lowest for the RIVM model, while the ENS-MED model has the best \ac{bs} for the horizon of seven and 14 days.
+The RKI model yields the highest \ac{bs} for all horizons.
+Note that the \ac{bs} is bounded by 0.25 for random guessing; thus, all models perform better than random guessing.
+The reliability diagrams show that the models are not well calibrated for the horizon of one day.
+While for predicted probabilities below 0.5, the observed ratio of increases is smaller, it is higher than predicted for probabilities above 0.5.
+Figure~\ref{fig:app-covid-prob-hist} shows the observed predicted increase probabilities for all horizons.
+For the horizons of seven and 14 days, the nowcasters issue only a few moderate probabilities.
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \tiny
+        \input{plots/covid_nowcast/70_brier_scores}
+    \caption{BS for the different models and horizons.}\label{fig:app-covid-prob-brier}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \begin{subfigure}[t]{0.48\textwidth}
+    \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_1}
+    \caption{Reliability diagram for horizon one day.}\label{fig:app-covid-prob-rel-1}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \caption[Brier Scores and reliability diagrams for ILM, RKI, RIVM, and ENS-MED.]{\aclp{bs} and reliability diagrams for ILM, RKI, RIVM, and ENS-MED.
+    The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
+    In the computation of BS and reliability diagram, missing values are excluded.
+    The reliability diagram for the horizon seven and 14 days is in the appendix (see Figure~\ref{fig:app-covid-rel}).}
+    \label{fig:app-covid-prob}
+\end{figure}
+
+
+
 
 
 \subsubsection*{Discussion}
@@ -150,8 +182,13 @@ Trending assessment evaluates the models differently from point evaluation measu
 RKI is among the best in point evaluation measures but performs worse in trending assessment.
 The assessment of asymmetry in the conditional trending plots is crucial for interpreting the trending ratios, with the RKI model being the most prominent example.
 
-Figure~\ref{fig:app-covid-trending-ratio-7} shows that the trending ratio increases with larger exclusion areas. 
-This indicates that if the model predicts a large change, the direction is indeed better than when a small change is predicted.
+Figure~\ref{fig:app-covid-trending-ratio-7} shows that the trending ratio increases with larger exclusion areas.
+This indicates that if the model predicts a large change, the direction is more accurate than when a small change is predicted.
+
+The probabilistic trending assessment shows that the models are better than random guessing.
+In general, the reliability diagram cannot provide information if specific probabilities are issued scarcely.
+Thus, the reliability diagrams for the horizons of 7 and 14 days do not contain information on moderate probabilities.
+The \ac{bs} values, however, work well for those examples and provide a good measure for the trending ability of the models.
 
 A more extensive data size would be beneficial for assessing the models' performance.
 For the evaluation period of 159 days, the trending ratio confidence intervals overlap; thus, no conclusions can be drawn from the trending evaluation comparing the models.
@@ -160,7 +197,7 @@ For the evaluation period of 159 days, the trending ratio confidence intervals o
 
 In a second example, we consider forecasting the number of arrivals in a large emergency department per hour.
 Good forecasts are crucial for planning staff and resources.
-Several models are used for predicting hourly outcomes in a study by \citet{Rostami-Tabar2023}.
+In a study by \citet{Rostami-Tabar2023}, several models predict hourly outcomes.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 Thus, management can take measures according to the expected number of arrivals, for example, by redeploying staff and reconfiguring units.
 
@@ -193,14 +230,13 @@ In contrast to their work, we use only the forecast data at least 36 hours ahead
 
 \subsubsection*{Results}
 
-We start by analyzing the marginal distributions for the changes of forecasts and true values for the horizons of three and seven days in Table~\ref{tab:app-eda-marginals}, again.
-Thereby, the computed difference aligns with Section~\ref{subset:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the true value is available when issuing the forecast.
+We start by analyzing the marginal distributions for the changes of forecasts and actual values for the horizons of three and seven days in Table~\ref{tab:app-eda-marginals}, again.
+Thereby, the computed difference aligns with Section~\ref{subset:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the actual value is available when issuing the forecast.
 The fraction of positive differences varies between 0.39 and 0.63 for the horizon of three days and between 0.37 and 0.63 for the horizon of seven days.
 The variability of differences decreases for the larger horizon for most models; only for the ETS model does it increase.
 The 10\%-quantile of the differences is between zero and one for all models and horizons.
-Thus, we exclude only differences smaller than one from the trending assessment.
+Thus, we exclude differences smaller than one from the trending assessment.
 The resulting fraction of included values in the computation is also listed in Table~\ref{tab:app-eda-marginals} and is at least 79\% of the values.
-\todo{Schwer verstaendlich (Auch Abbildung~\ref{tab:app-eda-marginals})}
 
 \begin{table}
     \centering
@@ -218,7 +254,7 @@ The confidence interval width is at most 0.02 for the trending ratios and at mos
 The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the three and seven-day horizon, while Poisson-2 and NBI-2 have the highest negative trending ratio.
 
 Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
-The conditional trending plots show similar courses for the two horizons, while the curves are shifted downwards for the horizon of seven days.
+The conditional trending plots show similar courses for the two horizons, though the curves are shifted downwards for the horizon of seven days.
 The model's relative trending ability evolves consistently for the two horizons, with the NBI-2 and Poisson-2 models being indistinguishable.
 The GBM-2 model outperforms the qreg-1 model for all $x$.
 The models NBI-2 and Poisson-2 have the highest trending ability for all negative values of $x$ and the lowest trending ability for all positive values of $x$.
@@ -226,7 +262,6 @@ Benchmark-1 lies between the other models for all $x$.
 
 Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
 The \acfp{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
-Remember that low a \ac{bs} and a plot along the diagonal are signs for good trending.
 The \acp{bs} are smallest for NBI-2 and Poisson-2 for both horizons, while the \acp{bs} for the other models are larger and differ more.
 The qreg-1 model has both horizons' highest \ac{bs}.
 The reliability diagrams of GBM-2 and NBI-2 are also close and show a too-small fraction of increases for the predicted probability overall.
@@ -364,7 +399,7 @@ This aligns with the trending ratios, but the confidence intervals overlap.
 
 The four-quadrant plots contain a considerable number of extreme points.
 Whether these points are due to measurement errors or extreme values is not distinguishable.
-Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile \citep[see][]{Critchley2010}.
+Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile~\citep[see][]{Critchley2010}.
 We do not follow this approach here, as the extreme values are not necessarily measurement errors and could be particularly relevant.
 
 The differences between positive and negative predicted changes are small in this example.

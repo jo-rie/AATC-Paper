@@ -135,7 +135,7 @@ Further examples, including comparisons between methods regarding their trending
 
 
 
-\subsection{Probabilistic trending evaluation}
+\subsection{Probabilistic trending evaluation}\label{subsec:app-probabilistic-trending-evaluation}
 
 If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
 Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
@@ -175,5 +175,6 @@ If the nowcasts have the form of a multivariate distribution, including the depe
 As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
 For forecasts, the indexes have to be shifted.
 If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to generate samples for the Monte Carlo approximation.
+This approach is applied in Section~\ref{sec:application-covid}, as the true values are published with a delay of more than 80 days, and the nowcasts are given as quantiles.
 
 

@@ -6,12 +6,12 @@ The evaluation of trending can accompany other evaluation techniques, such as me
 Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:trending-four-quadrant-plot}).
 The trending ratio, the ratio of change directions predicted correctly over the total number of changes, numerically evaluates trending.
 Visually, it is the proportion of concordant points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
-The positive and negative trending ratio analyze the trending ratio given the predicted change is positive or negative, respectively.
-Thus, they quantify the credibility of the respective predictions. 
+The positive and negative trending ratios analyze the trending ratio given whether the predicted change is positive or negative, respectively.
+Thus, they quantify the credibility of the respective predictions.
 The applications of Section~\ref{sec:application_measurement} show that models, in general, indeed have different positive and negative trending abilities and that they add valuable information to the trending ratio.
 In the applications, the bootstrap confidence intervals of Section~\ref{subsec:trending-measures} are used to quantify the estimation uncertainty of the trending measures.
 The width of the confidence intervals is around 0.1 for around 100 samples, while it is around 0.01 for 8000 samples.
-For reasonably well-trending models, 100 samples are thus sufficient to differentiate from random guessing or assess models with high trending differences.
+For reasonably well-trending models, 100 samples are thus sufficient to differentiate from random guessing or to assess models with high trending differences.
 
 A conditional trending plot visualizes the probability of correct trending over the predicted change of the signal (see Section~\ref{subsec:trending-cond-prob}).
 It is based on a multivariate \acf{kde} of predicted and observed change.

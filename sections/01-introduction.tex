@@ -8,19 +8,19 @@ Forecasting methods predict the future based on historical data, patterns, and e
 In medicine, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008,Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
 The forecast is computed based on the current value of the quantity of interest and an estimate of the development until the target time.
 In the current practice, a forecasting method is usually evaluated in terms of its prediction accuracy, measuring the deviation of the prediction from the actual outcome of the target variable. 
-Popular measures are scale-dependent measures such as the \ac{rmse}, measures based on percentage errors such as the root mean squared percentage error, or probabilistic scoring rules \citep[see the review in][]{hyndman2006another}. 
+Popular measures are scale-dependent measures such as the \ac{rmse}, measures based on percentage errors such as the root mean squared percentage error, or probabilistic scoring rules~\citep[see the review in][]{hyndman2006another}.
 They are not capable of assessing the trending ability discussed above.
 In a prediction competition on armed conflicts, trending recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with a trending component for evaluation. 
 However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
 This paper focuses on pure trending evaluation that accompanies traditional scores.
 
 Methodologically evolved from forecasting; nowcasting methods focus on predictions for the present, the immediate future, and the recent past \citep{banbura2013now}.
-Nowcasting has its origins in meteorology, and the methods were initially developed to describe the current state of the weather in detail and to predict the expected change on a time scale of a few hours \citep{browning1989nowcasting,schmid2019nowcasting}. 
+Nowcasting has its origins in meteorology, and the methods were initially developed to describe the current state of the weather in detail and to predict the expected change on a time scale of a few hours~\citep{browning1989nowcasting,schmid2019nowcasting}.
 %In economics, nowcasting is used to predict statistics on the current economic situation, for example, the gross domestic product, which is collected with low frequency and is available with a considerable time delay \citep{banbura2013now}.
-In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors \citep{wu2021nowcasting} or correct the daily COVID case numbers for events that have occurred but have not yet been reported \citep{gunther2021nowcasting}. 
+In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{wu2021nowcasting} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{gunther2021nowcasting}.
 Nowcasting methods use high-frequency indicators related to the target variable and estimate the value of a target variable for a specific time based on current preliminary measurements, which are finalized with a considerable time delay. 
-Thus, the nowcasts can produce early and ongoing estimates for the target variable during the relevant period \citep{castle2017forecasting}. 
-Like forecasts, nowcasts are often evaluated and compared in the literature based on performance measures such as the \ac{rmse} \citep{gunther2021nowcasting} or probabilistic scoring rules \citep{Wolffram2023}. 
+Thus, the nowcasts can produce early and ongoing estimates for the target variable during the relevant period~\citep{castle2017forecasting}.
+Like forecasts, nowcasts are often evaluated and compared in the literature based on performance measures such as the \ac{rmse}~\citep{gunther2021nowcasting} or probabilistic scoring rules~\citep{Wolffram2023}.
 The aspect of trending ability is not considered in the literature to the best of our knowledge. 
 However, trending evaluation adds valuable information on the methods' capability of predicting the development of the target variable, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
 The epidemic's development, in turn, can be the foundation of decisions on introducing or canceling policy measures. 
@@ -28,7 +28,7 @@ The epidemic's development, in turn, can be the foundation of decisions on intro
 Measurement is more technical and aims to obtain accurate and reliable data about the current state of a system based on sensors. 
 A parameter or variable can be measured regularly over a certain period to evaluate the system's development.
 When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as various individuals or environments.
-Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods \citep{lawrence1989concordance,koo2016guideline} in addition to paired t-tests to determine systematic differences between two measurement series \citep{watson2010method}. 
+Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods~\citep{lawrence1989concordance,koo2016guideline} in addition to paired t-tests to determine systematic differences between two measurement series~\citep{watson2010method}.
 Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value \citep{bland1986statistical}. 
 Trending considerations, that is, the consistency of the test method's development with the gold standard, is a field of active research in the last years \citep{Saugel2015,saugel2018error,hiraishi2021concordance}. 
 
@@ -40,8 +40,10 @@ The methods are applied to three applications from the abovementioned fields: CO
 The ready-to-use code for trending evaluation from the applications is available on ... .
 The trending evaluation methods are intended to complement the current evaluation and reveal additional information on the methods considered.
 
-The remainder of this paper is structured as follows. 
-Section \ref{sec:trending} formalizes trending and investigates several extensions, such as noise-aware methods, confidence intervals, and probabilistic forecasts and nowcasts. 
-We introduce a new graphical method for evaluating trending, the conditional trending plot, which can simultaneously assess different intervals and asymmetries. 
-In Section \ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting, and nowcasting. 
+The remainder of this paper is structured as follows.
+Section~\ref{sec:trending} formalizes trending and investigates several extensions, such as noise-aware methods, confidence intervals, and probabilistic forecasts and nowcasts.
+We introduce a new graphical method for evaluating trending, the conditional trending plot, which can simultaneously assess different intervals and asymmetries.
+In Section~\ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting, and nowcasting.
+Hence, we provide blueprints for applying trending evaluation in practice and make remarks on interpreting the measures.
 We conclude the paper in Section~\ref{sec:conclusion}.
+

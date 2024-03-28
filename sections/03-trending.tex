@@ -42,7 +42,6 @@ $ \\
     \label{tab:notation}
 \end{table}
 
-
 The definition of the \textit{predicted} change depends on the context;
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
 For nowcasting, let $x_{t | \tau}$ denote the nowcast for time $t$ computed with the knowledge of time $\tau$. 
@@ -55,7 +54,8 @@ The predicted change is computed by
 (x_{t|t} - y_{t-l})^T_{t=l} & \text{otherwise}.
 \end{cases} \label{eq:diffxl_nowcasting}
 \end{equation}
-When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet. 
+When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet.
+If the true value $y_{t-l}$ is known at time $t$, the predicted change is computed by the difference between the nowcast and the true value, as $y_{t-l}$ is also known by the nowcaster and incorporated into the nowcast.
 Through the computation in Equation~\eqref{eq:diffxl_nowcasting}, the predicted change can be computed with the knowledge of the nowcaster at time $t$. 
 
 The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$. 
@@ -76,6 +76,15 @@ The computation
 yields the change by the test method. 
 It is computed purely by the test method without the gold standard $y_t$ to analyze whether the gold standard and test method changes are consistent.
 Accordingly, $y_{t-l}$ is not used in the computation even if known at time $t$ in contrast to forecasting and nowcasting. 
+
+In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
+We refer to time steps for which either signal or true values, or both, are unavailable as missing values.
+Systematical missing values could lead to a biased estimate of the trending ratio, and missing data should be inspected for any underlying patterns.
+If the missing values are not systematic, random, and occur scarcely, data pairs with missing values can be excluded from the data to calculate the measures~\parencite[see][Section 1.3]{VanBuuren2018}.
+Note that in the case of measurement data, one missing value in the time series leads to two undefined differences in the change series; that is if $x_t$ is missing, $\diffxt$ and $\diffxt[t+l]$ are undefined; if an observation $y_t$ is missing, $\diffyt$ and $\diffyt[t+l]$ are undefined.
+The data pair is excluded even if the corresponding nowcast or forecast is available.
+
+
 
 \subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-four-quadrant-plot}
 
@@ -175,12 +184,7 @@ While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sampl
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
     \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward.}
-\end{figure} 
-
-In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
-We refer to time steps for which either signal or true values, or both, are unavailable as missing values.
-Data pairs with missing values can be excluded from the set $\mathcal{T}$ to calculate the measures. 
-However, systematical missing values could lead to a biased estimate of the trending ratio, and missing data should be inspected for any underlying patterns.
+\end{figure}
 
 \subsection{Accounting for noise and non-informative small changes and bootstrapping confidence intervals}\label{subsec:trending-noise}
 
@@ -261,7 +265,7 @@ In this section, we extend the trending assessment to probabilistic predictions.
 Probabilistic predictions can take the form of a \ac{cdf}, \ac{pdf}, or quantiles.
 The \ac{cdf} is the most general and can be used to derive the others, given they exist.
 Let us first assume that the prediction is a \ac{cdf}, and that $y_{t-l}$ is known at time $t$ (see Table~\ref{tab:notation}).
-In the appendix, we extend the analysis for predictions given as quantiles or unknown true values.
+In Appendix~\ref{subsec:app-probabilistic-trending-evaluation}, we extend the analysis for predictions given as quantiles or unknown true values.
 
 Let for a forecast $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
 Thereby, $F_{t | t-l} (x)$ yields the probability that the quantity of interest is at most $x$.
