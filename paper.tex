@@ -161,11 +161,8 @@
 \title{Trending assessment for nowcasts, measurements, and forecasts}
 %\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author[1]{Oliver Grothe}
-\equalcont{These authors contributed equally to this work.}
 \author[1]{Bolin Liu}
-\equalcont{These authors contributed equally to this work.}
 \author*[1]{Jonas Rieger}
-\equalcont{These authors contributed equally to this work.}
 
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 
@@ -189,25 +186,824 @@ We apply the methods to three large medical data applications: COVID-19-nowcasti
 
 
 \section{Introduction}\label{sec:introduction}
-\input{sections/01-introduction}
+The evaluation of measurement, prediction, and forecasting methods becomes increasingly important and sophisticated as technologies and data availability enable their application in more and more fields.
+Conventionally, differences between predictions (or measurements) and target values, such as the \ac{rmse} or \ac{mae}, form the basis of method evaluation.
+These measures do not consider trending, that is, whether the right direction of change is predicted or measured.
+However, the information about an increase or decrease is crucial to detect changes in the underlying process early.
+In the following, we provide a more specific overview of the characteristics and current evaluation schemes of the three application fields, forecasting, nowcasting, and measurement, and highlight why trending evaluation is highly relevant in the respective fields.
 
-%\section{Application areas and Notation} \label{sec:notation}
-%\input{sections/02-notation}
+Forecasting methods predict the future based on historical data, patterns, and exogenous factors.
+In medicine, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008,Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
+The forecast is computed based on the current value of the quantity of interest and an estimate of the development until the target time.
+In the current practice, a forecasting method is usually evaluated in terms of its prediction accuracy, measuring the deviation of the prediction from the actual outcome of the target variable.
+Popular measures are scale-dependent measures such as the \ac{rmse}, measures based on percentage errors such as the root mean squared percentage error, or probabilistic scoring rules~\citep[see the review in][]{hyndman2006another}.
+They are not capable of assessing the trending ability discussed above.
+In a prediction competition on armed conflicts, trending recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with a trending component for evaluation.
+However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
+This paper focuses on pure trending evaluation that accompanies traditional scores.
+
+Methodologically evolved from forecasting; nowcasting methods focus on predictions for the present, the immediate future, and the recent past \citep{banbura2013now}.
+Nowcasting has its origins in meteorology, and the methods were initially developed to describe the current state of the weather in detail and to predict the expected change on a time scale of a few hours~\citep{browning1989nowcasting,schmid2019nowcasting}.
+%In economics, nowcasting is used to predict statistics on the current economic situation, for example, the gross domestic product, which is collected with low frequency and is available with a considerable time delay \citep{banbura2013now}.
+In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{wu2021nowcasting} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{gunther2021nowcasting}.
+Nowcasting methods use high-frequency indicators related to the target variable and estimate the value of a target variable for a specific time based on current preliminary measurements, which are finalized with a considerable time delay.
+Thus, the nowcasts can produce early and ongoing estimates for the target variable during the relevant period~\citep{castle2017forecasting}.
+Like forecasts, nowcasts are often evaluated and compared in the literature based on performance measures such as the \ac{rmse}~\citep{gunther2021nowcasting} or probabilistic scoring rules~\citep{Wolffram2023}.
+The aspect of trending ability is not considered in the literature to the best of our knowledge.
+However, trending evaluation adds valuable information on the methods' capability of predicting the development of the target variable, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
+The epidemic's development, in turn, can be the foundation of decisions on introducing or canceling policy measures.
+
+Measurement is more technical and aims to obtain accurate and reliable data about the current state of a system based on sensors.
+A parameter or variable can be measured regularly over a certain period to evaluate the system's development.
+When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as various individuals or environments.
+Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods~\citep{lawrence1989concordance,koo2016guideline} in addition to paired t-tests to determine systematic differences between two measurement series~\citep{watson2010method}.
+Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value \citep{bland1986statistical}.
+Trending considerations, that is, the consistency of the test method's development with the gold standard, is a field of active research in the last years \citep{Saugel2015,saugel2018error,hiraishi2021concordance}.
+
+The main contributions of this paper are manifold.
+We formalize trending and present different variants of trending measures that consider either noiseless data or data with noise and small non-informative changes.
+We introduce the conditional trending plot, a new graphical method for assessing local trending behavior, and review bootstrap methods for calculating confidence intervals.
+We extend the concept of trending to probabilistic predictions.
+The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement.
+The ready-to-use code for trending evaluation from the applications is available on ... .
+The trending evaluation methods are intended to complement the current evaluation and reveal additional information on the methods considered.
+
+The remainder of this paper is structured as follows.
+Section~\ref{sec:trending} formalizes trending and investigates several extensions, such as noise-aware methods, confidence intervals, and probabilistic forecasts and nowcasts.
+We introduce a new graphical method for evaluating trending, the conditional trending plot, which can simultaneously assess different intervals and asymmetries.
+In Section~\ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting, and nowcasting.
+Hence, we provide blueprints for applying trending evaluation in practice and make remarks on interpreting the measures.
+We conclude the paper in Section~\ref{sec:conclusion}.
 
 
 \section{Trending assessment}\label{sec:trending}
-\input{sections/03-trending}
 
-%\section{Simulation Studies (?)}
-%
-%Eher nicht, weil angewandtes Paper
+As discussed in Section~\ref{sec:introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by a measurement, a nowcast, or a forecast.
+In this section, we want to specify trending and define different methods of measuring and visualizing trending.
+In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the task.
+Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is irrelevant.
+Before introducing measures to evaluate trending, we remark on calculating the predicted change and notation in Section~\ref{subsec:notation}.
+Section~\ref{subsec:trending-four-quadrant-plot} introduces trending basics and visualizes trending in a synthetic example.
+In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
+The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise}, and bootstrap methods for computing confidence intervals for the measures in the previous sections are briefly introduced.
+Section~\ref{subsec:trending-cond-prob} introduces a new graphical method for local trending assessment.
+Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:trending-probabilistic}.
+
+\subsection{Computing changes and notation}\label{subsec:notation}
+
+As noted above, trending refers to observed and predicted changes over a time horizon $l$.
+The \textit{observed} change is straightforward to compute for all types of signals.
+Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values for nowcasting or forecasting, or gold standard measurements up to time $T$.
+The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
+\begin{equation}\label{eq:diffy}
+    \diffylt = (y_{t} - y_{t-l}) \quad \text{for}\ t = l, \dots, T.
+\end{equation}
+
+\begin{table}
+    \centering
+    \scriptsize
+    \begin{tabular}{l l}
+        \toprule
+        Application & Predicted change computation \\
+        \midrule
+        Measurement & $(x_{t} - x_{t-l})_{t=l}^T $\\
+        Nowcasting & $
+\diffxl =
+\begin{cases}
+(x_{t|t} - x_{t-l|t})^T_{t=l}, & \text{if } y_{t-l} \text{ is not known at time } t, \\
+(x_{t|t} - y_{t-l})^T_{t=l}, & \text{otherwise}.
+\end{cases}
+$ \\
+        Forecasting & $ \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l}$\\
+        \bottomrule
+    \end{tabular}
+    \caption{Computation of the predicted change in the different applications. For nowcasting and forecasting, signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. For measurement, $x_t$ denotes the test device measurement at time $t$.}
+    \label{tab:notation}
+\end{table}
+
+The definition of the \textit{predicted} change depends on the context;
+Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
+For nowcasting, let $x_{t | \tau}$ denote the nowcast for time $t$ computed with the knowledge of time $\tau$.
+We call $t$ the \textit{forecast time} and $\tau$ the \textit{issue time}.
+The predicted change is computed by
+\begin{equation}
+  \diffxl =
+\begin{cases}
+(x_{t|t} - x_{t-l|t})^T_{t=l} & \text{if } y_{t-l} \text{ is not known at time } t, \\
+(x_{t|t} - y_{t-l})^T_{t=l} & \text{otherwise}.
+\end{cases} \label{eq:diffxl_nowcasting}
+\end{equation}
+When computing the predicted change of a nowcast for a time $t$, we use the best knowledge available at that time $t$, and the true value might not be known yet.
+If the true value $y_{t-l}$ is known at time $t$, the predicted change is computed by the difference between the nowcast and the true value, as $y_{t-l}$ is also known by the nowcaster and incorporated into the nowcast.
+Through the computation in Equation~\eqref{eq:diffxl_nowcasting}, the predicted change can be computed with the knowledge of the nowcaster at time $t$.
+
+The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$.
+The predicted change is computed by
+\begin{equation} \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l}\label{eq:diffxl_forecasting}
+\end{equation}
+with the same structure as in the nowcasting case.
+The indices are chosen to be consistent with $\diffyl$.
+If the true value $y_{t-l}$ is not known at time $t-l$, a similar modification as in Equation~\eqref{eq:diffxl_nowcasting} can be made.
+
+
+The distinction between forecast and issue time is unnecessary in measurement analysis, as the measurement is typically available with a very short time lag.
+Thus, $x_t$ denotes the test method measurement for time $t$.
+The computation
+\begin{equation}
+  (x_{t} - x_{t-l})_{t=l}^T \label{eq:diffxl_measure}
+\end{equation}
+yields the change by the test method.
+It is computed purely by the test method without the gold standard $y_t$ to analyze whether the gold standard and test method changes are consistent.
+Accordingly, $y_{t-l}$ is not used in the computation even if known at time $t$ in contrast to forecasting and nowcasting.
+
+In applications, signal data are often not available for all time steps, for example, due to technical problems or delays in data transfer (see the examples in Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
+We refer to time steps for which either signal or true values, or both, are unavailable as missing values.
+Systematical missing values could lead to a biased estimate of the trending ratio, and missing data should be inspected for any underlying patterns.
+If the missing values are not systematic, random, and occur scarcely, data pairs with missing values can be excluded from the data to calculate the measures~\parencite[see][Section 1.3]{VanBuuren2018}.
+Note that in the case of measurement data, one missing value in the time series leads to two undefined differences in the change series; that is if $x_t$ is missing, $\diffxt$ and $\diffxt[t+l]$ are undefined; if an observation $y_t$ is missing, $\diffyt$ and $\diffyt[t+l]$ are undefined.
+The data pair is excluded even if the corresponding nowcast or forecast is available.
+
+
+
+\subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-four-quadrant-plot}
+
+Formally, the trending assessment is the same for all three application areas, given the notation for the respective application of Section~\ref{subsec:notation}.
+In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
+As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
+Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
+A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{perrino1998intraoperative,Saugel2015}.
+In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
+Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
+Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
+
+Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
+Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
+Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant graph for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
+Data generation is described in Appendix~\ref{subsec:app-trending-data-generation}.
+The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
+
+The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
+It can be extended by including information on the time index in the point color to reveal effects over time.
+In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, more recent values; $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
+However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
+
+There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
+However, they lack the four-quadrant plot's clarity and intuition without adding more information on trending~\citep{Saugel2015}.
+
+\begin{figure}
+\centering
+\begin{subfigure}[t]{.24\textwidth}
+\includegraphics{plots/illustrative_examples/4Q_without_excl}
+\caption{Basic four-quadrant plot.} \label{fig:trending_basic_4q}
+\end{subfigure}\hspace{0.01\textwidth}%
+\begin{subfigure}[t]{.24\textwidth}
+\includegraphics{plots/illustrative_examples/4q_excl_box}
+\caption{Four-quadrant plot with rectangular exclusion area.}\label{fig:trending_basic_4q_excl_box}
+\end{subfigure}\hspace{0.01\textwidth}%
+\begin{subfigure}[t]{.24\textwidth}
+\includegraphics{plots/illustrative_examples/4q_excl_axis}
+\caption{Four-quadrant plot with horizontal exclusion area.} \label{fig:trending_basic_4q_excl_axis}
+\end{subfigure}\hspace{0.01\textwidth}%
+\begin{subfigure}[t]{.24\textwidth}
+\includegraphics{plots/illustrative_examples/4q_excl_cross}
+\caption{Four-quadrant plot with cross-shaped exclusion area.}\label{fig:trending_basic_4q_excl_cross}
+\end{subfigure}%
+\caption{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas. }
+\label{fig:trending_4q}
+\end{figure}
+
+\subsection{Trending ratio and other measures}\label{subsec:trending-measures}
+
+Analyzing the number of points in the green versus red quadrants is a standard approach in the trending assessment of measurement data \citep{Critchley2010,Saugel2015}.
+With that, we mainly estimate the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes.
+Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$), the standard estimator for $P(\diffxrv \diffyrv > 0)$ is
+\begin{equation}
+    \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
+\end{equation}
+Here, the numerator counts the number of same-sign-changes, while the denominator is the number of considered pairs $(\diffyt, \diffxt)$.
+Thus, $\acc$ is the proportion of concordant changes on all changes.
+We refer to this estimator as the \textit{trending ratio} of the prediction and set $\mathcal{T} = \{l, \dots, T\}$.
+Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
+Similar evaluations are used in other scientific areas, for example, with contingency tables in dichotomous forecasting or with confusion matrix in classification analysis~\citetext{see, e.g., the introductions in \citealt{James2021}, Ch. 4, and \citealp{Jolliffe2012}, Ch. 3}.
+Many other measures can be adapted from those fields to deepen the trending analysis.
+Two simple measures that focus on either a positive or negative predicted change are the positive and negative trending ratios $\accp$ and $\accm$, respectively.
+They are defined as
+\begin{align}
+    \accp (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0}},\ \text{and} \label{eq:accp}\\
+    \accm (\diffx, \diffy) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0}}.\label{eq:accm}
+\end{align}
+They estimate the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
+
+Rolling estimates of the above measures detect changes in performance over time and can give a sharper estimate of the current trending ability.
+For the trending ratio, a rolling estimate with a backward-looking window of length $w$ at time $t$ is given by
+\begin{equation*}
+    \acc_{t; w} (\diffx, \diffy) \coloneqq \frac{\sum_{t^\star = t-w + 1}^{t} \ind{\diffxt[t^\star] \diffyt[t^\star] > 0}}{w}.\label{eq:acc_rolling}
+\end{equation*}
+Backward-looking windows estimate the trending ratio at a time $t$ considering the $w$ time steps before time $t$.
+The window length $w$ controls the smoothing of the estimate; a larger $w$ gives smoother results, while a small $w$ focuses on local variations.
+Plotting the rolling estimates for $t = w-1, \dots, T$ yields an estimate of the trending ability over time.
+Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
+Thus, the yearly course of the prediction trending ratio can be detected.
+The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
+While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sample_color}, illustrate ongoing overall drifts in the trending ability, seasonal aspects are only revealed in rolling window estimates.
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.24\textwidth}
+\includegraphics{plots/illustrative_examples/4Q_sample_without_time}
+\caption{Four-quadrant plot with simulated data.}\label{fig:trending_basic_4q_sample}
+\end{subfigure}\hspace{0.01\textwidth}
+\begin{subfigure}[t]{.24\textwidth}
+\includegraphics{plots/illustrative_examples/4Q_sample_with_time}
+\caption{The same data is colored according to the time index $t$, the greener, the later.}\label{fig:trending_basic_4q_sample_color}
+\end{subfigure}\hspace{0.01\textwidth}
+\begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
+    \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
+    \end{subfigure}%
+    \caption{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward.}
+\end{figure}
+
+\subsection{Accounting for noise and non-informative small changes and bootstrapping confidence intervals}\label{subsec:trending-noise}
+
+The above measures can be extended to account for information on the point's location within the quadrant.
+For example, points close to the zero point may have less explanatory power or may be less reliable than points far away from zero on one of the diagonals.
+Suppose noise or non-systematic effects are present in the true values or predictions.
+In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
+This is more likely for points with at least one small coordinate.
+
+Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} accounting for such effects\citep[see, e.g.,][]{Saugel2015,Critchley2010}.
+Points within that area are omitted in the four-quadrant plot and the calculation of the measures.
+In particular, the prediction models are likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
+We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
+\begin{align}
+    \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}},\label{eq:acceps}\\
+    \accpeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt > 0, (\diffyt, \diffxt) \notin E}}, \ \text{and} \label{eq:accpeps}\\
+    \accmeps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{\diffxt < 0, (\diffyt, \diffxt) \notin E}}. \label{eq:accmeps}
+\end{align}
+The additional argument $(\diffyt, \diffxt) \notin E$ in the indicator ensures that only points not lying in the exclusion are evaluated when computing the measures.
+The measures are then estimators for the probability of trending, given that the point's location is not driven by noise or non-informative changes.
+
+The estimators accept various shapes of the exclusion area.
+Figure~\ref{fig:trending_4q} visualizes examples of exclusion area shapes.
+A rectangular exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ ($\varepsilon_x, \varepsilon_y > 0$), leaves out points that are small in both components and, therefore, likely to be driven by noise.
+Points are included if the true value or signal is unlikely to be noise-driven.
+In the example graph in Figure~\ref{fig:trending_basic_4q_excl_box}, only point 1 is excluded.
+An exclusion area along one axis, for example, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
+This particularly suits signals where small amounts of noise are inevitable.
+A cross-shaped exclusion area, $E = \{(x, y) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for the sign reversal in both components.
+A point is only included if no component is likely to be driven by noise.
+For the latter two methods, points 1 and 7 in Figure~\ref{fig:trending_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:trending_basic_4q_excl_cross}, respectively.
+
+In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
+The size determination can also be based on a proportion of the total variance or the total range of the data; for example, the 10\% smallest absolute values in each component determine the exclusion area size.
+A third approach is to visualize the trending ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
+For examples of such plots, see Section~\ref{sec:application-covid}.
+
+Confidence intervals can account for the estimation uncertainty of the measures above.
+Bootstrap confidence intervals are based on resampling and not on parametric assumptions as classical confidence intervals are~\parencite[for introductions see][]{Hesterberg2011,Bittmann2021}.
+Many new samples are drawn with replacement from the dataset, and the statistic of interest is computed for each sample, yielding an estimate for the distribution of the statistic of interest.
+Based on the derived \enquote{new} samples of the statistic, the confidence intervals can be derived through differently sophisticated bootstrapping methods.
+We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
+
+
+\subsection{The conditional trending plot}\label{subsec:trending-cond-prob}
+
+The estimators described above give information on the probabilities $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin E)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin E)$.
+A still finer analysis might be gained by considering the conditional distribution $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ to assess the trending ability of a prediction for a certain change size $\diffxrv = \xcond$ of the signal.
+Thereby, $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ denotes the probability of a correct trending given a predicted change of $\xcond$.
+Thus, if a change of $\xcond$ is observed in practice, one can directly assess the credibility of this specific signal.
+A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
+\begin{align*}
+P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond) = \begin{cases}
+                                              \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(\xcond, y)}{f_{\diffxrv}(\xcond)} \ \textrm{d} \: y & \text{if } \xcond < 0, \\
+                                              \int_{0}^{\infty} \frac{f_{\diffxrv, \diffyrv}(\xcond, y)}{f_{\diffxrv}(\xcond)} \ \textrm{d} \: y & \text{if } \xcond > 0, \\
+\end{cases}
+\end{align*}
+for $\xcond \neq 0$ through a \ac{kde}.
+A comprehensive introduction to multivariate \ac{kde} can be found in \textcite{Gramacki2018}, and implementations are available in many programming languages, for example, in the \verb|statsmodels| in Python~\parencite{Seabold2010}.
+The \ac{kde} yields estimates for $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ for all values of $\xcond \in \R$.
+Multivariate \ac{kde} takes a kernel and bandwidth selector as modeling parameters.
+We advise using a Gaussian kernel and the cross-validation maximum likelihood as bandwidth selector (see Appendix~\ref{subsec:appendix-kde}).
+
+Assessing $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ graphically by drawing $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ against $\xcond$ eases the simultaneous evaluation of various $\xcond$.
+Furthermore, the graph facilitates the comparison of various methods in a single graph, and asymmetries of $P(\diffxrv \diffyrv > 0 | \diffx = \xcond)$ with respect to $x$ in the trending ability can be detected.
+We refer to the plot as a \textit{conditional trending plot}.
+
+
+
+\subsection{Probabilistic Evaluation}\label{subsec:trending-probabilistic}
+
+In nowcasting and forecasting, probabilistic predictions have become more prevalent in recent years (see, for example, Sections~\ref{sec:application-covid} and~\ref{sec:application-eda} or the review in~\cite{Gneiting2014}).
+In this section, we develop trending measures for probabilistic signals.
+Probabilistic predictions issue a probability distribution for the quantity of interest based on their available information and, thus, include a point estimate and information on the prediction uncertainty and quantiles simultaneously.
+For trending analysis, probabilistic predictions thus also contain a probability of a positive or negative change.
+In this section, we extend the trending assessment to probabilistic predictions.
+
+Probabilistic predictions can take the form of a \ac{cdf}, \ac{pdf}, or quantiles.
+The \ac{cdf} is the most general and can be used to derive the others, given they exist.
+Let us first assume that the prediction is a \ac{cdf}, and that $y_{t-l}$ is known at time $t$ (see Table~\ref{tab:notation}).
+In Appendix~\ref{subsec:app-probabilistic-trending-evaluation}, we extend the analysis for predictions given as quantiles or unknown true values.
+
+Let for a forecast $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
+Thereby, $F_{t | t-l} (x)$ yields the probability that the quantity of interest is at most $x$.
+For trending assessment, we compare the predicted probability of positive change, denoted by $p_t$, with the occurrence of positive changes.
+A positive change occurs for any value at $t$ larger than the true value $y_{t-l}$, as then the change compared to $y_{t-l}$ is positive.
+The \ac{cdf} $F_{t | t-l} (y_{t-l})$ yields the predicted probability of any value at most $y_{t-l}$, a negative change.
+Thus, $1 - F_{t | t-l} (y_{t-l})$ is the probability of a positive change.
+As for the differences in Section~\ref{subsec:notation}, the computation differs slightly for nowcasts and forecasts.
+For nowcasts, the probability is calculated by
+\begin{equation*}
+    p_t = 1 - F_{t | t-l} (y_{t-l})\quad t = l, \dots, T;
+\end{equation*}
+while for nowcasts it is given by
+\begin{equation*}
+    p_t = 1 - F_{t | t} (y_{t-l})\quad t = l, \dots, T,
+\end{equation*}
+with analogous derivations as above.
+Let $z_t$ denote the indicator that the observed change at time $t$ is positive, that is,
+\begin{equation*}
+    z_t = \ind{\diffyt > 0} \quad t = l, \dots, T.
+\end{equation*}
+The probabilistic trending evaluation is then based on the probabilities $\mathbf{p} = (p_t)_{t=l}^{T}$ and the observed changes $\mathbf{z} = (z_t)_{t=l}^{T}$.
+The predictive power of $\mathbf{p}$ for $\mathbf{z}$ can be assessed using probabilistic dichotomous forecast evaluation methods.
+Dichotomous forecasts predict a binary outcome, such as a positive or negative change.
+Numerical measures for forecast quality are scoring rules.
+
+The \ac{bs} is a widely used scoring rule for dichotomous probabilistic forecasts~\citep{Brier1950}.
+In our context, it is
+\begin{equation*}
+    BS (\mathbf{p}, \mathbf{z}) = \frac{1}{T-l+1} \sum_{t=l}^{T} (p_t - z_t)^2.
+\end{equation*}
+Thereby, lower values indicate a higher probabilistic trending ability of the considered method.
+The \ac{bs} assesses the calibration and sharpness of the forecast and the observation simultaneously~\citep{Ranjan2010,Mitchell2011}.
+Calibration refers to the statistical consistency of forecasts and observations; that is, the event occurs with the issued probability.
+Sharpness refers to the spread of the forecast; higher probabilities are preferable as they convey a higher certainty.
+
+Graphical methods are a standard tool for evaluating the calibration of probabilistic forecasts in detail.
+In dichotomous forecasting, the reliability diagram is frequently used~\citep{Ranjan2010}.
+The reliability diagram plots the observed frequency of the positive outcome against the (binned) predicted probability.
+For example, it shows the proportion of observed increases, given the predicted probability of increase was approximately $0.7$.
+Ideally, the predicted probability equals the observed frequency, and the reliability diagram is a 45-degree line.
+Local deviations from the 45-degree line indicate a miscalibration of the forecast for specific probabilities.
+Thus, the reliability visualizes the local and overall calibration simultaneously.
+For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
+
 
 \section{Application to measurement, nowcasting, and forecasting data} \label{sec:application}
-\input{sections/04-application}
+In this section, we evaluate the trending in three different applications.
+In the first application in Section~\ref{sec:application-covid}, we consider the nowcasting of the seven-day hospitalization rate for COVID-19 in Germany.
+Section~\ref{sec:application-eda} applies the trending assessment to forecast methods for the number of arrivals in a large emergency department.
+In the last application in Section~\ref{sec:application_measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
+
+The examples illustrate the use of the methods of Section~\ref{sec:trending} and yield further insights into the measures and plots.
+All code used to generate the analysis is available online.
+
+
+\subsection{Covid nowcasting} \label{sec:application-covid}
+
+Amid the COVID-19 pandemic, the importance of accurate and prompt nowcasts of the pandemic's progression has become evident.
+Various indicators measured the pandemic's spread and severity.
+In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 measures in November 2021, and the imposition of severe public restrictions was based on it~\citep{RobertKochInstitute2021}.
+The Robert Koch Institute (RKI) provided preliminary daily reports on the seven-day hospitalization rate.
+However, these reports were subject to severe delays and revisions in two sources.
+The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\citep{RobertKochInstitute2024}.
+The second, more systematic source is the structure of the seven-day hospitalization rate.
+To a given date, all the cases are allocated whose first positive test result was on that date and who were hospitalized in relation to the disease in the following.
+The seven-day hospitalization rate is the average number of those cases per $100,000$ inhabitants on the given date and six days before.
+Thus, the final seven-day hospitalization rate can only be reported with a significant delay of more than 70 days, as the hospitalization of infected inhabitants can occur much later than the first positive test.
+Nevertheless, as the seven-day hospitalization rate was considered a major indicator of the pandemic's development, many organizations and institutions started to issue nowcasts, including research teams and newspapers.
+To collect nowcasts of the seven-day hospitalization rate by different nowcast groups, the COVID19-Nowcasting-Hub was established~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
+The nowcasts contain the seven-day hospitalization rate's predictive mean, median, and other quantiles.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+    \includegraphics{plots/covid_nowcast/00_true_data.pdf}
+    \caption{Realisations.}
+    \label{fig:app-covid-true}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+    \includegraphics{plots/covid_nowcast/00_nowcast_data.pdf}
+    \caption{Same-day nowcasts.}
+    \label{fig:app-covid-nowcast}
+        \end{subfigure}
+    \caption{True and nowcast data of the seven-day-hospitalization in Germany from November 22, 2021, to April 29, 2022 \citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
+    The outliers in the RKI model of values above $10^8$ are removed before the following analysis.}
+    \label{fig:app-covid-true-nowcast}
+\end{figure}
+
+The data contains eight nowcasts from scientific and public institutions, nowcast communities, and a newspaper, using different input variables, calendar data, and length of training data.
+The model structures are diverse, including Bayesian models, generalized additive models, and parametric bootstrapping.
+Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the respective names in the COVID19-Nowcasting-Hub.
+For information on the model design, we refer to~\citet{Wolffram2023}.
+In addition to those nowcasts, two ensemble methods are constructed using the ensembles' mean or median.
+We denote them by ENS-MEAN and ENS-MED.
+\citet{Wolffram2023} describes the design of the nowcast tasks and the data submission guidelines for the teams stated in a preregistered study.
+In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
+We use the data from February 8, 2024, for the true values.
+The nowcasts are resolved with regard to all inhabitants and specific geographical and age breakdowns.
+We do not expand on the models' performance on specific regions or age groups in Germany and the probabilistic nowcast assessment.
+Figure~\ref{fig:app-covid-true-nowcast} displays the true and nowcast data for the evaluation period.
+The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\citep{Tolksdorf2022}.
+
+Table~\ref{tab:app-covid-rmse} summarizes the point evaluation measures for the issued mean of the different models.
+The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}.
+The best-performing models in terms of RMSE and MAE are the ILM and RKI models.
+The ensemble methods perform worse than the best models regarding the mean location.
+The performance of the models is diverse, with more than twice as high RMSE values for the worst models compared to the best models.
+Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period.
+
+In addition to close inspection of the point evaluation measures, assessing the trending of the nowcasts is crucial.
+To assess the impact of taken measures and the direction of the curve, it is essential to distinguish between rising and falling hospitalization rates.
+If hospitalization rates rise, measures should be tightened, while falling rates might allow for loosening measures.
+Asymmetries are especially relevant for assessing whether some models are better at recognizing a fall than a rise or vice versa.
+
+\begin{table}[]
+    \centering
+    \input{plots/covid_nowcast/01_model_scores}
+    \caption{Point evaluation measures for the issued mean of the different models. The evaluation period comprises 159 days. }
+    \label{tab:app-covid-rmse}
+\end{table}
+
+\subsubsection*{Results}
+
+In the following, we apply the trending assessment of Section~\ref{sec:trending} to the nowcasts of the seven-day hospitalization rate.
+We report the trending for the horizons 1, 7, and 14 days.
+While horizon one assesses the short-term trending, horizons seven and 14 consider the medium-term trending.
+The horizons seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
+
+Before stating the results, we provide background information on the marginal distributions of the actual values and nowcasts for the different horizons.
+Table~\ref{tab:app-covid-marginals} in Appendix~\ref{sec:appendix-application-covid} presents marginal statistics such as standard deviation and quantiles of the nowcasts and true values.
+Overall, the variability and general level of differences grow with the horizon.
+The standard deviation increases from roughly 300 for horizon one to 1,200 for horizon seven and 2,000 for horizon 14 days.
+Similarly, the 10\%-quantile of differences increases.
+The 10\%-quantile is used for the exclusion areas in the trending assessment.
+The exclusion area is rectangular; a point falls within it if both $\diffy$ and $\diffx$ are below the respective 10\%-quantile of the absolute differences.
+Thus, points are still included in the trending assessment if they are large in one dimension but not in the other, thus ensuring that substantial changes in, for example, $\diffy$ are to be recognized by the nowcast and vice versa.
+
+\begin{table}
+    \centering
+    \tiny
+    \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
+    \caption{The trending ratio $\accl[7]$, positive trending ratio $\accpl[7]$, and negative trending ratio $\accml[7]$ for the models without and with exclusion areas for the horizon seven days. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. The subscript $q_{0.1}$ denotes the measures with exclusion area. }
+    \label{tab:app-covid-trending-ratios-lag-7}
+\end{table}
+
+Table~\ref{tab:app-covid-trending-ratios-lag-7} lists the trending ratios for all models with and without exclusion areas for the horizon of seven days.
+The trending ratios without exclusion area range from 0.72 to 0.85 for the horizon of seven days.
+The negative trending ratios are higher than the positive trending ratios for all models.
+The confidence intervals for the positive and negative trending ratios do not overlap for all models, indicating that the trending ratios are indeed different.
+The 10\%-quantile exclusion areas have, at most, an influence of 0.03 on the ratios.
+The model with the highest trending ratio is the ILM model, and the model with the lowest is the RKI model.
+The confidence intervals between all models overlap.
+The positive trending ratio implies a similar ranking of the models, while the negative ratio is second best for the RKI model.
+For the horizons of one and 14 days, we refer to Table~\ref{tab:app-covid-trending-ratios-lag-1-14} in Appendix~\ref{sec:appendix-application-covid}.
+
+\begin{figure}
+    \centering
+%    \includegraphics{}
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_cond_prob_lag_7}
+    \caption{Conditional trending plot.}\label{fig:app-covid-cond-prob-7}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_acc_eps_lag_7}
+    \caption{Trending ratio over exclusion area size in $\diffx$.}\label{fig:app-covid-trending-ratio-7}
+    \end{subfigure}
+    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days.}
+    \label{fig:app-covid-cond-prob-trending-ratio-7}
+\end{figure}
+
+Figure~\ref{fig:app-covid-cond-prob-trending-ratio-7} shows the conditional trending plots and the trending ratio over the exclusion area for the horizon seven days; the respective plots for the horizons one day and 14 days are shown in Figure~\ref{fig:app-covid-cond-prob-trending-ratio-1-14}.
+Here, only the best models in point evaluation measures, ILM, RKI, RIVM, and ENS-MED, are shown to keep the plots easily readable.
+If RKI or ILM issues a fall in the hospitalization rate, the probability of a fall is higher than if RIVM or ENS-MED issues a fall.
+The opposite is the case for a nowcasted hospitalization rate increase, and the difference between the models' performance is higher.
+Similar observations can be made for the horizon of 14 days in Figure~\ref{fig:app-covid-cond-prob-14}.
+For a horizon of one day, the models' conditional trending ability difference is less pronounced (see Figure~\ref{fig:app-covid-cond-prob-1}).
+The RKI model is still less conclusive when issuing an increase in the hospitalization rate, while RIVM is most informative in that case.
+The curves cross for an issued fall, with ENS-MED being on top for issued falls above 250.
+
+The trending ratios for various exclusion areas are shown in Figure~\ref{fig:app-covid-trending-ratio-7}.
+In general, the trending ratio increases with larger exclusion areas.
+While the RIVM and ENS-MED trending ratios evolve similarly, the RKI and ILM trending ratios get closer.
+For the horizon of one day, the RKI trending ratio decreases with increasing exclusion area size while the other models rise (see Figure~\ref{fig:app-covid-trending-ratio-1}).
+For the horizon of 14 days, all trending ratio curves increase with the exclusion area size (see Figure~\ref{fig:app-covid-trending-ratio-14}).
+
+Figure~\ref{fig:app-covid-prob} shows the \acf{bs} and reliability diagrams for the same subset of models, the ILM, RKI, RIVM, and ENS-MED.
+The probabilities of increase for the different models are computed using the nowcast quantiles.
+For each horizon $l$, $10,000$ samples of the forecast date $t$ and the forecast date $t-l$ based on the nowcasts of issue date $t$ are generated, and the proportion of positive changes is computed (see Appendix~\ref{subsec:app-probabilistic-trending-evaluation}).
+Remember that low a \ac{bs} and a plot along the diagonal are signs of good trending.
+The \ac{bs} is the lowest for the RIVM model, while the ENS-MED model has the best \ac{bs} for the horizon of seven and 14 days.
+The RKI model yields the highest \ac{bs} for all horizons.
+Note that the \ac{bs} is bounded by 0.25 for random guessing; thus, all models perform better than random guessing.
+The reliability diagrams show that the models are not well calibrated for the horizon of one day.
+While for predicted probabilities below 0.5, the observed ratio of increases is smaller, it is higher than predicted for probabilities above 0.5.
+Figure~\ref{fig:app-covid-prob-hist} shows the observed predicted increase probabilities for all horizons.
+For the horizons of seven and 14 days, the nowcasters issue only a few moderate probabilities.
+
+\begin{figure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \tiny
+        \input{plots/covid_nowcast/70_brier_scores}
+    \caption{BS for the different models and horizons.}\label{fig:app-covid-prob-brier}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \begin{subfigure}[t]{0.48\textwidth}
+    \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_1}
+    \caption{Reliability diagram for horizon one day.}\label{fig:app-covid-prob-rel-1}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \caption[Brier Scores and reliability diagrams for ILM, RKI, RIVM, and ENS-MED.]{\aclp{bs} and reliability diagrams for ILM, RKI, RIVM, and ENS-MED.
+    The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
+    In the computation of BS and reliability diagram, missing values are excluded.
+    The reliability diagram for the horizon seven and 14 days is in the appendix (see Figure~\ref{fig:app-covid-rel}).}
+    \label{fig:app-covid-prob}
+\end{figure}
+
+
+
+
+
+\subsubsection*{Discussion}
+
+For all horizons, the influence of the exclusion area on the 10\%-quantile level is negligible.
+For example, the trending ratio changes at most by 0.03 for the EPI model with $\accml[14]$.
+The exclusion areas are thus not crucial for the trending assessment in the case of the nowcasts of the seven-day hospitalization rate.
+The lower bound of confidence intervals is at least 0.68 for all models, indicating that they perform better than random guessing the trend.
+
+Trending assessment evaluates the models differently from point evaluation measures.
+RKI is among the best in point evaluation measures but performs worse in trending assessment.
+The assessment of asymmetry in the conditional trending plots is crucial for interpreting the trending ratios, with the RKI model being the most prominent example.
+
+Figure~\ref{fig:app-covid-trending-ratio-7} shows that the trending ratio increases with larger exclusion areas.
+This indicates that if the model predicts a large change, the direction is more accurate than when a small change is predicted.
+
+The probabilistic trending assessment shows that the models are better than random guessing.
+In general, the reliability diagram cannot provide information if specific probabilities are issued scarcely.
+Thus, the reliability diagrams for the horizons of 7 and 14 days do not contain information on moderate probabilities.
+The \ac{bs} values, however, work well for those examples and provide a good measure for the trending ability of the models.
+
+A more extensive data size would be beneficial for assessing the models' performance.
+For the evaluation period of 159 days, the trending ratio confidence intervals overlap; thus, no conclusions can be drawn from the trending evaluation comparing the models.
+
+\subsection{Forecasting emergency department arrivals}\label{sec:application-eda}
+
+In a second example, we consider forecasting the number of arrivals in a large emergency department per hour.
+Good forecasts are crucial for planning staff and resources.
+In a study by \citet{Rostami-Tabar2023}, several models predict hourly outcomes.
+Every 12 hours, the models issue hourly forecasts for the next 48 hours.
+Thus, management can take measures according to the expected number of arrivals, for example, by redeploying staff and reconfiguring units.
+
+\citet{Rostami-Tabar2023} publish means and probabilistic quantile forecasts, which are evaluated through RMSE, pinball loss, pinball skill scores, and PIT-histograms.
+The models are trained on data from April 1, 2014, to February 28, 2018, and evaluated on data from March 1, 2018, to February 28, 2019.
+For further notes on the models and the evaluation, we refer to \citet{Rostami-Tabar2023}.
+From the issued forecasts, we use the mean as a point forecast for the trending assessment and evaluate the probabilistic trending subsequently.
+We use the forecasts issued at the first time point for every target time.
+Thus, the forecasts are issued 36 to 48 hours ahead of the target time, and the emergency department management has time to adjust the measures according to the expected number of arrivals.
+Considering only the forecasts of at least 36 hours ahead, we restrict the evaluation period to March 2, 2018, at noon, to February 28, 2019, at 23:00, comprising 8,724 hours.
+
+In this setup, trending assessment is a simple and intuitive way to assess the models' performance.
+The trending perspective is easy for the management to understand and implement, as simple comparisons of the expected workload to a recent shift can be made.
+If, for example, the staff was near capacity during the last shift and an increase in the number of arrivals is expected, management can take measures to adjust the workload.
+
+The number of arrivals has a strong weekly and daily pattern.
+Thus, we consider the horizons of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day.
+Table~\ref{tab:app-eda-point-evaluation} lists the point evaluation measures and the count of available forecasts.
+The best-performing models regarding RMSE and MAE are the NBI-2 and Poisson-2 models.
+More than 8,600 forecasts are available for all models, with differences in the number due to missing values on four afternoons in 2018.
+Note that the reported values for the RMSE differ from those in \citet{Rostami-Tabar2023}.
+In contrast to their work, we use only the forecast data at least 36 hours ahead rather than the entire forecast data for evaluation.
+
+\begin{table}
+\centering
+\input{plots/ed_arrival/00_point_evaluation_measures}
+\caption{Point evaluation measures for the models. The smaller count for some models stems from missing forecasts scattered throughout the evaluation period.}\label{tab:app-eda-point-evaluation}
+\end{table}
+
+
+\subsubsection*{Results}
+
+We start by analyzing the marginal distributions for the changes of forecasts and actual values for the horizons of three and seven days in Table~\ref{tab:app-eda-marginals}, again.
+Thereby, the computed difference aligns with Section~\ref{subsec:notation}, defined as the difference between the forecasted mean and true value of three and seven days before, as the actual value is available when issuing the forecast.
+The fraction of positive differences varies between 0.39 and 0.63 for the horizon of three days and between 0.37 and 0.63 for the horizon of seven days.
+The variability of differences decreases for the larger horizon for most models; only for the ETS model does it increase.
+The 10\%-quantile of the differences is between zero and one for all models and horizons.
+Thus, we exclude differences smaller than one from the trending assessment.
+The resulting fraction of included values in the computation is also listed in Table~\ref{tab:app-eda-marginals} and is at least 79\% of the values.
+
+\begin{table}
+    \centering
+    \tiny
+    \input{plots/ed_arrival/10_marginal_analysis}
+    \caption{Marginal analysis of the forecast and true differences. The column (1) shows the fraction of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values. Column (2) shows the fraction of values not in the exclusion area of size one.}
+    \label{tab:app-eda-marginals}
+\end{table}
+
+Table~\ref{tab:app-eda-trending-ratios} lists the trending ratios for all models for three and seven-day horizons.
+The trending ratios range from 0.68 to 0.84 for a horizon of three days and from 0.68 to 0.82 for seven days.
+The negative and positive trending ratios differ for all models and horizons.
+For some models, for example, the GBM-2 model, the positive trending ratio is higher; for some models, for example, the tbats model, the negative trending ratio is higher.
+The confidence interval width is at most 0.02 for the trending ratios and at most 0.03 for the positive and negative trending ratios.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive trending ratio for the three and seven-day horizon, while Poisson-2 and NBI-2 have the highest negative trending ratio.
+
+Figure~\ref{fig:app-eda-cond-prob} shows the conditional trending plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days and thus inspects the local trending ability of the models with highest positive and negative trending ratio.
+The conditional trending plots show similar courses for the two horizons, though the curves are shifted downwards for the horizon of seven days.
+The model's relative trending ability evolves consistently for the two horizons, with the NBI-2 and Poisson-2 models being indistinguishable.
+The GBM-2 model outperforms the qreg-1 model for all $x$.
+The models NBI-2 and Poisson-2 have the highest trending ability for all negative values of $x$ and the lowest trending ability for all positive values of $x$.
+Benchmark-1 lies between the other models for all $x$.
+
+Figure~\ref{fig:app-eda-prob} visualizes the probabilistic trending evaluation for the same subset of models.
+The \acfp{bs} are shown in Figure~\ref{fig:app-eda-prob-brier}, and the reliability diagrams for the horizons three and seven days in Figures~\ref{fig:app-eda-prob-rel-3} and \ref{fig:app-eda-prob-rel-7}.
+The \acp{bs} are smallest for NBI-2 and Poisson-2 for both horizons, while the \acp{bs} for the other models are larger and differ more.
+The qreg-1 model has both horizons' highest \ac{bs}.
+The reliability diagrams of GBM-2 and NBI-2 are also close and show a too-small fraction of increases for the predicted probability overall.
+For the other models, the reliability diagrams show a fraction of increases that are too large for the corresponding predicted probability.
+
+\begin{table}
+    \centering
+    \tiny
+    \input{plots/ed_arrival/50_trending_ratio}
+    \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with the exclusion of zero-containing points for the horizons 72 hours and seven days.}
+    \label{tab:app-eda-trending-ratios}
+\end{table}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+    \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_3}
+    \caption{Horizon three days}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+    \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_7}
+    \caption{Horizon seven days}
+    \end{subfigure}
+    \caption{Conditional trending plots for the horizons three and seven days and the models with the best positive or negative trending ability. The plots of NBI-2 and Poisson-2 are indistinguishable.}
+    \label{fig:app-eda-cond-prob}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.32\textwidth}
+    \tiny
+    \input{plots/ed_arrival/70_brier_scores}
+    \caption{BS for the different models and horizons.}\label{fig:app-eda-prob-brier}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \begin{subfigure}[t]{0.32\textwidth}
+    \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_3}
+    \caption{Reliability diagram for horizon three days.}\label{fig:app-eda-prob-rel-3}
+    \end{subfigure}\hspace{0.01\textwidth}%
+    \begin{subfigure}[t]{0.32\textwidth}
+    \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_7}
+    \caption{Reliability diagram for horizon seven days.}\label{fig:app-eda-prob-rel-7}
+    \end{subfigure}
+    \caption{Probabilistic trending evaluation for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days. The \acl{bs} in Figure~\ref{fig:app-eda-prob-brier} evaluates the calibration and sharpness of the probabilistic trending simultaneously, while the two plots on the right assess solely the calibration, that is, whether the predicted probability of increase occurs empirically. Probabilistic trending by the \ac{bs} is best for the models NBI-2 and Poisson-2 for both lags.}
+    \label{fig:app-eda-prob}
+\end{figure}
+
+\subsubsection*{Discussion}
+
+The trending ability is consistent for the two horizons, with the models' relative trending ability evolving similarly for the two horizons.
+The models' trending ability is generally higher for the smaller horizon, but the differences are minor, and confidence intervals overlap.
+
+The trending differs for all models for positive and negative predicted change directions.
+While some models, such as GBM-2 and qreg-1, have the highest positive trending ratio, others, such as Poisson-2 and NBI-2, have the highest negative trending ratio.
+Thus, the uncertainty of the model's predicted change has to be assessed differently based on the direction.
+
+The results of the probabilistic trending evaluation endorse the point trending assessment and assign the best scores to NBI-2 and Poisson-2.
+The reliability diagrams show that they underestimate the fraction of increases slightly.
+
+The example shows that trending assessment is detached from standard point evaluation measures.
+While the models with the lowest RMSE, NBI-2, and Poisson-2, also have a high trending ability, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive trending ability.
+
+
+\subsection{Invasive and non-invasive blood pressure monitoring} \label{sec:application_measurement}
+
+In the last briefer example, we consider the trending assessment of measurement data.
+The data is from the MIMIC-III database, including various information on patients in critical care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}).
+The data is publicly available and also includes numerical measurement data such as heart rate, blood pressure, and oxygen saturation in a waveform database \citetext{\citealp{Moody2017}; available through \citealp{Goldberger2000}}.
+
+For some patients, the data includes \ac{abp} and \ac{nbp} measurements.
+While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods.
+For an overview of blood pressure measurement methods, see \citet{Saugel2014}.
+For critical patients, changes in blood pressure can be crucial for the treatment.
+Thus, trending assessment can be performed in addition to standard accuracy analysis~\citep[see, for example, ][]{Mostafa2020}.
+Thus, we assess the trending ability of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
+The database contains 64,168 numerical data records.
+One data record includes all numerical measurements for one patient.
+The measured signals vary in length, frequency, and type of measurement.
+Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} simultaneously.
+2,548 include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one measurement of systolic \ac{abp} and \ac{nbp} at the same time; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
+
+We consider the horizons of one minute, five minutes, and 15 minutes for the trending assessment, as those are typical intervals of NBP measurements.
+
+\subsubsection*{Results}
+
+Again, we exclude the smallest 10\% of absolute differences in trending assessment.
+The resulting four-quadrant plots of the mean and systolic blood pressure measurements for the different horizons are shown in Figure~\ref{fig:app-mimic-4q}.
+The number of points in the four-quadrant plot is smaller due to the restriction to data records with measurements of mean or systolic \ac{abp} and \ac{nbp} simultaneously for two consecutive times with the specified horizons.
+Thus, we use the \ac{nbp} measurements as the test method and the \ac{abp} measurements as the gold standard.
+For the systolic measurements, 290, 332, and 442 points are available for the horizons of one, five, and 15 minutes; for the mean measurements, 406, 430, and 542.
+
+The trending ratios, including confidence intervals for the different horizons, are listed in Table~\ref{tab:app-mimic-trending-ratios}.
+The confidence intervals have lower bounds of 0.5 or slightly above for the measurements with a horizon of one minute.
+For larger horizons, the trending ratio increases.
+The difference between positive and negative trending ratios is small for all types and horizons, with overlapping confidence intervals.
+
+Figure~\ref{fig:app-mimic-cond-prob} shows the conditional trending plots for the different horizons and the systolic and mean blood pressure measurements.
+It becomes apparent that the systolic measurements have a higher trending ability than the mean measurement, except for small negative predicted changes.
+This aligns with the trending ratios, but the confidence intervals overlap.
+
+\begin{figure}
+    \centering
+    \includegraphics{plots/mimic/plot_4q}
+    \caption{Four-quadrant plots for the different horizons and the systolic and mean blood pressure measurements. The upper row contains systolic measurements, and the lower row contains mean measurements. The columns contain the horizons one, five, and 15 minutes.}
+    \label{fig:app-mimic-4q}
+\end{figure}
+
+\begin{table}
+    \centering
+    \input{plots/mimic/trending_ratio}
+    \caption{Trending ratios for the different horizons and the systolic and mean blood pressure measurements.}
+    \label{tab:app-mimic-trending-ratios}
+\end{table}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.32\textwidth}
+        \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag1}
+        \caption{Horizon one minute.}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}[t]{.32\textwidth}
+        \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag5}
+        \caption{Horizon five minutes.}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}[t]{.32\textwidth}
+        \includegraphics{plots/mimic/cond_prob_diff_nbp_abp_lag15}
+        \caption{Horizon 15 minutes.}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \caption{Conditional trending plot for the systolic and mean blood pressure measurements and the horizons one, five, and 15 minutes. }
+    \label{fig:app-mimic-cond-prob}
+\end{figure}
+
+
+
+
+\subsubsection*{Discussion}
+
+The four-quadrant plots contain a considerable number of extreme points.
+Whether these points are due to measurement errors or extreme values is not distinguishable.
+Some authors argue to exclude the measurements below the 10\%-quantile of the absolute differences and the points above the 90\%-quantile~\citep[see][]{Critchley2010}.
+We do not follow this approach here, as the extreme values are not necessarily measurement errors and could be particularly relevant.
+
+The differences between positive and negative predicted changes are small in this example.
+The positive and negative trending ratios have overlapping confidence intervals, and the conditional trending plots do not contain prominent deviations in the course.
+This aligns with the four-quadrant plots, where no apparent asymmetry is visible.
+
+The bootstrap confidence intervals are wide.
+The width is around 0.1 for the trending ratio, while it gets up to 0.16 for the negative trending ratio for systolic measurement and the horizon of one minute.
+Thus, the confidence intervals cover 0.5 for systolic measurement and the horizon of one minute, and the equality to random guessing cannot be excluded.
+
+
 
 \section{Discussion and Conclusion}\label{sec:conclusion}
 
-\input{sections/05-conclusion.tex}
+
+In this paper, we examine various methods to analyze trending, that is, the statistical consistency of observed and predicted change direction.
+While the computation of predicted change varies between the application areas measurement, nowcasting, and forecasting (see Section~\ref{subsec:notation}), the trending assessment using the computed predicted and observed change is similar.
+The evaluation of trending can accompany other evaluation techniques, such as measures of deviation or probabilistic scoring rules.
+
+Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:trending-four-quadrant-plot}).
+The trending ratio, the ratio of change directions predicted correctly over the total number of changes, numerically evaluates trending.
+Visually, it is the proportion of concordant points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
+The positive and negative trending ratios analyze the trending ratio given whether the predicted change is positive or negative, respectively.
+Thus, they quantify the credibility of the respective predictions.
+The applications of Section~\ref{sec:application_measurement} show that models, in general, indeed have different positive and negative trending abilities and that they add valuable information to the trending ratio.
+In the applications, the bootstrap confidence intervals of Section~\ref{subsec:trending-measures} are used to quantify the estimation uncertainty of the trending measures.
+The width of the confidence intervals is around 0.1 for around 100 samples, while it is around 0.01 for 8000 samples.
+For reasonably well-trending models, 100 samples are thus sufficient to differentiate from random guessing or to assess models with high trending differences.
+
+A conditional trending plot visualizes the probability of correct trending over the predicted change of the signal (see Section~\ref{subsec:trending-cond-prob}).
+It is based on a multivariate \acf{kde} of predicted and observed change.
+In the application, the conditional trending plot gives reasonable insights into the local effects of the trending ability.
+Section~\ref{subsec:trending-probabilistic} adapts measures of probabilistic forecast evaluation to the trending assessment of probabilistic forecasts and nowcasts.
+The \acf{bs} as numerical assessment of probabilistic trending is introduced, and reliability diagrams are used to visualize the local trending ability of probabilistic forecasts.
+
+The methods of trending assessment are applied to COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements in Section~\ref{sec:application}.
+While trending evaluation should not be the only aspect, it is a valuable addition to evaluating nowcasts, forecasts, and measurements.
+Models with very different accuracies are usually scored similarly in trending evaluation, but trending evaluation can differentiate between models with similar accuracies.
+As in the application in Section~\ref{sec:application-covid}, models with medial point forecast evaluation measures can have the most meaningful positive trending ability.
+
+We did not expand on two modeling aspects throughout this paper, which we leave for further research.
+In the estimation, we did not consider sequential correlation.
+The computation of differences is a standard procedure in time series analysis to remove sequential dependence, but, in general, some could remain, and the estimators could account for it.
+Similarly, the bootstrap confidence intervals could be adapted to consider sequential correlation using time-series bootstrap methods~\citep{Hardle2003,Kreiss2012}.
+
+The estimators of Section~\ref{subsec:trending-measures} do not account for imbalances in the number of observed positive and negative changes \citep[for a theoretical analysis, see][Chapter 3]{Jolliffe2012}.
+Significant differences in the number of observed positive and negative changes are unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data and occur, for example, if the true value contains a few high jumps in one direction and many smaller jumps in the other.
+However, if the number of positive and negative observed changes differs widely, unbalanced-data-aware measures should be considered.
+There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \citep{Cohen1960} or those listed in \citet[Table 3.3]{Jolliffe2012}.
+
 
 \section{Declarations}
 \subsection{Availability of data and materials}
@@ -240,9 +1036,291 @@ Not applicable.
 
 \appendix
 
-\input{sections/50-appendix-data-generation}
+\section{Additional material on Section~\ref{sec:trending}}\label{sec:appendix-trending}
 
-\input{sections/55-appendix-application-covid}
+\subsection{Data generation for Section~\ref{sec:trending}}\label{subsec:app-trending-data-generation}
+
+The first dataset is generated by sequentially generating $\diffx$ and $\diffy$.
+First, the $\diffxt$ are sampled as a sum of a standard normal random number and a uniform random number on $(-10, 10)$:
+\begin{equation*}
+    \diffxt \sim N(0, 1) + U(-10, 10) \quad t = 1, \dots, T.
+\end{equation*}
+Subsequently, the $\diffy$ are simulated for a constant trending ratio $k$ by
+\begin{equation*}
+    \diffyt = \diffxt \cdot n_t \cdot b_t,
+\end{equation*}
+where $n_t$ is a truncated normal distribution with mean one and standard deviation 0.5, truncated at 0, and $b_t$ is a symmetric Bernoulli random variable with parameter $k$.
+For a time-varying trending ratio, the parameter $k$ is modified to have a wave-shape over time, that is,
+\begin{equation*}
+    k_t = 0.75 + \sin(t / 365.25 \cdot 2 \pi) / 4.
+\end{equation*}
+For the asymmetric trending ratio, $k$ is a function of $\diffxt$,
+\begin{equation*}
+    k(x) = 0.5 + \min \left\{ \max \left\{ \frac{x + 5}{10}, 0  \right\} , 1 \right\} / 2.
+\end{equation*}
+
+In the second approach, $\diffyt$ and $\diffxt$ are modeled to be multivariate normal with mean 0 and covariance matrix
+\begin{equation*}
+    \Sigma = \begin{pmatrix} 4 & 3 \\ 3 & 4 \end{pmatrix}.
+\end{equation*}
+Thus, the conditional probability of trending can be calculated by a conditional normal distribution to
+\begin{equation*}
+    P(\diffyrv \diffxrv > 0 | \diffxrv = x) = \Phi \left( \frac{3}{2 \sqrt{7}} x \right),
+\end{equation*}
+where $\Phi$ is a standard normal \ac{cdf}.
+
+The four-quadrant plots for the sample realizations of the data generation schemes are shown in Figure~\ref{fig:appendix_dgps}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/illustrative_examples/appendix_4q_dgp1}
+        \caption{Constant trending ratio.}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/illustrative_examples/appendix_4q_dgp1_time}
+        \caption{Time-varying trending ratio}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/illustrative_examples/appendix_4q_dgp1_asym}
+        \caption{Asymmetric trending ratio}
+    \end{subfigure}\hspace{0.01\textwidth}
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics{plots/illustrative_examples/appendix_4q_dgp2}
+        \caption{Second approach}
+    \end{subfigure}
+    \caption{Four-quadrant plots for sample realizations of the data generation schemes of Section~\ref{subsec:app-trending-data-generation}. Although the first and second plots differ over time, their difference is not discernible in the plots. The third data set's asymmetry is visible in the plot, but the decrease in the trending ability near 0 is not visible. }
+    \label{fig:appendix_dgps}
+\end{figure}
+
+\subsection{Simulation study on bootstrapping confidence intervals}\label{subsec:appendix-trending-bootstrap}
+
+
+We examine three methods for bootstrapping: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
+In the \textit{percentile} approach, the confidence interval for the level $\alpha$ is built directly from the empirical distribution of the bootstrap estimators.
+The \textit{basic} approach computes the confidence interval based on the non-bootstrap estimate using the bootstrapped quantile deviations~\citep{Davison1997}.
+The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\citep{Efron1987}.
+Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but requires smaller datasets for reasonable confidence intervals.
+The basic approach balances these two objectives.
+We compare the approaches in a small synthetic data study on their small-dataset behavior and computation time.
+
+We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
+The considered datasets are the first dataset with asymmetric dependence and the second dataset outlined in Appendix~\ref{subsec:app-trending-data-generation}.
+In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\citep{Virtanen2020}.
+The prescribed confidence level is 90 \%, and the number of bootstrap samples is $10,000$.
+The share of confidence intervals covering the true values per method and $T$ are shown in Table~\ref{tab:trending_bootstrap}.
+The true values of the accuracy are computed based on a dataset of size $10^8$, yielding 0.7501 and 0.7700 for the two datasets.
+The computation times per method and dataset are shown in Figure~\ref{fig:trending_bootstrap_time}.
+For the small sample sizes up to $T = 168$, only the \ac{bca} method keeps the confidence interval size and yields slightly wider confidence intervals.
+The method's results do not differ for the larger sample sizes.
+The computation time for the \ac{bca} method is slightly larger than for the other methods, but all methods have a moderate computation time.
+\Ac{bca} is the only method that maintains the confidence level for small datasets while increasing the computation time only moderately for larger datasets.
+Therefore, we use the \ac{bca} method for confidence intervals in the applications in Section~\ref{sec:application}.
+
+
+\begin{table}
+    \centering
+    \tiny
+    \begin{subtable}{.48\textwidth}
+        \input{plots/illustrative_examples/bootstrap_butterfly_cis}
+        \caption{First dataset}
+    \end{subtable}\hspace{0.02\textwidth}
+    \begin{subtable}{.48\textwidth}
+        \input{plots/illustrative_examples/bootstrap_normal_cis}
+        \caption{Second dataset}
+    \end{subtable}
+    \caption{Proportion of bootstrapping confidence intervals covering the true value of trending ratio per method and sample size $T$. The average width of the confidence interval is listed in brackets.}
+    \label{tab:trending_bootstrap}
+\end{table}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+\includegraphics{plots/illustrative_examples/boxplot_comp_time_butterfly}
+        \caption{First dataset}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+    \includegraphics{plots/illustrative_examples/boxplot_comp_time_normal}
+        \caption{Second dataset}
+    \end{subfigure}
+    \caption{Boxplot of the computation time of the different bootstrapping methods and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
+    \label{fig:trending_bootstrap_time}
+\end{figure}
+
+
+\subsection{Visualization of different bandwidth selectors in multivariate \ac{kde}}\label{subsec:appendix-kde}
+
+We examine the resulting conditional trending plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\citep{Seabold2010} in Figure~\ref{fig:trending-cond-prob-bw}.
+While the rule-of-thumb is based only on the covariance matrix, the other two numerically optimize the bandwidth with a hold-one-out least squares or likelihood objective function.
+The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = x)$.
+The second method, cross-validation least squares, requires long computation times while yielding small or no bandwidth results, even for two relatively small datasets.
+The rule-of-thumb and cross-validation maximum likelihood methods yield reasonable results at moderate computation times.
+Further examples, including comparisons between methods regarding their trending ability, are available in Section~\ref{sec:application}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.48\textwidth}
+        \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_butterfly}
+        \caption{First dataset with asymmetric dependence.}
+    \end{subfigure}
+    \begin{subfigure}{.48\textwidth}
+        \includegraphics{plots/illustrative_examples/cond_prob_plot_bw_normal}
+        \caption{Second dataset. }
+    \end{subfigure}
+    \caption{Conditional trending plot for different bandwidth selection processes. Cross-validation least squares takes a considerably larger computation time. It does not converge for the first data set and yields a bandwidth too small for the second data set. The rule of thumb is the fastest method but tends to oversmooth. The cross-validation maximum likelihood method yields a more reasonable bandwidth with moderate computation time. $\varepsilon$ specifies an exclusion area $E = \{(x, y) \in \R^2: (-\varepsilon \leq x \leq \varepsilon)\}$ in $\diffx$-direction.}\label{fig:trending-cond-prob-bw}
+\end{figure}
+
+
+
+
+\subsection{Probabilistic trending evaluation}\label{subsec:app-probabilistic-trending-evaluation}
+
+If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
+Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
+The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
+The probability $\pc_t$ of a \textit{negative} change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
+\begin{equation*}
+    p^{\star} = \max \{p \in \{1/\pmax, \dots, (\pmax-1) / \pmax\}: q_p \leq y_t\} , \quad \text{if}\ q_{1/\pmax} \leq y_t \leq q_{1 - 1/\pmax}.
+\end{equation*}
+Quantiles do not determine the location within the interval $[p^{\star}, p^{\star} + 1/\pmax]$.
+Under the assumption of a uniform distribution within the quantile interval, the probability of a negative change is
+\begin{equation*}
+    \pc_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
+\end{equation*}
+The approach does not assign probabilities for $y_t$ smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile.
+As a simple extension, we assume that the probability mass is uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
+This yields
+\begin{equation*}
+\pc_t = \begin{cases}
+    \max \{\frac{1}{\pmax} - \frac{q_{p^\star} - y_t}{\pmax (q_{p2/\pmax} - q_{1/\pmax})}, 0\} &, \text{if } y_t < q_{1/p}, \\
+    \min \{\frac{1}{\pmax} - \frac{y_t - q_{(\pmax-1)/\pmax}}{\pmax (q_{(\pmax-1)/\pmax} - q_{(\pmax-2)/\pmax})}, 1\} &, \text{if } y_t > q_{1 - 1/p}, \\
+    \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star} &, \text{otherwise.}
+\end{cases}
+\end{equation*}
+The probability of positive change is $p_t = 1 - \pc_t$.
+
+If the true value is given as a distribution because it is still unknown, the probabilities $p_t$ can be computed by integration.
+Let for two nowcasts the distributions be given by \acp{pdf} $f_{t+l|t+l}$ and $f_{t|t+l}$ with \acp{cdf}  $F_{t+l|t+l}$ and $F_{t|t+l}$.
+Then, the probability of a negative change can be computed by
+\begin{align}
+    \pc_t
+        &= \int_{\begin{subarray}{l}x_1, x_2 \in \R: \\ x_2 < x_1\end{subarray}} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: (x_1, x_2) \nonumber\\
+        &= \int_{x_1 \in \R} \int_{-\infty}^{x_1} f_{t|t+l} (x_1) f_{t+l|t+l} (x_2)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \nonumber\\
+        &= \int_{x_1 \in \R} f_{t|t+l} (x_1) F_{t+l|t+l} (x_1)  \ \textrm{d} \: x_2 \ \textrm{d} \: x_1 \label{eq:trending-probabilistic-pdf}.
+\end{align}
+Thereby, the distributions are assumed to be independent.
+If the nowcasts have the form of a multivariate distribution, including the dependence of the two \acp{pdf}, $f_{t+l|t+l} (x_2)$ has to be replaced by the \ac{pdf} conditional on $x_1$.
+As a Monte Carlo approximation of Equation~\eqref{eq:trending-probabilistic-pdf}, the probability can also be calculated by sampling from $f_{t+l|t+l}$ and $f_{t|t+l}$ and calculating the fraction of negative changes.
+For forecasts, the indexes have to be shifted.
+If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quantiles, or the \ac{cdf} or quantiles can be used to generate samples for the Monte Carlo approximation.
+This approach is applied in Section~\ref{sec:application-covid}, as the true values are published with a delay of more than 80 days, and the nowcasts are given as quantiles.
+
+ \section{Additional material on Section~\ref{sec:application-covid}}\label{sec:appendix-application-covid}
+
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{l l}
+        \toprule
+        Abbreviation & Nowcasting hub key \\
+        \midrule
+        EPI & Epiforecasts-independent \\
+        ILM & ILM-prop \\
+        KIT & KIT-simple\_nowcast \\
+        LMU & LMU\_StaBLab-GAM\_nowcast \\
+        RIVM & RIVM-KEW \\
+        RKI & RKI-weekly\_report \\
+        SU & SU-hier\_bayes \\
+        SZ & SZ-hosp\_nowcast\\
+        ENS-MEAN & NowcastHub-MeanEnsemble\\
+        ENS-MED & NowcastHub-MedianEnsemble\\
+        \bottomrule
+    \end{tabular}
+    \caption{Matching the abbreviation to the key in the nowcasting hub.
+    Information on the models and references is listed in \citet[][Table 1]{Wolffram2023}.}
+    \label{tab:app-covid-models}
+\end{table}
+
+
+\begin{table}
+    \centering
+    \tiny
+    \input{plots/covid_nowcast/10_marginal_analysis}
+    \caption{Analysis of the nowcast and true differences for the horizons 1, 7, and 14 days.
+    The column (1), $l=l$ shows the number of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the differences' absolute values.}
+    \label{tab:app-covid-marginals}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{subtable}[t]{\textwidth}
+        \input{plots/covid_nowcast/30_trending_ratios_lag_1}
+    \caption{1 day.}
+    \end{subtable}
+    \begin{subtable}[t]{\textwidth}
+        \input{plots/covid_nowcast/30_trending_ratios_lag_14}
+        \caption{14 days.}
+    \end{subtable}
+    \caption{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with and without exclusion areas for the horizon 1 and 14 days. The exclusion areas are rectangles centered on the zero points with a width and height of 10\% of the quantile of the absolute values of nowcast and true values. }
+    \label{tab:app-covid-trending-ratios-lag-1-14}
+\end{table}
+
+
+
+\begin{figure}
+\centering
+\includegraphics{plots/covid_nowcast/30_4q_plots}
+\caption{Four-quadrant plots for the models ILM, RIVM, RKI, and ENS-MEAN and the horizons of one, seven, and 14 days. The spread in both directions increases with the horizon. }
+\label{fig:app-covid-4q}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+%    \includegraphics{}
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_cond_prob_lag_1}
+    \caption{Conditional trending plot for horzion 1.}\label{fig:app-covid-cond-prob-1}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_cond_prob_lag_14}
+    \caption{Conditional trending plot for horizon 1.}\label{fig:app-covid-cond-prob-14}
+    \end{subfigure}
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_acc_eps_lag_1}
+    \caption{Trending ratio over exclusion area size in $\diffx$ for horizon 1.}\label{fig:app-covid-trending-ratio-1}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+    \includegraphics{plots/covid_nowcast/40_acc_eps_lag_14}
+    \caption{Trending ratio over exclusion area size in $\diffx$ for horizon 1.}\label{fig:app-covid-trending-ratio-14}
+    \end{subfigure}
+    \caption{Conditional trending plot and trending ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the lag seven days.}
+    \label{fig:app-covid-cond-prob-trending-ratio-1-14}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{.48\textwidth}
+        \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_7}
+        \caption{Reliability diagram for horizon seven days.} \label{fig:app-covid-reliability-7}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{.48\textwidth}
+        \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_14}
+        \caption{Reliability diagram for horizon 14 days.} \label{fig:app-covid-reliability-14}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \includegraphics{plots/covid_nowcast/70_prob_hist}
+        \caption{Count histogram of the predicted probabilities for the horizon one, seven, and 14 days.} \label{fig:app-covid-prob-hist}
+    \end{subfigure}
+    \caption{The reliability diagram for the models ILM, RIVM, RKI, and ENS-MED for the horizon seven and 14 days.
+    Additionally, the count of predicted probabilities for the horizons is shown.
+        The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
+    As the models issue small or large probabilities of increase for the higher horizons, little information on the accuracy of moderate probability predictions is available.}
+    \label{fig:}
+\end{figure}
+
 
 
 
