@@ -168,13 +168,12 @@
 
 \abstract{
 An intuitive and easily interpretable information on a quantity measured over time is whether it increases or decreases.
-We refer to the ability to accurately predict, nowcast, or measure the direction of change of a true variable as trending. 
-An appropriate assessment of the trending ability is crucial for decision-makers, as it enables them to assess the method's credibility and changes in the underlying process early.
-While the current practice of evaluating signals is focused on averaging over local deviation measures, we present trending evaluation techniques as accompanying assessments that consider whether the development direction fits the quantity of interest. 
+We refer to the ability to accurately predict, nowcast, or measure the direction of change of a true variable (value???) as "trending". 
+Trending describes the ability of a method to measure or predict the right direction [and magnitude???] of changes in a true variable (value???). Currently, evaluating signals to assess trending  is focused on averaging over local deviation measures. We here present techniques to assess trending as accompanying assessments that consider whether the development direction [direction of change???] fits the quantity of interest. 
 We formalize the concept of trending for all application areas and present quantitative measures. 
 Using bootstrap confidence intervals and exclusion areas, we provide extensions for noisy data and estimation uncertainty.
 We review and present new visualization techniques to assess the local trending behavior and enlarge the scope to probabilistic nowcasts and forecasts. 
-We apply the methods to three large medical data applications: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
+We exemplarily apply the methods to three medical or healthcare problems: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
 }
 
 \keywords{}
@@ -187,9 +186,9 @@ We apply the methods to three large medical data applications: COVID-19-nowcasti
 \section{Introduction}\label{sec:trending-introduction}
 
 The evaluation of measurement, prediction, and forecasting methods becomes increasingly important and sophisticated as technologies and data availability enable their application in more and more fields.
-Conventionally, differences between predictions (or measurements) and target values, such as the \ac{rmse} or \ac{mae}, form the basis of method evaluation.
-These measures do not consider trending, that is, whether the right direction of change is predicted or measured.
-However, the information about an increase or decrease is crucial to detect changes in the underlying process early.
+Conventionally, differences between predictions (or measurements) and target variables (values???), such as the \ac{rmse} or \ac{mae}, form the basis of method evaluation.
+These measures do not consider trending, that is, the ability of a method to measure or predict the right direction [and magnitude???] of changes in a true variable (value???). 
+However, the information about an increase or decrease in a true variable (value???) is crucial to detect changes in underlying processes.
 In the following, we provide a more specific overview of the characteristics and current evaluation schemes of the three application fields, forecasting, nowcasting, and measurement, and highlight why trending evaluation is highly relevant in the respective fields.
 
 Forecasting methods predict the future based on historical data, patterns, and exogenous factors.
@@ -202,13 +201,13 @@ In a prediction competition on armed conflicts, trending recently gained attenti
 However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
 This paper focuses on pure trending evaluation that accompanies traditional scores.
 
-Methodologically evolved from forecasting; nowcasting methods focus on predictions for the present, the immediate future, and the recent past~\citep{banbura2013now}.
+Methodologically evolved from forecasting, nowcasting methods focus on predictions for the present, the immediate future, and the recent past~\citep{banbura2013now}.
 Nowcasting has its origins in meteorology, and the methods were initially developed to describe the current state of the weather in detail and to predict the expected change on a time scale of a few hours~\citep{browning1989nowcasting,schmid2019nowcasting}.
 In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{wu2021nowcasting} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{gunther2021nowcasting}.
 Nowcasting methods use high-frequency indicators related to the target variable and estimate the value of a target variable for a specific time based on current preliminary measurements, which are finalized with a considerable time delay.
 Thus, the nowcasts can produce early and ongoing estimates for the target variable during the relevant period~\citep{castle2017forecasting}.
 Like forecasts, nowcasts are often evaluated and compared in the literature based on performance measures such as the \ac{rmse}~\citep{gunther2021nowcasting} or probabilistic scoring rules~\citep{Wolffram2023}.
-The aspect of trending ability is not considered in the literature to the best of our knowledge.
+The aspect of trending is not considered in the literature to the best of our knowledge.
 However, trending evaluation adds valuable information on the methods' capability of predicting the development of the target variable, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
 The epidemic's development, in turn, can be the foundation of decisions on introducing or canceling policy measures.
 
@@ -219,8 +218,7 @@ Various indices, such as the interclass correlation coefficient or Lin's concord
 Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value~\citep{bland1986statistical}.
 Trending considerations, that is, the consistency of the test method's development with the gold standard, is a field of active research in the last years~\citep{Saugel2015,saugel2018error,hiraishi2021concordance}.
 
-The main contributions of this paper are manifold.
-We formalize trending and present different variants of trending measures that consider either noiseless data or data with noise and small non-informative changes.
+In this article, we formalize trending and present different variants of trending measures that consider either noiseless data or data with noise and small non-informative changes.
 We introduce the conditional trending plot, a new graphical method for assessing local trending behavior, and review bootstrap methods for calculating confidence intervals.
 We extend the concept of trending to probabilistic predictions.
 The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement.
