@@ -83,7 +83,7 @@
 \DeclareAcronym{mae}{short=MAE, long=mean absolute error}
 \DeclareAcronym{tadda}{short=TADDA, long=targeted absolute deviation with direction augmentation}
 \DeclareAcronym{atc}{short=ATC, long=ability to track changes}
-\DeclareAcronym{aatc}{short=AATC, long=assessment of the ability to track changes}
+\DeclareAcronym{mnf}{short=MNF,}
 
 
 %%%% ---- Own Commands
@@ -195,27 +195,18 @@ Methodologically evolved from forecasting~\citep{Browning1989}, nowcasting metho
 Nowcasting methods use high-frequency indicators related to the target value and estimate the value of a target value for a specific time based on current preliminary measurements, which are finalized with a considerable delay.
 Thus, it focuses on ongoing predictions due to updating information for the same time~\citep{Castle2017}.
 In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
-In forecasting and nowcasting, the evaluation is based on accuracy measures such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
-None of them assesses the method's \ac{atc}.
-In a prediction competition on armed conflicts, the \ac{aatc} recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
-However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
-
-% Measurement weniger abgetrennt
-
-Measurement is more technical and aims to obtain accurate and reliable data about the current state of a system based on sensors.
+Measurement aims to obtain accurate and reliable data about the current state of a system based on sensors.
 A parameter or value can be measured regularly over a certain period to evaluate the system's development.
 When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as various individuals or environments.
-Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods~\citep{Lin1989, Koo2016} in addition to paired t-tests to determine systematic differences between two measurement series~\citep{Watson2010}.
-Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value~\citep{Bland1986}.
-The \ac{aatc} is a field of active research in recent years~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
+In forecasting and nowcasting, the evaluation is based on accuracy measures such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
+None of them assesses the method's \ac{atc}.
+In a prediction competition on armed conflicts, the assessment of \ac{atc} recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
+However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
+In measurement agreement analysis, a typical analysis includes the Bland-Altman analysis and a percentage error~\citep{Bland1986}.
+The assessment of \ac{atc} is a field of active research in recent years~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
-% AATC weg als Abkürzung
-
-
-This paper focuses on pure assessment of \ac{atc} accompanying traditional scores.
-The assessment of \ac{atc} adds valuable information on the methods' capability of predicting the development of the target value, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
-
-In this article, we formalize \ac{atc} and present different variants of assessment of \ac{atc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
+This article focuses on pure assessment of \ac{atc} accompanying traditional scores.
+ we formalize \ac{atc} and present different variants of assessment of \ac{atc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
 We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals (see Section~\ref{subsec:aatc-noise} and ~\ref{subsec:aatc-cond-prob}).
 We extend the concept of assessment of \ac{atc} to probabilistic predictions in Section~\ref{subsec:aatc-probabilistic}.
 The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement, and, thus, provide blueprints for future assessments.
@@ -224,22 +215,10 @@ The ready-to-use code for the assessment of \ac{atc} from the applications is av
 
 \section{Assessment of the \acf{atc}}\label{sec:aatc}
 
-% Einleitung weglassen; näher an Definition von oben.
-As discussed in Section~\ref{sec:atc-introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by a measurement, a nowcast, or a forecast.
-In this section, we want to specify trending and define different methods of measuring and visualizing trending.
-In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the task.
-Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is irrelevant.
-Before introducing measures to evaluate trending, we remark on calculating the predicted change and notation in Section~\ref{subsec:notation}.
-Section~\ref{subsec:trending-four-quadrant-plot} introduces trending basics and visualizes trending in a synthetic example.
-In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
-The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:aatc-noise}, and bootstrap methods for computing confidence intervals for the measures in the previous sections are briefly introduced.
-Section~\ref{subsec:aatc-cond-prob} introduces a new graphical method for local trending assessment.
-Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:aatc-probabilistic}.
+% \subsection{Computing changes and notation}\label{subsec:notation}
 
-\subsection{Computing changes and notation}\label{subsec:notation}
-
-As noted above, trending refers to observed and predicted changes over a time horizon $l$.
-The \textit{observed} change is straightforward to compute for all types of signals.
+As noted above, the assessment of \ac{atc} is based on the observed and predicted changes over a time horizon $l$.
+The \textit{observed} change is straightforward to compute for all types of \ac{mnf}.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the true values for nowcasting or forecasting, or gold standard measurements up to time $T$.
 The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
 \begin{equation}\label{eq:diffy}
