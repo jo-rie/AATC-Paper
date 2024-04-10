@@ -170,7 +170,7 @@
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 
 \abstract{ 
-In addition to measurements, nowcasts, or forecasts being numerically precise, it is essential how well they reflect changes in the underlying values.
+In addition to measurements, nowcasts, or forecasts being numerically precise, it is essential [to know] how well they reflect changes in the underlying values.
 In this article, we focus on evaluating the ability to predict the correct direction of changes, which we refer to as the ability to track changes (ATC). 
 We present visual techniques and quantitative measures to assess this ability and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
 Worked-through examples illustrate the assessment using the proposed methods: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
@@ -206,7 +206,7 @@ In measurement agreement analysis, a typical analysis includes the Bland-Altman 
 The assessment of \ac{atc} is a field of active research in recent years~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
 This article focuses on pure assessment of \ac{atc} accompanying traditional scores.
- we formalize \ac{atc} and present different variants of assessment of \ac{atc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
+ We formalize \ac{atc} and present different variants of assessment of \ac{atc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
 We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals (see Section~\ref{subsec:aatc-noise} and ~\ref{subsec:aatc-cond-prob}).
 We extend the concept of assessment of \ac{atc} to probabilistic predictions in Section~\ref{subsec:aatc-probabilistic}.
 The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement, and, thus, provide blueprints for future assessments.
@@ -301,19 +301,15 @@ A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{P
 In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
+Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot and
+Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant graph for simulated data with $T=1461$, for example, four years of daily data.
 
-Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
-Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
-Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant graph for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
-The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
-
-The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
 It can be extended by including information on the time index in the point color to reveal effects over time.
 In Figure~\ref{fig:trending_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, more recent values; $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
 However, four-quadrant plots become crowded for larger datasets, and sequential information on the differences is complex to assess thoroughly.
 
-There are other visualization techniques, such as polar plots or the Bland-Altmann analysis.
-However, they lack the four-quadrant plot's clarity and intuition without adding more information on trending~\citep{Saugel2015}.
+The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
+Other visualization techniques, such as polar plots, lack the four-quadrant plot's clarity and intuition without adding more information on the \ac{atc}~\citep{Saugel2015}.
 
 \begin{figure}
 \centering
@@ -333,21 +329,21 @@ However, they lack the four-quadrant plot's clarity and intuition without adding
 \includegraphics{plots/illustrative_examples/4q_excl_cross}
 \caption{Four-quadrant plot with cross-shaped exclusion area.}\label{fig:trending_basic_4q_excl_cross}
 \end{subfigure}%
-\caption{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas.}
+\caption{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas. In Figure~\ref{fig:trending_basic_4q}, points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.}
 \label{fig:trending_4q}
 \end{figure}
 
-\subsection{Trending ratio and other measures}\label{subsec:trending-measures}
+\subsection{ATC ratio and other measures}\label{subsec:atc-measures}
 
-Analyzing the number of points in the green versus red quadrants is a standard approach in the trending assessment of measurement data~\citep{Critchley2010,Saugel2015}.
-With that, we mainly estimate the probability of trending $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes.
+Analyzing the number of points in the green versus red quadrants is a standard approach in the \ac{atc} assessment of measurement data~\citep{Critchley2010,Saugel2015}.
+With that, we mainly estimate the probability of a correctly predicted change direction, $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes.
 Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$), the standard estimator for $P(\diffxrv \diffyrv > 0)$ is
 \begin{equation}
     \acc (\diffx, \diffy) \coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffxt \diffyt > 0}}{\card{T}}.\label{eq:acc}
 \end{equation}
 Here, the numerator counts the number of same-sign-changes, while the denominator is the number of considered pairs $(\diffyt, \diffxt)$.
 Thus, $\acc$ is the proportion of concordant changes on all changes.
-We refer to this estimator as the \textit{trending ratio} of the prediction and set $\mathcal{T} = \{l, \dots, T\}$.
+We refer to this estimator as the \textit{ATC ratio} of the prediction and set $\mathcal{T} = \{l, \dots, T\}$.
 Visually, the measure computes the fraction of points in the upper right or lower left quadrant.
 Similar evaluations are used in other scientific areas, for example, with contingency tables in dichotomous forecasting or with confusion matrices in classification analysis~\citetext{see, e.g., the introductions in \citealt{James2021}, Ch. 4, and \citealp{Jolliffe2012}, Ch. 3}.
 Many other measures can be adapted from those fields to deepen the trending analysis.
@@ -359,18 +355,16 @@ They are defined as
 \end{align}
 They estimate the probability of a correct prediction of the direction of change, given that the signal direction is positive or negative, that is, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0)$.
 
-Rolling estimates of the above measures detect changes in performance over time and can give a sharper estimate of the current trending ability.
-For the trending ratio, a rolling estimate with a backward-looking window of length $w$ at time $t$ is given by
+Rolling estimates of the above measures detect changes in performance over time and can give a sharper estimate of the current \ac{atc}.
+For the ATC ratio, a rolling estimate with a backward-looking window of length $w$ at time $t$ is given by
 \begin{equation*}
     \acc_{t; w} (\diffx, \diffy) \coloneqq \frac{\sum_{t^\star = t-w + 1}^{t} \ind{\diffxt[t^\star] \diffyt[t^\star] > 0}}{w}.\label{eq:acc_rolling}
 \end{equation*}
-Backward-looking windows estimate the trending ratio at a time $t$ considering the $w$ time steps before time $t$.
+Backward-looking windows estimate the ATC ratio at a time $t$ considering the $w$ time steps before time $t$.
 The window length $w$ controls the smoothing of the estimate; a larger $w$ gives smoother results, while a small $w$ focuses on local variations.
-Plotting the rolling estimates for $t = w-1, \dots, T$ yields an estimate of the trending ability over time.
-Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the trending ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
-Thus, the yearly course of the prediction trending ratio can be detected.
-The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
-While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sample_color}, illustrate ongoing overall drifts in the trending ability, seasonal aspects are only revealed in rolling window estimates.
+Plotting the rolling estimates for $t = w-1, \dots, T$ yields an estimate of the ATC ratio over time.
+Figure~\ref{fig:trending_ratio_time_series} depicts a rolling window estimate of the ATC ratio for the simulated data of Figures~\ref{fig:trending_basic_4q_sample} and~\ref{fig:trending_basic_4q_sample_color}.
+While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sample_color}, illustrate ongoing overall drifts in the \ac{atc}, seasonal aspects are only revealed in rolling window estimates.
 
 
 \begin{figure}
@@ -387,7 +381,9 @@ While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sampl
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series.pdf}
     \caption{Rolling estimate of the trending ratio over time with window length 91. }\label{fig:trending_ratio_time_series}
     \end{subfigure}%
-    \caption[Visualizations of the four-quadrant plot for data with a time-varying trending ratio.]{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward.}
+    \caption[Visualizations of the four-quadrant plot for data with a time-varying trending ratio.]{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward. Thus, the yearly course of the ATC ratio can be detected.
+The trending ability of the signal has a strong sinus-shaped seasonality with a trending ability peak after a quarter of a year and a low point after three quarters.
+}
 \end{figure}
 
 \subsection{Accounting for noise and non-informative small changes and bootstrapping confidence intervals}\label{subsec:aatc-noise}
@@ -398,7 +394,7 @@ Suppose noise or non-systematic effects are present in the true values or predic
 In that case, a point's assignment to a quadrant can be driven by noise instead of a systematic trending ability of the signal.
 This is more likely for points with at least one small coordinate.
 
-Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:trending-measures} accounting for such effects~\citep[see, e.g.,][]{Saugel2015,Critchley2010}.
+Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:atc-measures} accounting for such effects~\citep[see, e.g.,][]{Saugel2015,Critchley2010}.
 Points within that area are omitted in the four-quadrant plot and the calculation of the measures.
 In particular, the prediction models are likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
 We denote the measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} accounting for an exclusion area $E$ by
@@ -939,11 +935,11 @@ The evaluation of trending can accompany other evaluation techniques, such as me
 
 Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:aatc-four-quadrant-plot}).
 The trending ratio, the ratio of change directions predicted correctly over the total number of changes, numerically evaluates trending.
-Visually, it is the proportion of concordant points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
+Visually, it is the proportion of concordant points in a four-quadrant plot (see Section~\ref{subsec:atc-measures}).
 The positive and negative trending ratios analyze the trending ratio given whether the predicted change is positive or negative, respectively.
 Thus, they quantify the credibility of the respective predictions.
 The applications of Section~\ref{sec:application_measurement} show that models, in general, indeed have different positive and negative trending abilities and that they add valuable information to the trending ratio.
-In the applications, the bootstrap confidence intervals of Section~\ref{subsec:trending-measures} are used to quantify the estimation uncertainty of the trending measures.
+In the applications, the bootstrap confidence intervals of Section~\ref{subsec:atc-measures} are used to quantify the estimation uncertainty of the trending measures.
 The width of the confidence intervals is around 0.1 for around 100 samples, while it is around 0.01 for 8000 samples.
 For reasonably well-trending models, 100 samples are thus sufficient to differentiate from random guessing or to assess models with high trending differences.
 
@@ -963,7 +959,7 @@ In the estimation, we did not consider sequential correlation.
 The computation of differences is a standard procedure in time series analysis to remove sequential dependence, but, in general, some could remain, and the estimators could account for it.
 Similarly, the bootstrap confidence intervals could be adapted to consider sequential correlation using time-series bootstrap methods~\citep{Hardle2003,Kreiss2012}.
 
-The estimators of Section~\ref{subsec:trending-measures} do not account for imbalances in the number of observed positive and negative changes \citep[for a theoretical analysis, see][Chapter 3]{Jolliffe2012}.
+The estimators of Section~\ref{subsec:atc-measures} do not account for imbalances in the number of observed positive and negative changes \citep[for a theoretical analysis, see][Chapter 3]{Jolliffe2012}.
 Significant differences in the number of observed positive and negative changes are unlikely in the trending setting, as $\diffy$ is obtained from differencing time series data and occur, for example, if the true value contains a few high jumps in one direction and many smaller jumps in the other.
 However, if the number of positive and negative observed changes differs widely, unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \citep{Cohen1960} or those listed in \citet[Table 3.3]{Jolliffe2012}.
