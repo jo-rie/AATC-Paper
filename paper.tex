@@ -164,15 +164,16 @@
 %\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author*[1]{Jonas Rieger}\email{jonas.rieger@kit.edu}
 \author[1]{Bolin Liu}
+\author[2]{Bernd Saugel}
 \author[1]{Oliver Grothe}
 
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 
-\abstract{ % Weniger We; Erste zwei Sätze kombinieren
+\abstract{ 
 In addition to measurements, nowcasts, or forecasts being numerically precise, it is essential how well they reflect changes in the underlying values.
-In this article, we focus on evaluating the ability to predict the correct direction of changes, which we refer to as the ability to track changes. 
+In this article, we focus on evaluating the ability to predict the correct direction of changes, which we refer to as the ability to track changes (ATC). 
 We present visual techniques and quantitative measures to assess this ability and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
-Worked through examples illustrate the assessment using the proposed methods: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
+Worked-through examples illustrate the assessment using the proposed methods: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
 }
 
 \keywords{}
@@ -198,9 +199,8 @@ In forecasting and nowcasting, the evaluation is based on accuracy measures such
 None of them assesses the method's \ac{atc}.
 In a prediction competition on armed conflicts, the \ac{aatc} recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
 However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
-This paper focuses on pure \ac{aatc} accompanying traditional scores.
-The \ac{aatc} adds valuable information on the methods' capability of predicting the development of the target value, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
-% Measurement noch integrieren
+
+% Measurement weniger abgetrennt
 
 Measurement is more technical and aims to obtain accurate and reliable data about the current state of a system based on sensors.
 A parameter or value can be measured regularly over a certain period to evaluate the system's development.
@@ -208,6 +208,12 @@ When introducing new, cheaper, simpler, or less invasive measurement methods, th
 Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods~\citep{Lin1989, Koo2016} in addition to paired t-tests to determine systematic differences between two measurement series~\citep{Watson2010}.
 Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value~\citep{Bland1986}.
 The \ac{aatc} is a field of active research in recent years~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
+
+% AATC weg als Abkürzung
+
+
+This paper focuses on pure \ac{aatc} accompanying traditional scores.
+The \ac{aatc} adds valuable information on the methods' capability of predicting the development of the target value, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
 
 In this article, we formalize \ac{atc} and present different variants of \acs{aatc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
 We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals (see Section~\ref{subsec:aatc-noise} and ~\ref{subsec:aatc-cond-prob}).
