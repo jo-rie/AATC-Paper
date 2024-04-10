@@ -44,7 +44,7 @@
 \usepackage[style=authoryear,backend=biber,natbib=true]{biblatex}
 %\usepackage{natbib}
 %\bibliographystyle{
-\addbibresource{library.bib}
+%\addbibresource{library.bib}
 \addbibresource{library-jonas.bib}
 \usepackage{csquotes}
 \usepackage[shortcuts]{extdash} % For Hyphens in English
@@ -82,6 +82,8 @@
 \DeclareAcronym{rmse}{short=RMSE, long=root mean square error}
 \DeclareAcronym{mae}{short=MAE, long=mean absolute error}
 \DeclareAcronym{tadda}{short=TADDA, long=targeted absolute deviation with direction augmentation}
+\DeclareAcronym{atc}{short=ATC, long=ability to track changes}
+\DeclareAcronym{aatc}{short=AATC, long=assessment of the ability to track changes}
 
 
 %%%% ---- Own Commands
@@ -158,7 +160,7 @@
 
 \begin{document}
 
-\title{Trending assessment for nowcasts, measurements, and forecasts}
+\title{Assessment of the ability to track changes for nowcasts, measurements, and forecasts}
 %\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author*[1]{Jonas Rieger}\email{jonas.rieger@kit.edu}
 \author[1]{Bolin Liu}
@@ -167,13 +169,13 @@
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 
 \abstract{
-An intuitive and easily interpretable information on a quantity measured over time is whether it increases or decreases.
-We refer to the ability to accurately predict, nowcast, or measure the direction of change of a true variable (value???) as "trending". 
-Trending describes the ability of a method to measure or predict the right direction [and magnitude???] of changes in a true variable (value???). Currently, evaluating signals to assess trending  is focused on averaging over local deviation measures. We here present techniques to assess trending as accompanying assessments that consider whether the development direction [direction of change???] fits the quantity of interest. 
-We formalize the concept of trending for all application areas and present quantitative measures. 
-Using bootstrap confidence intervals and exclusion areas, we provide extensions for noisy data and estimation uncertainty.
-We review and present new visualization techniques to assess the local trending behavior and enlarge the scope to probabilistic nowcasts and forecasts. 
-We exemplarily apply the methods to three medical or healthcare problems: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
+Measurements, nowcasts, and forecasts aim to indicate a value of interest's change through direction and magnitude.
+The direction of change alone is easily and intuitively interpretable information on the development and can be an early sign of regime switching.
+We refer to a measurement's, nowcast's, or forecast's ability to predict the right direction of development as the ability to track changes.
+We present techniques to assess this ability as accompanying evaluation in all application areas, including quantitative measures.
+We provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
+We review and present new visualization techniques to assess the local ability to track changes and enlarge the scope to probabilistic nowcasts and forecasts.
+We exemplify the methods for three medical or healthcare problems: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
 }
 
 \keywords{}
@@ -183,69 +185,52 @@ We exemplarily apply the methods to three medical or healthcare problems: COVID-
 
 
 
-\section{Introduction}\label{sec:trending-introduction}
+\section{Introduction}\label{sec:atc-introduction}
 
 The evaluation of measurement, prediction, and forecasting methods becomes increasingly important and sophisticated as technologies and data availability enable their application in more and more fields.
-Conventionally, differences between predictions (or measurements) and target variables (values???), such as the \ac{rmse} or \ac{mae}, form the basis of method evaluation.
-These measures do not consider trending, that is, the ability of a method to measure or predict the right direction [and magnitude???] of changes in a true variable (value???). 
-However, the information about an increase or decrease in a true variable (value???) is crucial to detect changes in underlying processes.
-In the following, we provide a more specific overview of the characteristics and current evaluation schemes of the three application fields, forecasting, nowcasting, and measurement, and highlight why trending evaluation is highly relevant in the respective fields.
+Although the three areas differ in the framework and methods used, they share the goal of predicting an unknown value, and thus, similar techniques can be used in the evaluation.
 
 Forecasting methods predict the future based on historical data, patterns, and exogenous factors.
-In medicine, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in][]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008,Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
+In medicine, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in][]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008, Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
 The forecast is computed based on the current value of the quantity of interest and an estimate of the development until the target time.
-In the current practice, a forecasting method is usually evaluated in terms of its prediction accuracy, measuring the deviation of the prediction from the actual outcome of the target variable.
-Popular measures are scale-dependent measures such as the \ac{rmse}, measures based on percentage errors such as the root mean squared percentage error, or probabilistic scoring rules~\citep[see the review in][]{hyndman2006another}.
-They are not capable of assessing the trending ability discussed above.
-In a prediction competition on armed conflicts, trending recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with a trending component for evaluation.
+Methodologically evolved from forecasting~\citep{Browning1989}, nowcasting methods focus on predictions for the present, the immediate future, and the recent past~\citep{Banbura2013, WorldMeteorologicalOrganizationWMO2017}.
+Nowcasting methods use high-frequency indicators related to the target value and estimate the value of a target value for a specific time based on current preliminary measurements, which are finalized with a considerable delay.
+Thus, it focuses on ongoing predictions due to updating information for the same time~\citep{Castle2017}.
+In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
+In forecasting and nowcasting, the evaluation is based on accuracy measures such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
+None of them assesses the method's \ac{atc}.
+In a prediction competition on armed conflicts, the \ac{aatc} recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
 However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
-This paper focuses on pure trending evaluation that accompanies traditional scores.
-
-Methodologically evolved from forecasting, nowcasting methods focus on predictions for the present, the immediate future, and the recent past~\citep{banbura2013now}.
-Nowcasting has its origins in meteorology, and the methods were initially developed to describe the current state of the weather in detail and to predict the expected change on a time scale of a few hours~\citep{browning1989nowcasting,schmid2019nowcasting}.
-In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{wu2021nowcasting} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{gunther2021nowcasting}.
-Nowcasting methods use high-frequency indicators related to the target variable and estimate the value of a target variable for a specific time based on current preliminary measurements, which are finalized with a considerable time delay.
-Thus, the nowcasts can produce early and ongoing estimates for the target variable during the relevant period~\citep{castle2017forecasting}.
-Like forecasts, nowcasts are often evaluated and compared in the literature based on performance measures such as the \ac{rmse}~\citep{gunther2021nowcasting} or probabilistic scoring rules~\citep{Wolffram2023}.
-The aspect of trending is not considered in the literature to the best of our knowledge.
-However, trending evaluation adds valuable information on the methods' capability of predicting the development of the target variable, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
-The epidemic's development, in turn, can be the foundation of decisions on introducing or canceling policy measures.
+This paper focuses on pure \ac{aatc} accompanying traditional scores.
+The \ac{aatc} adds valuable information on the methods' capability of predicting the development of the target value, for example, the number of cases of an epidemic, where increases can be an early sign of the beginning of a wave.
 
 Measurement is more technical and aims to obtain accurate and reliable data about the current state of a system based on sensors.
-A parameter or variable can be measured regularly over a certain period to evaluate the system's development.
+A parameter or value can be measured regularly over a certain period to evaluate the system's development.
 When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as various individuals or environments.
-Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods~\citep{lawrence1989concordance,koo2016guideline} in addition to paired t-tests to determine systematic differences between two measurement series~\citep{watson2010method}.
-Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value~\citep{bland1986statistical}.
-Trending considerations, that is, the consistency of the test method's development with the gold standard, is a field of active research in the last years~\citep{Saugel2015,saugel2018error,hiraishi2021concordance}.
+Various indices, such as the interclass correlation coefficient or Lin's concordance correlation, have been proposed to check the reproducibility of the measurement or to compare different measurement methods~\citep{Lin1989, Koo2016} in addition to paired t-tests to determine systematic differences between two measurement series~\citep{Watson2010}.
+Graphical tools, such as the Bland-Altman diagram, are used to visualize the differences between the methods in relation to their mean value~\citep{Bland1986}.
+The \ac{aatc} is a field of active research in recent years~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
-In this article, we formalize trending and present different variants of trending measures that consider either noiseless data or data with noise and small non-informative changes.
-We introduce the conditional trending plot, a new graphical method for assessing local trending behavior, and review bootstrap methods for calculating confidence intervals.
-We extend the concept of trending to probabilistic predictions.
-The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement.
-The ready-to-use code for trending evaluation from the applications is available on ... .
-The trending evaluation methods are intended to complement the current evaluation and reveal additional information on the methods considered.
-
-The remainder of this paper is structured as follows.
-Section~\ref{sec:trending} formalizes trending and investigates several extensions, such as noise-aware methods, confidence intervals, and probabilistic forecasts and nowcasts.
-We introduce a new graphical method for evaluating trending, the conditional trending plot, which can simultaneously assess different intervals and asymmetries.
-In Section~\ref{sec:application}, we show the results of applying our method to several practical examples from measurement, forecasting, and nowcasting.
-Hence, we provide blueprints for applying trending evaluation in practice and make remarks on interpreting the measures.
-We conclude the paper in Section~\ref{sec:trending-conclusion}.
+In this article, we formalize \ac{atc} and present different variants of \acs{aatc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
+We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals (see Section~\ref{subsec:aatc-noise} and ~\ref{subsec:aatc-cond-prob}).
+We extend the concept of \ac{aatc} to probabilistic predictions in Section~\ref{subsec:aatc-probabilistic}.
+The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement, and, thus, provide blueprints for future assessments.
+The ready-to-use code for \ac{aatc} from the applications is available on [LINK WILL BE INSERTED].
 
 
-\section{Trending assessment}\label{sec:trending}
+\section{\ac{aatc}}\label{sec:aatc}
 
-
-As discussed in Section~\ref{sec:trending-introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by a measurement, a nowcast, or a forecast.
+% Einleitung weglassen; näher an Definition von oben.
+As discussed in Section~\ref{sec:atc-introduction}, the term \enquote{trending} denotes the alignment of a detected true development with the development indicated by a measurement, a nowcast, or a forecast.
 In this section, we want to specify trending and define different methods of measuring and visualizing trending.
 In general, trending can be assessed for different horizons $l$ separately, and the considered horizons' relevance must be determined based on the task.
 Throughout the section, we call a measurement, nowcast, or forecast a \textit{prediction} or \textit{signal} whenever the application area is irrelevant.
 Before introducing measures to evaluate trending, we remark on calculating the predicted change and notation in Section~\ref{subsec:notation}.
 Section~\ref{subsec:trending-four-quadrant-plot} introduces trending basics and visualizes trending in a synthetic example.
 In Section~\ref{subsec:trending-measures}, various methods from other disciplines and tasks are applied and examined.
-The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:trending-noise}, and bootstrap methods for computing confidence intervals for the measures in the previous sections are briefly introduced.
-Section~\ref{subsec:trending-cond-prob} introduces a new graphical method for local trending assessment.
-Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:trending-probabilistic}.
+The approaches are extended to account for noise and non-systematic effects in Section~\ref{subsec:aatc-noise}, and bootstrap methods for computing confidence intervals for the measures in the previous sections are briefly introduced.
+Section~\ref{subsec:aatc-cond-prob} introduces a new graphical method for local trending assessment.
+Trending assessment for probabilistic nowcasts and forecasts is treated in Section~\ref{subsec:aatc-probabilistic}.
 
 \subsection{Computing changes and notation}\label{subsec:notation}
 
@@ -329,7 +314,7 @@ Formally, the trending assessment is the same for all three application areas, g
 In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
 As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
-A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{perrino1998intraoperative,Saugel2015}.
+A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{Perrino1998,Saugel2015}.
 In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct trending for the respective time step, whereas points in the remaining red quadrants show incorrect predicted changes.
@@ -423,7 +408,7 @@ While colored four-quadrant plots, as in Figure~\ref{fig:trending_basic_4q_sampl
     \caption[Visualizations of the four-quadrant plot for data with a time-varying trending ratio.]{Visualizations for data with a time-varying trending ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-trending-data-generation}). The trending ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the trending ratio becomes visible in Figure~\ref{fig:trending_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward.}
 \end{figure}
 
-\subsection{Accounting for noise and non-informative small changes and bootstrapping confidence intervals}\label{subsec:trending-noise}
+\subsection{Accounting for noise and non-informative small changes and bootstrapping confidence intervals}\label{subsec:aatc-noise}
 
 The above measures can be extended to account for information on the point's location within the quadrant.
 For example, points close to the zero point may have less explanatory power or may be less reliable than points far away from zero on one of the diagonals.
@@ -466,7 +451,7 @@ Based on the derived \enquote{new} samples of the statistic, the confidence inte
 We use the \ac{bca} approach for bootstrapping in the following, as it holds the confidence level for small and large samples and has a moderate computation time (see the simulation study in Appendix~\ref{subsec:appendix-trending-bootstrap}).
 
 
-\subsection{The conditional trending plot}\label{subsec:trending-cond-prob}
+\subsection{The conditional trending plot}\label{subsec:aatc-cond-prob}
 
 The estimators described above give information on the probabilities $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin E)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin E)$.
 A still finer analysis might be gained by considering the conditional distribution $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ to assess the trending ability of a prediction for a certain change size $\diffxrv = \xcond$ of the signal.
@@ -491,7 +476,7 @@ We refer to the plot as a \textit{conditional trending plot}.
 
 
 
-\subsection{Probabilistic evaluation}\label{subsec:trending-probabilistic}
+\subsection{Probabilistic evaluation}\label{subsec:aatc-probabilistic}
 
 In nowcasting and forecasting, probabilistic predictions have become more prevalent in recent years (see, for example, Sections~\ref{sec:application-covid} and~\ref{sec:application-eda} or the review in~\cite{Gneiting2014}).
 In this section, we develop trending measures for probabilistic signals.
@@ -555,7 +540,7 @@ In the first application in Section~\ref{sec:application-covid}, we consider the
 Section~\ref{sec:application-eda} applies the trending assessment to forecast methods for the number of arrivals in a large emergency department.
 In the last application in Section~\ref{sec:application_measurement}, we consider the trending assessment of non-invasive blood pressure measurements compared to invasive blood pressure measurements.
 
-The examples illustrate the use of the methods of Section~\ref{sec:trending} and yield further insights into the measures and plots.
+The examples illustrate the use of the methods of Section~\ref{sec:aatc} and yield further insights into the measures and plots.
 All code used to generate the analysis is available online.
 
 
@@ -627,7 +612,7 @@ Asymmetries are especially relevant for assessing whether some models are better
 
 \subsubsection*{Results}
 
-In the following, we apply the trending assessment of Section~\ref{sec:trending} to the nowcasts of the seven-day hospitalization rate.
+In the following, we apply the trending assessment of Section~\ref{sec:aatc} to the nowcasts of the seven-day hospitalization rate.
 We report the trending for the horizons one, seven, and 14 days.
 While horizon one assesses the short-term trending, horizons seven and 14 consider the medium-term trending.
 The horizons seven and 14 are particularly interesting, reflecting a usual period until new policy changes are taken.
@@ -980,10 +965,10 @@ In the applications, the bootstrap confidence intervals of Section~\ref{subsec:t
 The width of the confidence intervals is around 0.1 for around 100 samples, while it is around 0.01 for 8000 samples.
 For reasonably well-trending models, 100 samples are thus sufficient to differentiate from random guessing or to assess models with high trending differences.
 
-A conditional trending plot visualizes the probability of correct trending over the predicted change of the signal (see Section~\ref{subsec:trending-cond-prob}).
+A conditional trending plot visualizes the probability of correct trending over the predicted change of the signal (see Section~\ref{subsec:aatc-cond-prob}).
 It is based on a multivariate \acf{kde} of predicted and observed change.
 In the application, the conditional trending plot gives reasonable insights into the local effects of the trending ability.
-Section~\ref{subsec:trending-probabilistic} adapts measures of probabilistic forecast evaluation to the trending assessment of probabilistic forecasts and nowcasts.
+Section~\ref{subsec:aatc-probabilistic} adapts measures of probabilistic forecast evaluation to the trending assessment of probabilistic forecasts and nowcasts.
 The \acf{bs} as numerical assessment of probabilistic trending is introduced, and reliability diagrams are used to visualize the local trending ability of probabilistic forecasts.
 
 The methods of trending assessment are applied to COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements in Section~\ref{sec:application}.
@@ -1033,9 +1018,9 @@ Not applicable.
 
 \appendix
 
-\section{Additional material on Section~\ref{sec:trending}}\label{sec:appendix-trending}
+\section{Additional material on Section~\ref{sec:aatc}}\label{sec:appendix-trending}
 
-\subsection{Data generation for Section~\ref{sec:trending}}\label{subsec:app-trending-data-generation}
+\subsection{Data generation for Section~\ref{sec:aatc}}\label{subsec:app-trending-data-generation}
 
 The first dataset is generated by sequentially generating $\diffx$ and $\diffy$.
 First, the $\diffxt$ are sampled as a sum of a standard normal random number and a uniform random number on $(-10, 10)$:
@@ -1142,7 +1127,7 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
     \includegraphics{plots/illustrative_examples/boxplot_comp_time_normal}
         \caption{Second dataset}
     \end{subfigure}
-    \caption[Boxplot of the computation time of the different bootstrapping methods and data set sizes $T$.]{Boxplot of the computation time of the different bootstrapping methods and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
+    \caption[Boxplot of the computation time for different bootstrapping methods and data set sizes.]{Boxplot of the computation time for different bootstrapping methods and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
     \label{fig:trending_bootstrap_time}
 \end{figure}
 
@@ -1173,7 +1158,7 @@ The rule-of-thumb and cross-validation maximum likelihood methods yield reasonab
 
 \subsection{Probabilistic trending evaluation}\label{subsec:app-probabilistic-trending-evaluation}
 
-Section~\ref{subsec:trending-probabilistic} outlines the probabilistic evaluation of trending for nowcasts and forecasts and specifies the computation for predictions in terms of a \ac{cdf} and known true values.
+Section~\ref{subsec:aatc-probabilistic} outlines the probabilistic evaluation of trending for nowcasts and forecasts and specifies the computation for predictions in terms of a \ac{cdf} and known true values.
 Here, we outline the computation for quantile forecasts and probabilistic true values.
 If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
 Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
@@ -1216,7 +1201,7 @@ If no \acp{pdf} are available, they can be estimated from the \ac{cdf} or quanti
 This approach is applied in Section~\ref{sec:application-covid}, as the true values are published with a delay of more than 80 days, and the nowcasts are given as quantiles.
 
 
-\section{Additional material on Section~\ref{sec:application-covid}}\label{sec:appendix-application-covid}
+\section{Additional results for Section~\ref{sec:application-covid}}\label{sec:appendix-application-covid}
 
 
 \begin{table}
@@ -1262,7 +1247,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         \input{plots/covid_nowcast/30_trending_ratios_lag_14}
         \caption{14 days.}
     \end{subtable}
-    \caption[Trending ratios for the models with and without exclusion areas for the horizon one and 14 days in Covid nowcasting.]{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models with and without exclusion areas for the horizon 1 and 14 days in Covid nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height of 10\% of the quantile of the absolute values of nowcast and true values. }
+    \caption[Trending ratios for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting.]{Trending ratio $\acc$, positive trending ratio $\accp$, and negative trending ratio $\accm$ for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height of 10\% of the quantile of the absolute values of nowcast and true values. }
     \label{tab:app-covid-trending-ratios-lag-1-14}
 \end{table}
 
