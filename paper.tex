@@ -83,7 +83,7 @@
 \DeclareAcronym{mae}{short=MAE, long=mean absolute error}
 \DeclareAcronym{tadda}{short=TADDA, long=targeted absolute deviation with direction augmentation}
 \DeclareAcronym{atc}{short=ATC, long=ability to track changes}
-\DeclareAcronym{mnf}{short=MNF, long=measure}
+\DeclareAcronym{mnf}{short=MNF, long={measurement, nowcast, or forecast}}
 
 
 %%%% ---- Own Commands
@@ -160,7 +160,7 @@
 
 \begin{document}
 
-\title{Assessment of the ability to track changes for nowcasts, measurements, and forecasts}
+\title{Assessment of the ability to track changes for measurements, nowcasts, and forecasts}
 %\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author*[1]{Jonas Rieger}\email{jonas.rieger@kit.edu}
 \author[1]{Bolin Liu}
@@ -213,7 +213,7 @@ The methods are applied to three applications from the abovementioned fields: CO
 The ready-to-use code for the assessment of \ac{atc} from the applications is available on [LINK WILL BE INSERTED].
 
 
-\section{Assessment of the \acf{atc}}\label{sec:aatc}
+\section{Assessment of the ability to track changes (ATC)}\label{sec:aatc}
 
 % \subsection{Computing changes and notation}\label{subsec:notation}
 
@@ -243,14 +243,14 @@ $ \\
         Forecasting & $ \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l}$\\
         \bottomrule
     \end{tabular}
-    \caption[Computation of the predicted change in the different applications.]{Computation of the predicted change in the different applications. For nowcasting and forecasting, signals $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. For measurement, $x_t$ denotes the test device measurement at time $t$.}
+    \caption[Computation of the predicted change in the different applications.]{Computation of the predicted change in the different applications. For nowcasting and forecasting, $x_{t | \tau}$ refer to values issued at $\tau$ with a target time $t$. For measurement, $x_t$ denotes the test device measurement at time $t$.}
     \label{tab:notation}
 \end{table}
 
 The definition of the \textit{predicted} change depends on the context;
 Table~\ref{tab:notation} summarizes the notation for the different signal types and the computation of the predicted change.
 For nowcasting, let $x_{t | \tau}$ denote the nowcast for time $t$ computed with the knowledge of time $\tau$.
-We call $t$ the \textit{forecast time} and $\tau$ the \textit{issue time}.
+We call $t$ the \textit{target time} and $\tau$ the \textit{issue time}.
 The predicted change is computed by
 \begin{equation}
   \diffxl =
@@ -263,7 +263,7 @@ When computing the predicted change of a nowcast for a time $t$, we use the best
 If the true value $y_{t-l}$ is known at time $t$, the predicted change is computed by the difference between the nowcast and the true value, as $y_{t-l}$ is also known by the nowcaster and incorporated into the nowcast.
 Through the computation in Equation~\eqref{eq:diffxl_nowcasting}, the predicted change can be computed with the knowledge of the nowcaster at time $t$.
 
-The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for forecast time $t$ and issue time $\tau$.
+The notation is similar for forecasting: Let $x_{t | \tau}$ denote the forecast for target time $t$ and issue time $\tau$.
 The predicted change is computed by
 \begin{equation} \diffxl = (x_{t|t-l} - y_{t-l})^T_{t=l}\label{eq:diffxl_forecasting}
 \end{equation}
@@ -291,12 +291,12 @@ The data pair is excluded even if the corresponding nowcast or forecast is avail
 
 
 
-\subsection{Basics of trending and four-quadrant plots}\label{subsec:trending-four-quadrant-plot}
+\subsection{The four-quadrant plot}\label{subsec:aatc-four-quadrant-plot}
 
-Formally, the trending assessment is the same for all three application areas, given the notation for the respective application of Section~\ref{subsec:notation}.
-In the following, we omit the difference horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
-As noted above, a signal's trending is perfect if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
-Consequently, when evaluating the trending, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
+Formally, the assessment of \ac{atc} is the same for \ac{mnf}, given the notation for the respective application of Section~\ref{subsec:notation}.
+In the following, we omit the horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
+The \ac{atc} is maximal if all the change directions are predicted correctly; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
+Consequently, when assessing the \ac{atc}, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
 A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{Perrino1998,Saugel2015}.
 In a four-quadrant plot, the occured changes are plotted with the predicted changes, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
@@ -305,7 +305,6 @@ Points in the green upper right and lower left quadrants reflect a correct trend
 Figure~\ref{fig:trending_basic_4q} displays a basic four-quadrant plot.
 Points 2, 3, 5, and 6 show trending, whereas points 1, 4, and 7 count for anti-trending behavior.
 Figure~\ref{fig:trending_basic_4q_sample} shows a four-quadrant graph for a more extensive simulated data set with $T=1461$, for example, four years of daily data.
-Data generation is described in Appendix~\ref{subsec:app-trending-data-generation}.
 The four-quadrant plot resembles a butterfly-like shape, with more data in the upper right and lower left quadrants than in the remaining quadrants.
 
 The four-quadrant plot is intuitive to interpret, and the magnitude and direction of change are shown simultaneously.
@@ -334,7 +333,7 @@ However, they lack the four-quadrant plot's clarity and intuition without adding
 \includegraphics{plots/illustrative_examples/4q_excl_cross}
 \caption{Four-quadrant plot with cross-shaped exclusion area.}\label{fig:trending_basic_4q_excl_cross}
 \end{subfigure}%
-\caption{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas. }
+\caption{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas.}
 \label{fig:trending_4q}
 \end{figure}
 
@@ -472,7 +471,7 @@ The \ac{cdf} is the most general and can be used to derive the others, given the
 Let us first assume that the prediction is a \ac{cdf}, and that $y_{t-l}$ is known at time $t$ (see Table~\ref{tab:notation}).
 In Appendix~\ref{subsec:app-probabilistic-trending-evaluation}, we extend the analysis for predictions given as quantiles or unknown true values.
 
-Let for a forecast $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for forecast time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
+Let for a forecast $F_{t | t-l} (x)$ denote the predicted \ac{cdf} for target time $t$ and issue time $t - l$, where the index is analogous to the point prediction notation of Section~\ref{subsec:notation}.
 Thereby, $F_{t | t-l} (x)$ specifies the forecastes probability that the quantity of interest is at most $x$.
 For trending assessment, we compare the predicted probability of positive change, denoted by $p_t$, with the occurrence of positive changes.
 A positive change occurs for any value at $t$ larger than the true value $y_{t-l}$, as then the change compared to $y_{t-l}$ is positive.
@@ -938,7 +937,7 @@ In this paper, we examine various methods to analyze trending, that is, the stat
 While the computation of predicted change varies between the application areas measurement, nowcasting, and forecasting (see Section~\ref{subsec:notation}), the trending assessment using the computed predicted and observed change is similar.
 The evaluation of trending can accompany other evaluation techniques, such as measures of deviation or probabilistic scoring rules.
 
-Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:trending-four-quadrant-plot}).
+Four-quadrant plots facilitate the visual inspection of the trending ability for a signal (see Section~\ref{subsec:aatc-four-quadrant-plot}).
 The trending ratio, the ratio of change directions predicted correctly over the total number of changes, numerically evaluates trending.
 Visually, it is the proportion of concordant points in a four-quadrant plot (see Section~\ref{subsec:trending-measures}).
 The positive and negative trending ratios analyze the trending ratio given whether the predicted change is positive or negative, respectively.
@@ -1144,7 +1143,7 @@ The rule-of-thumb and cross-validation maximum likelihood methods yield reasonab
 Section~\ref{subsec:aatc-probabilistic} outlines the probabilistic evaluation of trending for nowcasts and forecasts and specifies the computation for predictions in terms of a \ac{cdf} and known true values.
 Here, we outline the computation for quantile forecasts and probabilistic true values.
 If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
-Let $q_p$ denote the quantiles for forecast time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
+Let $q_p$ denote the quantiles for target time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
 The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
 The probability $\pc_t$ of a \textit{negative} change is between $p^{\star}$ and $p^{\star} + 1/\pmax$ for
 \begin{equation*}
