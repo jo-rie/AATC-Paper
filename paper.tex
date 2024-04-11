@@ -1067,8 +1067,10 @@ The rule-of-thumb and cross-validation maximum likelihood methods yield reasonab
 
 \subsection{Probabilistic ATC evaluation}\label{subsec:app-probabilistic-atc-evaluation}
 
+
 Section~\ref{subsec:aatc-probabilistic} outlines the assessment of probabilistic \ac{atc} for nowcasts and forecasts and specifies the computation for predictions in terms of a \ac{cdf} and known true values.
-Here, we outline the computation for quantile forecasts and probabilistic true values.
+Here, we outline the computation for quantile forecasts and yet unknown, probabilistic true values.
+
 If forecasts or nowcasts are given as quantiles, $p_t$ can be determined by interpolations among the quantiles.
 Let $q_p$ denote the quantiles for target time $t+l$ for even-spaced probabilities $p \in \{1/\pmax, \dots, (p-1) / \pmax\}$ ($\pmax \in \N \setminus \{1, 2\}$) and $y_t$ the true value at time $t$.
 The quantiles $q_p$ generally differ for each time step, but we omit an index here for ease of notation.
@@ -1081,7 +1083,7 @@ Under the assumption of a uniform distribution within the quantile interval, the
 \begin{equation*}
     \pc_t = \frac{y_t - q_{p^\star}}{\pmax (q_{p^{\star} + 1} - q_{p^{\star}})} + p^{\star}.
 \end{equation*}
-The approach does not assign probabilities for $y_t$ smaller than the smallest quantile $q_{1/p}$ or larger than the largest quantile.
+The approach does not yet assign probabilities for $y_t$ smaller than the smallest quantile $q_{1/p}$ or greater than the largest quantile.
 As a simple extension, we assume that the probability mass is uniformly distributed on an interval of the same length as the nearest interval specified by the quantiles.
 This yields
 \begin{equation*}
@@ -1172,7 +1174,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         \input{plots/covid_nowcast/30_trending_ratios_lag_14}
         \caption{14 days.}
     \end{subtable}
-    \caption[ATC ratios for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height of 10\% of the quantile of the absolute values of nowcast and true values. }
+    \caption[ATC ratios for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height to exclude the 10\%-quantile of the absolute values of nowcast or true values. }
     \label{tab:app-covid-atc-ratios-lag-1-14}
 \end{table}
 
