@@ -171,14 +171,14 @@
 \author[1]{Oliver Grothe}
 
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
-
+%TC:ignore
 \abstract{ 
 In addition to measurements, nowcasts, or forecasts being numerically precise, it is essential [to know] how well they reflect changes in the underlying values.
 In this article, we focus on evaluating the ability to predict the correct direction of changes, which we refer to as the ability to track changes (ATC). 
 We present visual techniques and quantitative measures to assess this ability and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
 Worked-through examples illustrate the assessment using the proposed methods: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
 }
-
+%TC:endignore
 \keywords{}
 
 \maketitle
@@ -941,7 +941,7 @@ Subsequently, the $\diffy$ are simulated for a constant \ac{atc} ratio $k$ by
     \diffyt = \diffxt \cdot n_t \cdot b_t,
 \end{equation*}
 where $n_t$ is a truncated normal distribution with mean one and standard deviation 0.5, truncated at 0, and $b_t$ is a symmetric Bernoulli random variable with parameter $k$.
-For a time-varying \ac{atc} ratio, the parameter $k$ is modified to have a wave-shape over time, that is,
+For a time-varying \ac{atc} ratio, the parameter $k$ is modified to have a wave-shape function over time, that is,
 \begin{equation*}
     k_t = 0.75 + \sin(t / 365.25 \cdot 2 \pi) / 4.
 \end{equation*}
@@ -987,7 +987,7 @@ The four-quadrant plots for the sample realizations of the data generation schem
 \subsection{Simulation study on bootstrapping confidence intervals}\label{subsec:appendix-aatc-bootstrap}
 
 
-We examine three methods for bootstrapping: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
+We examine three methods for bootstrapping for computing confidence intervals for the \ac{atc} ratio: the intuitive percentile and the more sophisticated basic and \ac{bca} method.
 In the \textit{percentile} approach, the confidence interval for the level $\alpha$ is built directly from the empirical distribution of the bootstrap estimators.
 The \textit{basic} approach computes the confidence interval based on the non-bootstrap estimate using the bootstrapped quantile deviations~\citep{Davison1997}.
 The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\citep{Efron1987}.
@@ -995,7 +995,7 @@ Typically, the percentile approach needs larger datasets and provides an easy an
 The basic approach balances these two objectives.
 We compare the approaches in a small synthetic data study on their small-dataset behavior and computation time.
 
-We vary the number of available time steps $T$ to be a typical time-series value, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
+We vary the number of time steps $T$ to take typical time-series values, such as 30 for daily data in a month, 52 for weekly data, 168, 365, 720, and 1024.
 The considered datasets are the first dataset with asymmetric dependence and the second dataset outlined in Appendix~\ref{subsec:app-ATC-data-generation}.
 In the calculations, the \verb|scipy| package's implementation of bootstrap confidence intervals is used~\citep{Virtanen2020}.
 The prescribed confidence level is 90 \%, and the number of bootstrap samples is $10,000$.
@@ -1043,7 +1043,7 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
 
 \subsection{Visualization of different bandwidth selectors in multivariate \ac{kde}}\label{subsec:appendix-kde}
 
-We examine the resulting conditional \ac{atc} plots for the three well-known selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\citep{Seabold2010} in Figure~\ref{fig:atc-cond-prob-bw}.
+We examine the resulting conditional \ac{atc} plots for the three well-known \ac{kde} bandwidth selectors, rule-of-thumb, cross-validation maximum likelihood, and cross-validation least squares using the \verb|statsmodels| Python package~\citep{Seabold2010} in Figure~\ref{fig:atc-cond-prob-bw}.
 While the rule-of-thumb is based only on the covariance matrix, the other two numerically optimize the bandwidth with a hold-one-out least squares or likelihood objective function.
 The dashed line shows the theoretical $P(\diffyrv \diffxrv > 0 | \diffxrv = \xcond)$.
 The second method, cross-validation least squares, requires long computation times while yielding small or no bandwidth results, even for two relatively small datasets.
