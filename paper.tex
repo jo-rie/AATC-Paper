@@ -188,19 +188,20 @@ Worked-through examples illustrate the assessment using the proposed methods: CO
 
 \section{Introduction}\label{sec:atc-introduction}
 
-The evaluation of measurement, prediction, and forecasting methods becomes increasingly important and sophisticated as technologies and data availability enable their application in more and more fields.
+The appropriate evaluation of \ac{mnf} methods is fundamental for assessing the method's suitability for the task.
+If the development of the underlying values is of interest, the ability to predict the correct direction of changes, we call \acf{atc}, is crucial.
 Although the three areas differ in the framework and methods used, they share the goal of predicting an unknown value, and thus, similar techniques can be used in the evaluation.
 
 Forecasting methods predict the future based on historical data, patterns, and exogenous factors.
-In medicine, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in][]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008, Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
+In medicine and healthcare, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in][]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008, Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
 The forecast is computed based on the current value of the quantity of interest and an estimate of the development until the target time.
 Methodologically evolved from forecasting~\citep{Browning1989}, nowcasting methods focus on predictions for the present, the immediate future, and the recent past~\citep{Banbura2013, WorldMeteorologicalOrganizationWMO2017}.
-Nowcasting methods use high-frequency indicators related to the target value and estimate the value of a target value for a specific time based on current preliminary measurements, which are finalized with a considerable delay.
-Thus, it focuses on ongoing predictions due to updating information for the same time~\citep{Castle2017}.
-In medicine, epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
+Nowcasting methods use high-frequency indicators or preliminary measurements related to the target value and focuses on ongoing predictions due to updating information for the same time~\citep{Castle2017}.
+Epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
 Measurement aims to obtain accurate and reliable data about the current state of a system based on sensors.
-A parameter or value can be measured regularly over a certain period to evaluate the system's development.
+Through repeated measurements a system's development is tracked.
 When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as various individuals or environments.
+
 In forecasting and nowcasting, the evaluation is based on accuracy measures such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
 None of them assesses the method's \ac{atc}.
 In a prediction competition on armed conflicts, the assessment of \ac{atc} recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
@@ -513,10 +514,10 @@ In Germany, the seven-day hospitalization rate was established as a central stee
 However, the publication of the definite rate was subject to severe delays and revisions in two sources.
 The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\citep{RobertKochInstitute2024}.
 The second, more systematic source is the structure of the seven-day hospitalization rate, allocating all Covid-related hospitalization to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
-Nevertheless, as the seven-day hospitalization rate was considered a central indicator of the pandemic's development, various organizations and institutions started to issue nowcasts.
+Nevertheless, as the seven-day hospitalization rate was considered a central indicator of the pandemic's development, various organizations and institutions issued nowcasts.
 The COVID19-Nowcasting-Hub collected various nowcasts in a predefined setup, including the seven-day hospitalization rate's predictive mean, median, and other quantiles~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
 For information on the model design, nowcast tasks, and the data submission guidelines, we refer to~\citet{Wolffram2023}.
-Table~\ref{tab:app-covid-models} in the appendix lists the different abbreviations and the respective names in the COVID19-Nowcasting-Hub.
+Table~\ref{tab:app-covid-models} matches the abbreviations here to the respective names in the COVID19-Nowcasting-Hub.
 In addition to those nowcasts, \citet{Wolffram2023} construct two ensemble methods using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
@@ -531,19 +532,17 @@ Asymmetries are especially relevant for assessing whether some models are better
 
 \subsubsection*{Results}
 
-\begin{table}[]
+\begin{table}
     \centering
     \input{plots/covid_nowcast/01_model_scores}
-    \caption[Point evaluation measures for the issued mean of the different models in Covid nowcasting.]{Point evaluation measures for the issued mean of the different models in Covid nowcasting. The evaluation period comprises 159 days. \enquote{RMSE} and \enquote{MAE} are accuracy measures, while \enquote{Count} lists the number of non-missing values. The RMSE orders the models.}
+    \caption[Point evaluation measures for the issued mean of the different models in Covid nowcasting.]{Point evaluation measures for the issued mean of the different models in Covid nowcasting. \enquote{RMSE} and \enquote{MAE} are accuracy measures, while \enquote{Count} lists the number of non-missing values. The RMSE orders the models. The evaluation period comprises 159 days and only few nowcasts are missing~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}. Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period (see Figure~\ref{fig:app-covid-true-nowcast}).}
     \label{tab:app-covid-rmse}
 \end{table}
 
-Table~\ref{tab:app-covid-rmse} summarizes the non-\ac{ATC}-aware point evaluation measures for the issued mean of the different models.
-The models issue same-day nowcasts for nearly all 159 days of the evaluation period~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}.
+Table~\ref{tab:app-covid-rmse} summarizes the non-\ac{atc}-aware point evaluation measures for the issued mean of the different models.
 The best-performing models in terms of RMSE and MAE are the ILM and RKI models.
 The ensemble methods ENS-MED and ENS-MEAN perform worse than the best models regarding the mean location.
 The performance of the models is diverse, with more than twice as high RMSE values for the worst models compared to the best models.
-Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period.
 
 In the following, we apply the \ac{atc} assessment for the short-term horizons one and medium-term horizons seven and 14 days.
 The horizons seven and 14 reflect a typical period until new policy changes are taken.
