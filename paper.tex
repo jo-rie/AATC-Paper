@@ -169,7 +169,7 @@
 
 \begin{document}
 
-\title{Assessment of the ability to track changes for measurements, nowcasts, and forecasts}
+\title{The assessment of the ability of measurements, nowcasts, and forecasts to track changes}
 %\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author*[1]{Jonas Rieger}\email{jonas.rieger@kit.edu}
 \author[1]{Bolin Liu}
@@ -179,10 +179,10 @@
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 %TC:ignore
 \abstract{ 
-In addition to measurements, nowcasts, or forecasts being numerically precise, it is essential [to know] how well they reflect changes in the underlying values.
-In this article, we focus on evaluating the ability to predict the correct direction of changes, which we refer to as the ability to track changes (ATC). 
-We present visual techniques and quantitative measures to assess this ability and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
-Worked-through examples illustrate the assessment using the proposed methods: COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements.
+Measurements, nowcasts, or forecasts ideally should correctly reflect changes in the values of interest.
+In this article, we focus on how to assess the ability of measurements, nowcasts, or forecasts to correctly predict the direction of changes in values – which we refer to as the ability to track changes. 
+We present visual techniques and quantitative measures to assess the ability to track changes and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
+We exemplarily illustrate the proposed methods to assess the ability to track changes for nowcasting during the COVID-19 pandemic, patient admissions to an emergency department, and non-invasive blood pressure measurements.
 }
 %TC:endignore
 \keywords{}
@@ -193,33 +193,34 @@ Worked-through examples illustrate the assessment using the proposed methods: CO
 
 
 \section{Introduction}\label{sec:atc-introduction}
+BCS: We need to avoid non-standard abbreviations that confuse readers such as MNF. Please delete the abbreviation MNF throughout the text.
 
-The appropriate evaluation of \ac{mnf} methods is fundamental for assessing the method's suitability for the task.
-If the development of the underlying values is of interest, the ability to predict the correct direction of changes, we call \acf{atc}, is crucial.
-Although the three areas differ in the framework and methods used, they share the goal of predicting an unknown value, and thus, similar techniques can be used in the evaluation.
+Measurements, nowcasts, or forecasts ideally should correctly reflect changes in the values of interest. It is thus important to meticulously assess the ability of measurements, nowcasts, or forecasts to correctly predict the direction of changes in values – which we refer to as the ability to track changes (\ac{atc}). Although measurements, nowcasts, and forecasts fundamentally differ as they either measure or predict a value, similar methods can be used to assess their \ac{atc}.
 
-Forecasting methods predict the future based on historical data, patterns, and exogenous factors.
-In medicine and healthcare, forecasting is used in various applications, such as population and personal health~\parencite[see, e.g., the review in][]{Soyiri2013}, emergency department demand forecasting~\parencite{Jones2008, Rostami-Tabar2023}, and emergency medical services~\parencite{HaugsboHermansen2021}.
-The forecast is computed based on the current value of the quantity of interest and an estimate of the development until the target time.
+Forecasting methods predict the future based on historical data, patterns, or exogenous factors. A forecast is computed based on the current value of interest and an estimate of its future development.
+In medicine and healthcare, forecasting – for example – is used to predict patient volumes in emergency departments~\parencite{Jones2008, Rostami-Tabar2023} or the demand of emergency medical services~\parencite{HaugsboHermansen2021}.
+
 Methodologically evolved from forecasting~\citep{Browning1989}, nowcasting methods focus on predictions for the present, the immediate future, and the recent past~\citep{Banbura2013, WorldMeteorologicalOrganizationWMO2017}.
-Nowcasting methods use high-frequency indicators or preliminary measurements related to the target value and focuses on ongoing predictions due to updating information for the same time~\citep{Castle2017}.
-Epidemic nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or correct the daily COVID case numbers for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
-Measurement aims to obtain accurate and reliable data about the current state of a system based on sensors.
-Through repeated measurements a system's development is tracked.
-When introducing new, cheaper, simpler, or less invasive measurement methods, they are evaluated against current measurement techniques, called the gold standard, by measuring the same quantity in different settings, such as various individuals or environments.
+Nowcasting methods use high-frequency indicators or preliminary measurements related to the value of interest and focus on updating predictions using currently available information~\citep{Castle2017}.
+Nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or provide daily numbers of COVID-19 cases for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
 
-In forecasting and nowcasting, the evaluation is based on accuracy measures such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
+Measurements aim to obtain accurate and precise values of a measureable quantity (measureand).
+BCS: Please cite https://pubmed.ncbi.nlm.nih.gov/32185615/ and https://pubmed.ncbi.nlm.nih.gov/32185616/
+Repeated measurements can be used to track changes in a value over time.  
+When introducing new measurement methods, they are evaluated against current reference methods, often called the "gold standard", by simultaneously measuring the same quantity with the new method and the reference method – often in various individuals or different clinical settings.
+
+In forecasting and nowcasting, the evaluation of the measurement performance is based on statistical methods quantifiying the accuracy such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
 None of them assesses the method's \ac{atc}.
-In a prediction competition on armed conflicts, the assessment of \ac{atc} recently gained attention as \citet{Vesco2022} used the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
-However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
-In measurement agreement analysis, a typical analysis includes the Bland-Altman analysis and a percentage error~\citep{Bland1986}.
-The assessment of \ac{atc} is a field of active research in recent years~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
-This article focuses on pure assessment of \ac{atc} accompanying traditional scores.
- We formalize \ac{atc} and present different variants of assessment of \ac{atc} measures that consider either noiseless data or data with noise and small non-informative changes (see Section~\ref{sec:aatc}).
-We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals (see Section~\ref{subsec:aatc-noise} and ~\ref{subsec:aatc-cond-prob}).
-We extend the concept of assessment of \ac{atc} to probabilistic predictions in Section~\ref{subsec:aatc-probabilistic}.
-The methods are applied to three applications from the abovementioned fields: COVID-19-nowcasting, emergency department arrival forecasting, and blood pressure measurement, and, thus, provide blueprints for future assessments.
+In a prediction competition on armed conflicts, the assessment of the \ac{atc} recently gained attention as \citet{Vesco2022} proposed the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
+However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
+When evaluating the measurment performance of a measurement method, comparative statistics such as Bland-Altman analysis~\citep{Bland1986} and the percentage error [BCS: Please cite: https://pubmed.ncbi.nlm.nih.gov/12578081/] are commonly used.
+How to best assess the \ac{atc} of measurement methods is a field of ongoing research~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
+
+In this article, we focus on how to assess the \ac{atc} of measurements, nowcasts, or forecasts to track changes. We formalize the concept of \ac{atc} and present visual techniques and quantitative measures to assess the \ac{atc} – considering both noiseless data and data with noise and small non-informative changes.
+We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals.
+We extend the concept of assessment of \ac{atc} to probabilistic predictions.
+We exemplarily illustrate the proposed methods to assess the \ac{atc} for nowcasting during the COVID-19 pandemic, patient admissions to an emergency department, and non-invasive blood pressure measurements – and thus provide blueprints for future assessments.
 The ready-to-use code for the assessment of \ac{atc} from the applications is available on [LINK WILL BE INSERTED].
 
 
@@ -227,8 +228,8 @@ The ready-to-use code for the assessment of \ac{atc} from the applications is av
 
 \subsection{Computing changes and notation}\label{subsec:notation}
 
-As noted above, the assessment of \ac{atc} is based on the observed and predicted changes over a time horizon $l$.
-The \textit{observed} change is straightforward to compute for all types of \ac{mnf}.
+The assessment of \ac{atc} is based on the measured and predicted changes in a value of interest over a time horizon $l$.
+The \textit{measured} change is straightforward to compute for all types of \ac{mnf}.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the actual values for nowcasting or forecasting, or gold standard measurements up to time $T$.
 The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
 \begin{equation}\label{eq:diffy}
@@ -512,18 +513,18 @@ Thus, the reliability visualizes the local and overall calibration simultaneousl
 For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 
 
-\section{Application to measurement, nowcasting, and forecasting data} \label{sec:application}
+\section{Application to medical/healthcare nowcasting, forecasting, and measurement data} \label{sec:application}
 
-\subsection{Covid nowcasting} \label{sec:application-covid}
+\subsection{Nowcasting during the COVID-19 pandemic} \label{sec:application-covid}
 
-In Germany, the seven-day hospitalization rate was established as a central steering measure for COVID-19 in November 2021, and the imposition of severe public restrictions was based on it~\citep{RobertKochInstitute2021}.
-However, the publication of the definite rate was subject to severe delays and revisions in two sources.
-The first source is technical delays in the reporting process, for example, due to different authorities passing the data to the RKI~\citep{RobertKochInstitute2024}.
-The second, more systematic source is the structure of the seven-day hospitalization rate, allocating all Covid-related hospitalization to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
-Nevertheless, as the seven-day hospitalization rate was considered a central indicator of the pandemic's development, various organizations and institutions issued nowcasts.
-The COVID19-Nowcasting-Hub collected various nowcasts in a predefined setup, including the seven-day hospitalization rate's predictive mean, median, and other quantiles~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
+In Germany, the seven-day hospitalization rate was established as a central steering measure in November 2021 during the COVID-19 pandemic, and the imposition of severe public restrictions was based on it~\citep{RobertKochInstitute2021}.
+However, the publication of the definite hospitalization rate was substantially delayed and partially flawed for two main reasons.
+First, the reporting process was delayed because – among other reasons – different authorities reported the data to the RKI~\citep{RobertKochInstitute2024}.
+Second, the seven-day hospitalization rate allocated all Covid-19-related hospitalizations to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
+Nevertheless, as the seven-day hospitalization rate was considered an important indicator of how the pandemic developed, various organizations and institutions issued nowcasts.
+The COVID-19-Nowcasting-Hub collected various nowcasts in a predefined setup, including the mean, median, and other quantiles of the predicted seven-day hospitalization rate~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
 For information on the model design, nowcast tasks, and the data submission guidelines, we refer to~\citet{Wolffram2023}.
-Table~\ref{tab:app-covid-models} matches the abbreviations here to the respective names in the COVID19-Nowcasting-Hub.
+Table~\ref{tab:app-covid-models} matches the abbreviations here to the respective names in the COVID-19-Nowcasting-Hub.
 In addition to those nowcasts, \citet{Wolffram2023} construct two ensemble methods using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
@@ -661,9 +662,9 @@ The \ac{bs} values, however, work well for those examples and provide a good mea
 A more extensive data size would be beneficial for assessing the models' performance.
 For the evaluation period of 159 days, the \ac{atc} ratio confidence intervals overlap; thus, no conclusions can be drawn from the \ac{atc} assessment comparing the models.
 
-\subsection{Forecasting emergency department arrivals}\label{sec:application-eda}
+\subsection{Forecasting patient admissions to an emergency department}\label{sec:application-eda}
 
-In a second example, we consider forecasting the number of arrivals in a large emergency department per hour with data and models by \citet{Rostami-Tabar2023}.
+In a second example, we consider forecasting patient admissions to an emergency department per hour with data and models by \citet{Rostami-Tabar2023}.
 Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 
 \citet{Rostami-Tabar2023} publish means and probabilistic quantile forecasts for various models and input data.
@@ -672,9 +673,9 @@ Considering only the forecasts of at least 36 hours ahead, we restrict the evalu
 
 In this setup, \ac{atc} assessment is a simple and intuitive way to assess the models' performance.
 The \ac{atc} perspective is easy for the management to understand and implement, as simple comparisons of the expected workload to a recent shift can be made.
-If, for example, the staff was near capacity during the last shift and an increase in the number of arrivals is expected, management can take measures to adjust the workload.
+If, for example, the staff was near capacity during the last shift and an increase in the number of patient admissions is expected, management can take measures to adjust the workload.
 
-The number of arrivals has a strong weekly and daily pattern.
+The number of patient admissions has a strong weekly and daily pattern.
 Thus, we consider the horizons of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day, in \ac{atc} assessment.
 
 \subsubsection*{Results}
@@ -686,7 +687,7 @@ More than 8,600 forecasts are available for all models, with changes in the numb
 \begin{table}
 \centering
 \input{plots/ed_arrival/00_point_evaluation_measures}
-\caption[Point evaluation measures for the emergency department arrival forecasting models.]{Point evaluation measures for the emergency department arrival forecasting models. The smaller count for some models stems from missing forecasts scattered throughout the evaluation period. Note that the reported values for the RMSE differ from those in \citet{Rostami-Tabar2023} due to differences in the evaluation period.}\label{tab:app-eda-point-evaluation}
+\caption[Point evaluation measures for forecasting models of patient admissions to an emergency department.]{Point evaluation measures for the forecasting models for patient admissions to an emergency department. The smaller count for some models stems from missing forecasts scattered throughout the evaluation period. Note that the reported values for the RMSE differ from those in \citet{Rostami-Tabar2023} due to differences in the evaluation period.}\label{tab:app-eda-point-evaluation}
 \end{table}
 
 We start by analyzing the marginal distributions for the predicted and observed changes for the three- and seven-day horizons in Table~\ref{tab:app-eda-marginals}, again.
@@ -701,7 +702,7 @@ The resulting fraction of included values in the computation is also listed in T
     \centering
     \tiny
     \input{plots/ed_arrival/10_marginal_analysis}
-    \caption[Marginal analysis of the forecast and true changes in emergency department arrival forecasting.]{Marginal analysis of the forecast and true changes in emergency department arrival forecasting. The column (1) shows the fraction of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the changes' absolute values. Column (2) shows the fraction of values not in the exclusion area of size one.}
+    \caption[Marginal analysis of the forecast and true changes in patient admissions to an emergency department.]{Marginal analysis of the forecast and true changes in patient admissions to an emergency department. The column (1) shows the fraction of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the changes' absolute values. Column (2) shows the fraction of values not in the exclusion area of size one.}
     \label{tab:app-eda-marginals}
 \end{table}
 
@@ -782,19 +783,11 @@ Overall, the example provides performance assessments that are different from st
 While the models with the lowest RMSE, NBI-2, and Poisson-2, also have a high \ac{atc}, three models with below-average point evaluation measures, Benchmark-1, GBM-2, and qreg-1, have a high positive \ac{atc}.
 
 
-\subsection{Invasive and non-invasive blood pressure monitoring} \label{sec:application_measurement}
+\subsection{Non-invasive blood pressure monitoring} \label{sec:application_measurement}
 
-In the last briefer example, we consider the \ac{atc} assessment of measurement data.
-The data is from the MIMIC-III database, including various numerical measurement data, such as heart rate, blood pressure, and oxygen saturation, on patients in critical care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}, \citealp{Moody2017}; available through \citealp{Goldberger2000}).
-We focus on \acf{abp} and \acf{nbp} measurements.
-While non-invasive blood pressure measurement methods are relatively gentle, they are less accurate than invasive methods~\citet[see][]{Saugel2014}.
-For critical patients, changes in blood pressure can be crucial for the treatment.
-Thus, \ac{atc} assessment can be performed in addition to standard accuracy analysis~\citep[see, for example, ][]{Mostafa2020}.
-Thus, we assess the \ac{atc} of the non-invasive blood pressure measurements compared to the invasive blood pressure measurements.
-The database contains 64,168 numerical data records, comprising all numerical measurements for one patient.
-The measured signals vary in length, frequency, and type of measurement.
-Thus, only a subset of the data contains measurements of \ac{abp} and \ac{nbp} simultaneously.
-2,548 include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one measurement of systolic \ac{abp} and \ac{nbp} at the same time; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
+We here consider the \ac{atc} of non-invasive blood pressure measurements from the MIMIC-III database that includes of critically ill patients treated in intensive care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}, \citealp{Moody2017}; available through \citealp{Goldberger2000}).
+We focus on \acf{abp} and \acf{nbp} measurements and thus limit our analysis to datasets containing simultaneous measurements of \ac{abp} and \ac{nbp} simultaneously. 2,548 (BCS: what? datasets? patients?) include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one pair of simultaneously measured systolic \ac{abp} and \ac{nbp}; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
+We assess the \ac{atc} of non-invasive blood pressure measurements (test emthod) compared to intraarterial blood pressure measurements (referecne method, gold standard).
 We consider the horizons of one minute, five minutes, and 15 minutes for the \ac{atc} assessment, as those are typical intervals of NBP measurements.
 
 \subsubsection*{Results}
@@ -867,6 +860,7 @@ Thus, the confidence intervals cover 0.5 for systolic measurement and the horizo
 \section{Discussion and conclusion}\label{sec:atc-conclusion}
 
 In this paper, we examine various methods to assess the \acf{atc} for \acf{mnf}, that is, whether it predicts the correct direction of changes.
+BCS: Hier einfach wieder gleiches Wording wie in Einleitung etc. Sonst verwirren wir die Leser
 While the computation of predicted change varies between the application areas measurement, nowcasting, and forecasting, the predict the correct direction of changes assessment using the computed predicted and observed change is similar.
 The \ac{atc} assessment can accompany other evaluation techniques, such as measures of deviation or probabilistic scoring rules.
 
