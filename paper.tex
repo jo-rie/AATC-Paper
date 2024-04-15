@@ -202,7 +202,7 @@ Methodologically evolved from forecasting~\citep{Browning1989}, nowcasting metho
 Nowcasting methods use high-frequency indicators or preliminary measurements related to the value of interest and focus on updating predictions using currently available information~\citep{Castle2017}.
 Nowcasting, for example, can assess the current situation during an ongoing epidemic, considering the main pathogenic, epidemiological, clinical, and socio-behavioral factors~\citep{Wu2021} or provide daily numbers of COVID-19 cases for events that have occurred but have not yet been reported~\citep{Gunther2021, Wolffram2023}.
 
-Measurements aim to obtain accurate and precise values of a measureable quantity (measureand; \citealp{Squara2021,Squara2021a}).
+Measurements aim to obtain accurate and precise values of a measurable quantity (measurand; \citealp{Squara2021,Squara2021a}).
 Repeated measurements can be used to track changes in a value over time.
 When introducing new measurement methods, they are evaluated against current reference methods, often called the \enquote{gold standard}, by simultaneously measuring the same quantity with the new method and the reference method – often in various individuals or different clinical settings.
 
@@ -211,7 +211,7 @@ None of them assesses the method's \ac{atc}.
 
 In a prediction competition on armed conflicts, the assessment of the \ac{atc} recently gained attention as \citet{Vesco2022} proposed the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
 However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
-When evaluating the measurment performance of a measurement method, comparative statistics such as Bland-Altman analysis~\citep{Bland1986} and the percentage error \parencite{Critchley1999} are commonly used.
+When evaluating the measurement performance of a measurement method, comparative statistics such as Bland-Altman analysis~\citep{Bland1986} and the percentage error \parencite{Critchley1999} are commonly used.
 How to best assess the \ac{atc} of measurement methods is a field of ongoing research~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
 In this article, we focus on how to assess the \ac{atc} of measurements, nowcasts, or forecasts to track changes. We formalize the concept of \ac{atc} and present visual techniques and quantitative measures to assess the \ac{atc} – considering both noiseless data and data with noise and small non-informative changes.
@@ -300,7 +300,7 @@ The data pair is excluded even if the corresponding nowcast or forecast is avail
 
 \subsection{The four-quadrant plot}\label{subsec:aatc-four-quadrant-plot}
 
-Formally, the assessment of \ac{atc} is the same for measurement, nowcast, or forecast, given the notation for the respective application of Section~\ref{subsec:notation}.
+Formally, the assessment of \ac{atc} is the same for measurements, nowcasts, and forecasts, given the notation for the respective application of Section~\ref{subsec:notation}.
 In the following, we omit the horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
 The \ac{atc} is maximal if all predicted change directions are correct; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when assessing the \ac{atc}, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
@@ -402,7 +402,7 @@ This is more likely for points with at least one small coordinate.
 
 Using an exclusion area around the zero point, as further defined below, is a straightforward and highly interpretable extension of the measures of Section~\ref{subsec:atc-measures} accounting for such effects~\citep[see, e.g.,][]{Saugel2015, Critchley2010}.
 Points within that area are omitted in the calculation of the measures.
-In particular, the measurement, nowcast, or forecast are likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
+In particular, the measurement, nowcast, or forecast is likely to have a noise component; thus, $\diffx$ should be subject to an exclusion area.
 The measures of Equations~\eqref{eq:acc},~\eqref{eq:accp} and~\eqref{eq:accm} without points in the exclusion area $E$ are
 \begin{align}
     \acceps (\diffx, \diffy, E) &\coloneqq \frac{\sum_{t \in \mathcal{T}} \ind{\diffx \diffy > 0} \ind{(\diffyt, \diffxt) \notin E}}{\sum_{t \in \mathcal{T}} \ind{(\diffyt, \diffxt) \notin E}},\label{eq:acceps}\\
@@ -517,7 +517,7 @@ For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 In Germany, the seven-day hospitalization rate was established as a central steering measure in November 2021 during the COVID-19 pandemic, and the imposition of severe public restrictions was based on it~\citep{RobertKochInstitute2021}.
 However, the publication of the definite hospitalization rate was substantially delayed and partially flawed for two main reasons.
 First, the reporting process was delayed because – among other reasons – different authorities reported the data to the RKI~\citep{RobertKochInstitute2024}.
-Second, the seven-day hospitalization rate allocated all Covid-19-related hospitalizations to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
+Second, the seven-day hospitalization rate allocated all COVID-19-related hospitalizations to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
 Nevertheless, as the seven-day hospitalization rate was considered an important indicator of how the pandemic developed, various organizations and institutions issued nowcasts.
 The COVID-19-Nowcasting-Hub collected various nowcasts in a predefined setup, including the mean, median, and other quantiles of the predicted seven-day hospitalization rate~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
 For information on the model design, nowcast tasks, and the data submission guidelines, we refer to~\citet{Wolffram2023}.
@@ -539,7 +539,7 @@ Asymmetries are especially relevant for assessing whether some models are better
 \begin{table}
     \centering
     \input{plots/covid_nowcast/01_model_scores}
-    \caption[Point evaluation measures for the issued mean of the different models in Covid nowcasting.]{Point evaluation measures for the issued mean of the different models in Covid nowcasting. \enquote{RMSE} and \enquote{MAE} are accuracy measures, while \enquote{Count} lists the number of non-missing values. The RMSE orders the models. The evaluation period comprises 159 days and only few nowcasts are missing~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}. Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period (see Figure~\ref{fig:app-covid-true-nowcast}).}
+    \caption[Point evaluation measures for the issued mean of the different models in COVID-19 nowcasting.]{Point evaluation measures for the issued mean of the different models in COVID-19 nowcasting. \enquote{RMSE} and \enquote{MAE} are accuracy measures, while \enquote{Count} lists the number of non-missing values. The RMSE orders the models. The evaluation period comprises 159 days and only few nowcasts are missing~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}. Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period (see Figure~\ref{fig:app-covid-true-nowcast}).}
     \label{tab:app-covid-rmse}
 \end{table}
 
@@ -560,7 +560,7 @@ Thus, points are still included in the \ac{atc} assessment if they are large in 
     \centering
     \tiny
     \input{plots/covid_nowcast/30_trending_ratios_lag_7.tex}
-    \caption[The ATC ratios for Covid nowcasting.]{The \ac{atc} ratio $\accl[7]$, positive \ac{atc} ratio $\accpl[7]$, and negative \ac{atc} ratio $\accml[7]$ for the models without and with exclusion areas for the horizon seven days in Covid nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. The subscript $q_{0.1}$ denotes the measures with exclusion area. }
+    \caption[The ATC ratios for COVID-19 nowcasting.]{The \ac{atc} ratio $\accl[7]$, positive \ac{atc} ratio $\accpl[7]$, and negative \ac{atc} ratio $\accml[7]$ for the models without and with exclusion areas for the horizon seven days in COVID-19 nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height of twice the 10\%-quantile of the absolute values of nowcast and true values. The subscript $q_{0.1}$ denotes the measures with exclusion area. }
     \label{tab:app-covid-atc-ratios-lag-7}
 \end{table}
 
@@ -585,7 +585,7 @@ For the horizons of one and 14 days, we refer to Table~\ref{tab:app-covid-atc-ra
     \includegraphics{plots/covid_nowcast/40_acc_eps_lag_7}
     \caption{ATC ratio over exclusion area size in $\diffx$.}\label{fig:app-covid-atc-ratio-7}
     \end{subfigure}
-    \caption[Conditional ATC plot and ATC ratio over exclusion area for the Covid nowcasts.]{Conditional \ac{atc} plot and \ac{atc} ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days in Covid nowcasting.}
+    \caption[Conditional ATC plot and ATC ratio over exclusion area for the COVID-19 nowcasts.]{Conditional \ac{atc} plot and \ac{atc} ratio over exclusion area for the nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days in COVID-19 nowcasting.}
     \label{fig:app-covid-cond-prob-atc-ratio-7}
 \end{figure}
 
@@ -627,7 +627,7 @@ For the horizons of seven and 14 days, the nowcasters issue only a few moderate 
     \includegraphics{plots/covid_nowcast/60_reliability_diagram_lag_1}
     \caption{Reliability diagram for horizon one day.}\label{fig:app-covid-prob-rel-1}
     \end{subfigure}\hspace{0.01\textwidth}%
-    \caption[Brier Scores and reliability diagrams for the Covid nowcasting models ILM, RKI, RIVM, and ENS-MED.]{\aclp{bs} and reliability diagrams for the Covid nowcasting models ILM, RKI, RIVM, and ENS-MED.
+    \caption[Brier Scores and reliability diagrams for the COVID-19 nowcasting models ILM, RKI, RIVM, and ENS-MED.]{\aclp{bs} and reliability diagrams for the COVID-19 nowcasting models ILM, RKI, RIVM, and ENS-MED.
     The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
     In the computation of BS and reliability diagram, missing values are excluded.
     The reliability diagram for the horizon seven and 14 days is in the appendix (see Figure~\ref{fig:app-covid-rel}).}
@@ -782,9 +782,10 @@ While the models with the lowest RMSE, NBI-2, and Poisson-2, also have a high \a
 
 \subsection{Non-invasive blood pressure monitoring} \label{sec:application_measurement}
 
-We here consider the \ac{atc} of non-invasive blood pressure measurements from the MIMIC-III database that includes of critically ill patients treated in intensive care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}, \citealp{Moody2017}; available through \citealp{Goldberger2000}).
-We focus on \acf{abp} and \acf{nbp} measurements and thus limit our analysis to datasets containing simultaneous measurements of \ac{abp} and \ac{nbp} simultaneously. 2,548 datasets include at least one measurement of systolic \ac{abp} and \ac{nbp} and 1,327 include at least one pair of simultaneously measured systolic \ac{abp} and \ac{nbp}; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
-We assess the \ac{atc} of non-invasive blood pressure measurements (test emthod) compared to intraarterial blood pressure measurements (referecne method, gold standard).
+We here consider the \ac{atc} of non-invasive blood pressure measurements from the MIMIC-III database that includes data of critically ill patients treated in intensive care units of the Beth Israel Deaconess Medical Center in Boston (Massachusetts, USA, \cite{Johnson2016}, \citealp{Moody2017}; available through \citealp{Goldberger2000}).
+We focus on \acf{abp} and \acf{nbp} measurements and thus limit our analysis to datasets containing simultaneous measurements of \ac{abp} and \ac{nbp} simultaneously.
+2,548 datasets include at least one measurement of systolic \ac{abp} and \ac{nbp}, and 1,327 include at least one pair of simultaneously measured systolic \ac{abp} and \ac{nbp}; for the mean \ac{abp} and \ac{nbp}, the numbers are 2,605 and 1,516, respectively.
+We assess the \ac{atc} of non-invasive blood pressure measurements (test method) compared to intraarterial blood pressure measurements (reference method, gold standard).
 We consider the horizons of one minute, five minutes, and 15 minutes for the \ac{atc} assessment, as those are typical intervals of NBP measurements.
 
 \subsubsection*{Results}
@@ -857,7 +858,7 @@ Thus, the confidence intervals cover 0.5 for systolic measurement and the horizo
 \section{Discussion and conclusion}\label{sec:atc-conclusion}
 
 In this paper, we examine various methods to assess the \acf{atc} for measurements, nowcasts, or forecasts, that is, whether they correctly predict the direction of changes in values.
-While the computation of predicted change varies between the application areas measurement, nowcasting, and forecasting, the predict the correct direction of changes assessment using the computed predicted and observed change is similar.
+While the computation of predicted change varies between the application areas of measurement, nowcasting, and forecasting, the assessment can be based on the same methods.
 The \ac{atc} assessment can accompany other evaluation techniques, such as measures of deviation or probabilistic scoring rules.
 
 Four-quadrant plots facilitate the visual inspection of the \ac{atc} for a measurement, nowcast, or forecast (see Section~\ref{subsec:aatc-four-quadrant-plot}).
@@ -1145,7 +1146,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         ENS-MED & NowcastHub-MedianEnsemble\\
         \bottomrule
     \end{tabular}
-    \caption[Matching the abbreviation to the key in the Covid nowcasting hub.]{Matching the abbreviation to the key in the Covid nowcasting hub.
+    \caption[Matching the abbreviation to the key in the COVID-19 nowcasting hub.]{Matching the abbreviation to the key in the COVID-19 nowcasting hub.
     Information on the models and references is listed in \citet[][Table 1]{Wolffram2023}.}
     \label{tab:app-covid-models}
 \end{table}
@@ -1155,7 +1156,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
     \centering
     \tiny
     \input{plots/covid_nowcast/10_marginal_analysis}
-    \caption[Marginal analysis of the Covid nowcast and true changes for the horizons one, seven, and 14 days.]{Marginal analysis of the Covid nowcast and true changes for the horizons one, seven, and 14 days.
+    \caption[Marginal analysis of the COVID-19 nowcast and true changes for the horizons one, seven, and 14 days.]{Marginal analysis of the COVID-19 nowcast and true changes for the horizons one, seven, and 14 days.
     The column (1), $l=l$ shows the number of values greater than zero for horizon $l$, $\sigma_{x^{\Delta, l}}$ the standard deviation, and $q_{0.1} (x^{\Delta, l})$ the 10\% quantile of the changes' absolute values.}
     \label{tab:app-covid-marginals}
 \end{table}
@@ -1171,7 +1172,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         \input{plots/covid_nowcast/30_trending_ratios_lag_14}
         \caption{14 days.}
     \end{subtable}
-    \caption[ATC ratios for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models without and with exclusion areas for the horizon one and 14 days in Covid nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height to exclude the 10\%-quantile of the absolute values of nowcast or true values. }
+    \caption[ATC ratios for the models without and with exclusion areas for the horizon one and 14 days in COVID-19 nowcasting.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models without and with exclusion areas for the horizon one and 14 days in COVID-19 nowcasting. The exclusion areas are rectangles centered on the zero points with a width and height to exclude the 10\%-quantile of the absolute values of nowcast or true values. }
     \label{tab:app-covid-atc-ratios-lag-1-14}
 \end{table}
 
@@ -1180,7 +1181,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
 \begin{figure}
 \centering
 \includegraphics{plots/covid_nowcast/30_4q_plots}
-\caption[Four-quadrant plots for the Covid nowcast models ILM, RIVM, RKI, and ENS-MEAN and the horizons of one, seven, and 14 days.]{Four-quadrant plots for the Covid nowcast models ILM, RIVM, RKI, and ENS-MEAN and the horizons of one, seven, and 14 days. The spread in both directions increases with the horizon. }
+\caption[Four-quadrant plots for the COVID-19 nowcast models ILM, RIVM, RKI, and ENS-MEAN and the horizons of one, seven, and 14 days.]{Four-quadrant plots for the COVID-19 nowcast models ILM, RIVM, RKI, and ENS-MEAN and the horizons of one, seven, and 14 days. The spread in both directions increases with the horizon. }
 \label{fig:app-covid-4q}
 \end{figure}
 
@@ -1204,7 +1205,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
     \includegraphics{plots/covid_nowcast/40_acc_eps_lag_14}
     \caption{\ac{atc} ratio over exclusion area size in $\diffx$ for horizon 1.}\label{fig:app-covid-atc-ratio-14}
     \end{subfigure}
-    \caption[Conditional ATC plot and ATC ratio over exclusion area in Covid nowcasting.]{Conditional \ac{atc} plot and \ac{atc} ratio over exclusion area for the Covid nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days.}
+    \caption[Conditional ATC plot and ATC ratio over exclusion area in COVID-19 nowcasting.]{Conditional \ac{atc} plot and \ac{atc} ratio over exclusion area for the COVID-19 nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days.}
     \label{fig:app-covid-cond-prob-atc-ratio-1-14}
 \end{figure}
 
@@ -1223,7 +1224,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         \includegraphics{plots/covid_nowcast/70_prob_hist}
         \caption{Count histogram of the predicted probabilities for the horizon one, seven, and 14 days.} \label{fig:app-covid-prob-hist}
     \end{subfigure}
-    \caption[Reliability diagrams for Covid nowcasting models and the horizon seven and 14 days.]{The reliability diagram for the Covid nowcasting models ILM, RIVM, RKI, and ENS-MED for the horizon seven and 14 days.
+    \caption[Reliability diagrams for COVID-19 nowcasting models and the horizon seven and 14 days.]{The reliability diagram for the COVID-19 nowcasting models ILM, RIVM, RKI, and ENS-MED for the horizon seven and 14 days.
     Additionally, the count of predicted probabilities for the horizons is shown.
         The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
     As the models issue small or large probabilities of increase for the higher horizons, little information on the accuracy of moderate probability predictions is available.}
