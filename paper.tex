@@ -214,18 +214,18 @@ However, the score poses an unintuitive incentive to forecasters and is thus the
 When evaluating the measurement performance of a measurement method, comparative statistics such as Bland-Altman analysis~\citep{Bland1986} and the percentage error \parencite{Critchley1999} are commonly used.
 How to best assess the \ac{atc} of measurement methods is a field of ongoing research~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
-In this article, we focus on how to assess the \ac{atc} of measurements, nowcasts, or forecasts to track changes. We formalize the concept of \ac{atc} and present visual techniques and quantitative measures to assess the \ac{atc} – considering both noiseless data and data with noise and small non-informative changes.
-We introduce the conditional \ac{atc} plot, a new graphical method for assessing local \ac{atc} behavior, and review bootstrap methods for calculating confidence intervals.
-We extend the concept of assessment of \ac{atc} to probabilistic predictions.
+In this article, we focus on how to assess the ability of measurements, nowcasts, or forecasts to track changes. We formalize the concept of \ac{atc} and present visual techniques and quantitative measures to assess it – considering both noiseless data and data with noise and small non-informative changes.
+We introduce the conditional \ac{atc} plot, a new graphical method for assessing the local ability, and review bootstrap methods for calculating confidence intervals.
+We extend the concept of assessment to probabilistic predictions.
 We exemplarily illustrate the proposed methods to assess the \ac{atc} for nowcasting during the COVID-19 pandemic, patient admissions to an emergency department, and non-invasive blood pressure measurements – and thus provide blueprints for future assessments.
-The ready-to-use code for the assessment of \ac{atc} from the applications is available on [LINK WILL BE INSERTED].
+Ready-to-use code is available on [LINK WILL BE INSERTED].
 
 
 \section{Assessment of the ability to track changes (ATC)}\label{sec:aatc}
 
 \subsection{Computing changes and notation}\label{subsec:notation}
 
-The assessment of \ac{atc} is based on the measured and predicted changes in a value of interest over a time horizon $l$.
+The assessment of \ac{atc} is based on the measured, observed, or true and the predicted changes in a value of interest over a time horizon $l$.
 The \textit{measured} change is straightforward to compute for all types of measurement, nowcast, or forecast.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the actual values for nowcasting or forecasting, or gold standard measurements up to time $T$.
 The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
@@ -516,7 +516,7 @@ For an example of a reliability diagram, see Section~\ref{sec:application-eda}.
 
 In Germany, the seven-day hospitalization rate was established as a central steering measure in November 2021 during the COVID-19 pandemic, and the imposition of severe public restrictions was based on it~\citep{RobertKochInstitute2021}.
 However, the publication of the definite hospitalization rate was substantially delayed and partially flawed for two main reasons.
-First, the reporting process was delayed because – among other reasons – different authorities reported the data to the RKI~\citep{RobertKochInstitute2024}.
+First, the reporting process was delayed because – among other reasons – different authorities were involved in passing the data to the RKI~\citep{RobertKochInstitute2024}.
 Second, the seven-day hospitalization rate allocated all COVID-19-related hospitalizations to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
 Nevertheless, as the seven-day hospitalization rate was considered an important indicator of how the pandemic developed, various organizations and institutions issued nowcasts.
 The COVID-19-Nowcasting-Hub collected various nowcasts in a predefined setup, including the mean, median, and other quantiles of the predicted seven-day hospitalization rate~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
