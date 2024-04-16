@@ -225,10 +225,10 @@ Ready-to-use code is available on [LINK WILL BE INSERTED].
 
 \subsection{Computing changes and notation}\label{subsec:notation}
 
-The assessment of \ac{atc} is based on the measured, observed, or true and the predicted changes in a value of interest over a time horizon $l$.
+The assessment of \ac{atc} is based on the measured/observed/true and the predicted changes in a value of interest over a time horizon $l$.
 The \textit{measured} change is straightforward to compute for all types of measurement, nowcast, or forecast.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the actual values for nowcasting or forecasting, or gold standard measurements up to time $T$.
-The sequence of observed changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
+The sequence of changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
 \begin{equation}\label{eq:diffy}
     \diffylt = (y_{t} - y_{t-l}) \quad \text{for}\ t = l, \dots, T.
 \end{equation}
@@ -518,10 +518,7 @@ In Germany, the seven-day hospitalization rate was established as a central stee
 However, the publication of the definite hospitalization rate was substantially delayed and partially flawed for two main reasons.
 First, the reporting process was delayed because – among other reasons – different authorities were involved in passing the data to the RKI~\citep{RobertKochInstitute2024}.
 Second, the seven-day hospitalization rate allocated all COVID-19-related hospitalizations to the date of the first positive test~\parencite[for a detailed description, see][]{Wolffram2023}.
-Nevertheless, as the seven-day hospitalization rate was considered an important indicator of how the pandemic developed, various organizations and institutions issued nowcasts.
-The COVID-19-Nowcasting-Hub collected various nowcasts in a predefined setup, including the mean, median, and other quantiles of the predicted seven-day hospitalization rate~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024}.
-For information on the model design, nowcast tasks, and the data submission guidelines, we refer to~\citet{Wolffram2023}.
-Table~\ref{tab:app-covid-models} matches the abbreviations here to the respective names in the COVID-19-Nowcasting-Hub.
+The COVID-19-Nowcasting-Hub~\citep{ChairOfEconometricsAndStatisticsAtKarlsruheInstituteOfTechnology2024} collected various nowcasts in a predefined setup, including the mean, median and other quantiles of the predicted seven-day hospitalization rate~\parentext{for further information see~\citealp{Wolffram2023} and Table~\ref{tab:app-covid-models} for the abbreviations used}.
 In addition to those nowcasts, \citet{Wolffram2023} construct two ensemble methods using the ensembles' mean or median.
 We denote them by ENS-MEAN and ENS-MED.
 In line with the initial study design, we consider the period from November 22, 2021, to April 29, 2022, as the evaluation period.
