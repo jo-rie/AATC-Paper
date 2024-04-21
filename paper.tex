@@ -206,7 +206,7 @@ Measurements aim to obtain accurate and precise values of a measurable quantity 
 Repeated measurements can be used to track changes in a value over time.
 When introducing new measurement methods, they are evaluated against current reference methods, often called the \enquote{gold standard}, by simultaneously measuring the same quantity with the new method and the reference method – often in various individuals or different clinical settings.
 
-In forecasting and nowcasting, the evaluation of the measurement performance is based on statistical methods quantifiying the accuracy such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
+In forecasting and nowcasting, the evaluation of the measurement performance is based on statistical methods quantifying the accuracy such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
 None of them assesses the method's \ac{atc}.
 
 In a prediction competition on armed conflicts, the assessment of the \ac{atc} recently gained attention as \citet{Vesco2022} proposed the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
@@ -308,7 +308,7 @@ A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{P
 In a four-quadrant plot, the occured changes and the predicted changes are plotted together, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct change direction for the respective time step, whereas points in the remaining red quadrants show incorrectly predicted changes.
-Figure~\ref{fig:aatc_basic_4q} displays a basic four-quadrant plot and Figure~\ref{fig:aatc_basic_4q_sample} shows a four-quadrant graph for simulated data with $T=1461$, for example, four years of daily data.
+Figure~\ref{fig:aatc_basic_4q} displays a basic four-quadrant plot, and Figure~\ref{fig:aatc_basic_4q_sample} shows a four-quadrant graph for simulated data with $T=1461$, for example, four years of daily data (for the data generation, see Appendix~\ref{subsec:app-ATC-data-generation}).
 
 The four-quadrant plot can be extended by including information on the time index in the point color to reveal effects over time.
 In Figure~\ref{fig:aatc_basic_4q_sample_color}, the point colors turn from blue to green for higher time indices $t$, that is, more recent values; $(\diffyt[l], \diffxt[l])$ is blue and turns green until $(\diffyt[T], \diffxt[T])$.
@@ -335,7 +335,7 @@ Other visualization techniques, such as polar plots, lack the four-quadrant plot
 \includegraphics{plots/illustrative_examples/4q_excl_cross}
 \caption{Four-quadrant plot with cross-shaped exclusion area. Points 1, 6 and 7 are excluded.}\label{fig:aatc_basic_4q_excl_cross}
 \end{subfigure}%
-\caption{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas. The rectangular exclusion area in Figure~\ref{fig:aatc_basic_4q_excl_box} excludes only points where both components are likely to be noise-driven, while the exclusion areas in Figures~\ref{fig:aatc_basic_4q_excl_axis} and~\ref{fig:aatc_basic_4q_excl_cross} excludes points where at least one component is noise-driven. }
+\caption[Illustrations of the four-quadrant plot with sample points and with and without exclusion areas.]{Illustrations of the four-quadrant plot with sample points and with and without exclusion areas. The rectangular exclusion area in Figure~\ref{fig:aatc_basic_4q_excl_box} excludes only points where both components are likely to be noise-driven, while the exclusion areas in Figures~\ref{fig:aatc_basic_4q_excl_axis} and~\ref{fig:aatc_basic_4q_excl_cross} exclude points where at least one component is noise-driven. }
 \label{fig:aatc_4q}
 \end{figure}
 
@@ -536,7 +536,7 @@ Asymmetries are especially relevant for assessing whether some models are better
 \begin{table}
     \centering
     \input{plots/covid_nowcast/01_model_scores}
-    \caption[Point evaluation measures for the issued mean of the different models in COVID-19 nowcasting.]{Point evaluation measures for the issued mean of the different models in COVID-19 nowcasting. \enquote{RMSE} and \enquote{MAE} are accuracy measures, while \enquote{Count} lists the number of non-missing values. The RMSE orders the models. The evaluation period comprises 159 days and only few nowcasts are missing~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}. Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period (see Figure~\ref{fig:app-covid-true-nowcast}).}
+    \caption[Point evaluation measures for the issued mean of the different models in COVID-19 nowcasting.]{Point evaluation measures for the issued mean of the different models in COVID-19 nowcasting. \enquote{RMSE} and \enquote{MAE} are accuracy measures, while \enquote{Count} lists the number of non-missing values. The RMSE orders the models. The evaluation period comprises 159 days, and only a few nowcasts are missing~\citep[for explanations of the missing values, see][Tables A2, A3, and A4]{Wolffram2023}. Note that the high values for the EPI model could be driven by an exceptionally far-off value at the end of the evaluation period (see Figure~\ref{fig:app-covid-true-nowcast}).}
     \label{tab:app-covid-rmse}
 \end{table}
 
@@ -627,7 +627,7 @@ For the horizons of seven and 14 days, the nowcasters issue only a few moderate 
     \caption[Brier Scores and reliability diagrams for the COVID-19 nowcasting models ILM, RKI, RIVM, and ENS-MED.]{\aclp{bs} and reliability diagrams for the COVID-19 nowcasting models ILM, RKI, RIVM, and ENS-MED.
     The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
     In the computation of BS and reliability diagram, missing values are excluded.
-    The reliability diagram for the horizon seven and 14 days is in the appendix (see Figure~\ref{fig:app-covid-rel}).}
+    The reliability diagram for the horizons seven and 14 days is in the appendix (see Figure~\ref{fig:app-covid-rel}).}
     \label{fig:app-covid-prob}
 \end{figure}
 
@@ -705,7 +705,7 @@ The \ac{atc} ratios range from 0.68 to 0.84 for a horizon of three days and from
 The negative and positive \ac{atc} ratios differ for all models and horizons.
 For some models, for example, the GBM-2 model, the positive \ac{atc} ratio is higher than the negative \ac{atc} ratio, and for some models, for example, the tbats model, vice versa.
 The confidence interval width is at most 0.02 for the \ac{atc} ratios and at most 0.03 for the positive and negative \ac{atc} ratios.
-The models GBM-2, qreg-1, and Benchmark-1 have the highest positive \ac{atc} ratio for the three and seven-day horizon, while Poisson-2 and NBI-2 have the highest negative \ac{atc} ratio.
+The models GBM-2, qreg-1, and Benchmark-1 have the highest positive \ac{atc} ratio for the three and seven-day horizons, while Poisson-2 and NBI-2 have the highest negative \ac{atc} ratio.
 
 Figure~\ref{fig:app-eda-cond-prob} shows the conditional \ac{atc} plots for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days and thus inspects the local \ac{atc} of the models with highest positive and negative \ac{atc} ratio.
 The conditional \ac{atc} plots show similar courses for the two horizons, though the curves are shifted downwards for the horizon of seven days.
@@ -725,7 +725,7 @@ For the other models, the reliability diagrams show a fraction of increases that
     \centering
     \tiny
     \input{plots/ed_arrival/50_trending_ratio}
-    \caption[ATC ratios for the emergency department arrival forecasts.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models with the exclusion of zero-containing points for the horizons 72 hours and seven days in emergency department arrival forecasting.}
+    \caption[ATC ratios for the forecasts of patient admission to an emergency department.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models with the exclusion of zero-containing points for the horizons 72 hours and seven days in the forecasting of patient admissions to an emergency department.}
     \label{tab:app-eda-atc-ratios}
 \end{table}
 
@@ -733,13 +733,13 @@ For the other models, the reliability diagrams show a fraction of increases that
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_3}
-    \caption{Horizon three days}
+    \caption{Horizon three days.}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{0.48\textwidth}
     \includegraphics{plots/ed_arrival/50_Cond_Prob_lag_7}
-    \caption{Horizon seven days}
+    \caption{Horizon seven days.}
     \end{subfigure}
-    \caption[Conditional ATC plots for the horizons three and seven days and the models with the best positive or negative \ac{atc} in emergency department arrival forecasting.]{Conditional \ac{atc} plots for the horizons three and seven days and the models with the best positive or negative \ac{atc} in emergency department arrival forecasting. The plots of NBI-2 and Poisson-2 are indistinguishable.}
+    \caption[Conditional ATC plots for the horizons three and seven days and the models with the best positive or negative \acs{atc} in forecasting the patient admissions to an emergency department.]{Conditional \ac{atc} plots for the horizons three and seven days and the models with the best positive or negative \ac{atc} in forecasting the patient admissions to an emergency department. The plots of NBI-2 and Poisson-2 are indistinguishable.}
     \label{fig:app-eda-cond-prob}
 \end{figure}
 
@@ -757,7 +757,7 @@ For the other models, the reliability diagrams show a fraction of increases that
     \includegraphics{plots/ed_arrival/60_reliability_diagram_lag_7}
     \caption{Reliability diagram for horizon seven days.}\label{fig:app-eda-prob-rel-7}
     \end{subfigure}
-    \caption[Probabilistic \ac{atc} assessment in emergency department arrival forecasting.]{Probabilistic \ac{atc} assessment for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days in emergency department arrival forecasting. The \acl{bs} in Figure~\ref{fig:app-eda-prob-brier} evaluates the calibration and sharpness of the probabilistic \ac{atc} simultaneously, while the two plots on the right assess solely the calibration, that is, whether the predicted probability of increase occurs empirically. Probabilistic \ac{atc} by the \ac{bs} is best for the models NBI-2 and Poisson-2 for both lags.}
+    \caption[Probabilistic \acs{atc} assessment in forecasting patient admissions to an emergency department.]{Probabilistic \ac{atc} assessment for the models Benchmark-1, GBM-2, NBI-2, Poisson-2, and qreg-1 for the horizons three and seven days in forecasting patient admissions to an emergency department. The \acl{bs} in Figure~\ref{fig:app-eda-prob-brier} evaluates the calibration and sharpness of the probabilistic \ac{atc} simultaneously, while the two plots on the right assess solely the calibration, that is, whether the predicted probability of increase occurs empirically. Probabilistic \ac{atc} by the \ac{bs} is best for the models NBI-2 and Poisson-2 for both lags.}
     \label{fig:app-eda-prob}
 \end{figure}
 
@@ -874,7 +874,7 @@ In the application, the conditional \ac{atc} plot gives reasonable insights into
 Section~\ref{subsec:aatc-probabilistic} adapts measures of probabilistic forecast evaluation to the \ac{atc} assessment of probabilistic forecasts and nowcasts.
 The \acf{bs} as numerical assessment of probabilistic \ac{atc} is introduced, and reliability diagrams are used to visualize the local \ac{atc} of probabilistic forecasts.
 
-The methods of \ac{atc} assessment are applied to COVID-19-nowcasting, emergency department arrival forecasting, and invasive and non-invasive blood pressure measurements in Section~\ref{sec:application}.
+The methods of \ac{atc} assessment are applied to COVID-19-nowcasting, forecasting the patient admissions to an emergency department, and invasive and non-invasive blood pressure measurements in Section~\ref{sec:application}.
 While \ac{atc} assessment should not be the only aspect, it is a valuable addition to evaluating nowcasts, forecasts, and measurements.
 Models with highly different accuracies are usually scored similarly in \ac{atc} assessment, but \ac{atc} assessment can differentiate between models with similar accuracies.
 As in the application in Section~\ref{sec:application-covid}, models with medial point forecast evaluation measures can have the most meaningful positive \ac{atc}.
@@ -972,7 +972,7 @@ The four-quadrant plots for the sample realizations of the data generation schem
     \end{subfigure}\hspace{0.01\textwidth}
     \begin{subfigure}{0.24\textwidth}
         \includegraphics{plots/illustrative_examples/appendix_4q_dgp2}
-        \caption{Second approach}
+        \caption{Second approach.}
     \end{subfigure}
     \caption[Four-quadrant plots for sample realizations of the data generation schemes of Section~\ref{subsec:app-ATC-data-generation}.]{Four-quadrant plots for sample realizations of the data generation schemes of Section~\ref{subsec:app-ATC-data-generation}. Although the first and second plots differ over time, their difference is not discernible in the plots. The third data set's asymmetry is visible in the plot, but the decrease in the \ac{atc} near 0 is not visible. }
     \label{fig:appendix_dgps}
@@ -1009,14 +1009,14 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
     \begin{subtable}{.48\textwidth}
        \centering
         \input{plots/illustrative_examples/bootstrap_butterfly_cis}
-        \caption{First dataset}
+        \caption{First dataset.}
     \end{subtable}\hspace{0.02\textwidth}
     \begin{subtable}{.48\textwidth}
        \centering
        \input{plots/illustrative_examples/bootstrap_normal_cis}
-        \caption{Second dataset}
+        \caption{Second dataset.}
     \end{subtable}
-    \caption[Proportion of bootstrapping confidence intervals covering the true value of \ac{atc} ratio per method and sample size $T$ in the bootstrap simulation study.]{Proportion of bootstrapping confidence intervals covering the true value of \ac{atc} ratio per method and sample size $T$. The average width of the confidence interval is listed in brackets.}
+    \caption[Proportion of bootstrap confidence intervals covering the true value of \ac{atc} ratio per method and sample size $T$ in the bootstrap simulation study.]{Proportion of bootstrap confidence intervals covering the true value of \ac{atc} ratio per method and sample size $T$. The average width of the confidence interval is listed in brackets.}
     \label{tab:atc_bootstrap}
 \end{table}
 
@@ -1024,11 +1024,11 @@ Therefore, we use the \ac{bca} method for confidence intervals in the applicatio
     \centering
     \begin{subfigure}{0.48\textwidth}
 \includegraphics{plots/illustrative_examples/boxplot_comp_time_butterfly}
-        \caption{First dataset}
+        \caption{First dataset with asymmetry.}
     \end{subfigure}
     \begin{subfigure}{0.48\textwidth}
     \includegraphics{plots/illustrative_examples/boxplot_comp_time_normal}
-        \caption{Second dataset}
+        \caption{Second dataset.}
     \end{subfigure}
     \caption[Boxplot of the computation time for different bootstrapping methods and data set sizes.]{Boxplot of the computation time for different bootstrapping methods and data set sizes $T$. The computation time refers to bootstrapping one confidence interval based upon $10,000$ values. Each boxplot reflects $10,000$ samples. The \ac{bca} method takes slightly longer than the other two, but the difference is negligible.}
     \label{fig:atc_bootstrap_time}
@@ -1144,7 +1144,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         \bottomrule
     \end{tabular}
     \caption[Matching the abbreviation to the key in the COVID-19 nowcasting hub.]{Matching the abbreviation to the key in the COVID-19 nowcasting hub.
-    Information on the models and references is listed in \citet[][Table 1]{Wolffram2023}.}
+Information on the models and references are listed in \citet[][Table 1]{Wolffram2023}.}
     \label{tab:app-covid-models}
 \end{table}
 
@@ -1163,7 +1163,7 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
     \tiny
     \begin{subtable}[t]{\textwidth}
         \input{plots/covid_nowcast/30_trending_ratios_lag_1}
-    \caption{1 day.}
+    \caption{One day.}
     \end{subtable}
     \begin{subtable}[t]{\textwidth}
         \input{plots/covid_nowcast/30_trending_ratios_lag_14}
@@ -1188,21 +1188,21 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
 %    \includegraphics{}
     \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/covid_nowcast/40_cond_prob_lag_1}
-    \caption{Conditional \ac{atc} plot for horizon 1.}\label{fig:app-covid-cond-prob-1}
+    \caption{Conditional \ac{atc} plot for horizon one.}\label{fig:app-covid-cond-prob-1}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/covid_nowcast/40_cond_prob_lag_14}
-    \caption{Conditional \ac{atc} plot for horizon 1.}\label{fig:app-covid-cond-prob-14}
+    \caption{Conditional \ac{atc} plot for horizon 14.}\label{fig:app-covid-cond-prob-14}
     \end{subfigure}
     \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/covid_nowcast/40_acc_eps_lag_1}
-    \caption{\Ac{atc} ratio over exclusion area size in $\diffx$ for horizon 1.}\label{fig:app-covid-atc-ratio-1}
+    \caption{\Ac{atc} ratio over exclusion area size in $\diffx$ for horizon one.}\label{fig:app-covid-atc-ratio-1}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/covid_nowcast/40_acc_eps_lag_14}
-    \caption{\ac{atc} ratio over exclusion area size in $\diffx$ for horizon 1.}\label{fig:app-covid-atc-ratio-14}
+    \caption{\ac{atc} ratio over exclusion area size in $\diffx$ for horizon 14.}\label{fig:app-covid-atc-ratio-14}
     \end{subfigure}
-    \caption[Conditional ATC plot and ATC ratio over exclusion area in COVID-19 nowcasting.]{Conditional \ac{atc} plot and \ac{atc} ratio over exclusion area for the COVID-19 nowcasts of the seven-day hospitalization rate ILM, RKI, RIVM, and ENS-MED for the horizon seven days.}
+    \caption[Conditional ATC plot and ATC ratio over exclusion area in COVID-19 nowcasting.]{Conditional \ac{atc} plot and \ac{atc} ratio over exclusion area for the COVID-19 nowcast models ILM, RKI, RIVM, and ENS-MED for the horizon seven days. Note the different axis scalings of the ATC ratios for the two horizons. While the ENS-MED model has a rather low \ac{atc} ratio for small exclusion areas, it is increasing fast for larger exclusion areas. The RKI model is among the worst, except for the small negative predicted changes. }
     \label{fig:app-covid-cond-prob-atc-ratio-1-14}
 \end{figure}
 
@@ -1222,9 +1222,9 @@ This approach is applied in Section~\ref{sec:application-covid}, as the true val
         \caption{Count histogram of the predicted probabilities for the horizon one, seven, and 14 days.} \label{fig:app-covid-prob-hist}
     \end{subfigure}
     \caption[Reliability diagrams for COVID-19 nowcasting models and the horizon seven and 14 days.]{The reliability diagram for the COVID-19 nowcasting models ILM, RIVM, RKI, and ENS-MED for the horizon seven and 14 days.
-    Additionally, the count of predicted probabilities for the horizons is shown.
-        The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
-    As the models issue small or large probabilities of increase for the higher horizons, little information on the accuracy of moderate probability predictions is available.}
+Additionally, the count of predicted probabilities for the horizons is shown.
+    The reliability diagram bins are chosen according to the empirical quantiles of the predicted probabilities.
+As the models issue small or large probabilities of increase for the higher horizons, little information on the accuracy of moderate probability predictions is available.}
     \label{fig:app-covid-rel}
 \end{figure}
 %TC:endignore
