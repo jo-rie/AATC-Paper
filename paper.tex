@@ -168,7 +168,7 @@
 
 \begin{document}
 
-\title{The assessment of the ability of measurements, nowcasts, and forecasts to track changes}
+\title{On the assessment of the ability of measurements, nowcasts, and forecasts to track changes}
 %\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author*[1]{Jonas Rieger}\email{jonas.rieger@kit.edu}
 \author[1]{Bolin Liu}
@@ -207,12 +207,11 @@ Measurements aim to obtain accurate and precise values of a measurable quantity 
 Repeated measurements can be used to track changes in a value over time.
 When introducing new measurement methods, they are evaluated against current reference methods, often called the \enquote{gold standard}, by simultaneously measuring the same quantity with the new method and the reference method – often in various individuals or different clinical settings.
 
-In forecasting and nowcasting, the evaluation of the measurement performance is based on statistical methods quantifying the accuracy such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
+In forecasting and nowcasting the evaluation of performance or goodness is usually based on statistical methods quantifying the accuracy such as the \ac{rmse}, probabilistic scoring rules, and calibration measures~\citep{Gneiting2007, Gunther2021, Wolffram2023}.
 None of them assesses the method's \ac{atc}.
-
-In a prediction competition on armed conflicts, the assessment of the \ac{atc} recently gained attention as \citet{Vesco2022} proposed the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
+In a forecasting competition on armed conflicts, the assessment of the \ac{atc} recently gained attention as \citet{Vesco2022} proposed the novel \ac{tadda} score with an additive tracking-changes-component for evaluation.
 However, the score poses an unintuitive incentive to forecasters and is thus theoretically problematic~\parencite{Bracher2023}.
-When evaluating the measurement performance of a measurement method, comparative statistics such as Bland-Altman analysis~\citep{Bland1986} and the percentage error \parencite{Critchley1999} are commonly used.
+When evaluating the performance or goodness of a measurement method, comparative statistics such as Bland-Altman analysis~\citep{Bland1986} and the percentage error \parencite{Critchley1999} are commonly used.
 How to best assess the \ac{atc} of measurement methods is a field of ongoing research~\citep{Saugel2015, Saugel2018, Hiraishi2021}.
 
 In this article, we focus on how to assess the ability of measurements, nowcasts, or forecasts to track changes. We formalize the concept of \ac{atc} and present visual techniques and quantitative measures to assess it – considering both noiseless data and data with noise and small non-informative changes.
@@ -227,7 +226,7 @@ Ready-to-use code is available on [LINK WILL BE INSERTED].
 \subsection{Computing changes and notation}\label{subsec:notation}
 
 The assessment of \ac{atc} is based on the measured/observed/true and the predicted changes in a value of interest over a time horizon $l$.
-The \textit{measured} change is straightforward to compute for all types of measurement, nowcast, or forecast.
+The \textit{true} change is straightforward to compute for all types of measurement, nowcast, or forecast.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the actual values for nowcasting or forecasting, or gold standard measurements up to time $T$.
 The sequence of changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
 \begin{equation}\label{eq:diffy}
@@ -388,8 +387,8 @@ While colored four-quadrant plots, as in Figure~\ref{fig:aatc_basic_4q_sample_co
     \includegraphics{plots/illustrative_examples/trending_ratio_time_series}
     \caption{Rolling estimate of the \ac{atc} ratio over time with window length 91. }\label{fig:atc_ratio_time_series}
     \end{subfigure}%
-    \caption[Visualizations of the four-quadrant plot for data with a time-varying ATC ratio.]{Visualizations for data with a time-varying ATC ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-ATC-data-generation}). The ATC ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the ATC ratio becomes visible in Figure~\ref{fig:atc_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The rolling estimates are shifted to the right compared to $k_t$ as the windows look backward. Thus, the yearly course of the ATC ratio can be detected.
-The ATC ratio has a pronounced sinus-shaped seasonality with a peak after a quarter of a year and a low point after three quarters.
+    \caption[Visualizations of the four-quadrant plot for data with a time-varying ATC ratio.]{Visualizations for data with a time-varying ATC ratio. We defer information on the data generation process to the appendix (see \ref{subsec:app-ATC-data-generation}). The ATC ratio for the entire data set is $\mu = 0.7577$. The strong seasonality of the ATC ratio becomes visible in Figure~\ref{fig:atc_ratio_time_series}. The green curve $k_t$ shows the theoretical probability that $\diffxt$ has the same sign as $\diffyt$ for each time step. The ATC ratio has a pronounced sinus-shaped seasonality with a peak after a quarter of a year and a low point after three quarters. The rolling estimates detect the yearly course of the ATC ration. Naturally, they are shifted to the right compared to $k_t$ as the windows look backward. 
+
 }
 \end{figure}
 
@@ -439,8 +438,8 @@ We use the \ac{bca} approach for bootstrapping in the following, as it holds the
 The estimators described above give information on the probabilities $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin E)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin E)$.
 A still finer analysis might be gained by considering the conditional distribution $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ to assess the \ac{atc} of a prediction for a specific change $\diffxrv = \xcond$ of the measurement, nowcast, or forecast.
 Thereby, $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ denotes the probability of a correct direction given a predicted change of $\xcond$.
-Thus, if a change of $\xcond$ is observed in practice, one can directly assess its credibility.
-A multivariate \acf{kde} facilitates a continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
+Thus, if a change of $\xcond$ is observed in practice, one can directly assess its credibility regarding the direction.
+Multivariate \acf{kde} facilitates the continuous estimation of $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ by estimating the components $f_{\diffxrv, \diffyrv}$ and $f_{\diffxrv}$ of
 \begin{align*}
 P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond) = \begin{cases}
                                               \int_{-\infty}^0 \frac{f_{\diffxrv, \diffyrv}(\xcond, y)}{f_{\diffxrv}(\xcond)} \ \textrm{d} \: y & \text{if } \xcond < 0, \\
@@ -686,6 +685,7 @@ More than 8,600 forecasts are available for all models, with changes in the numb
 \end{table}
 
 We start by analyzing the marginal distributions for the predicted and observed changes for the three- and seven-day horizons in Table~\ref{tab:app-eda-marginals}, again.
+% XXX should we delegate that table to the appendix as before?
 The computed difference aligns with Section~\ref{subsec:notation}, that is, the difference between the forecasted mean and true value of three and seven days before, as the actual value is available when issuing the forecast.
 The positive change fraction varies between 0.39 and 0.63 for the horizon of three days and between 0.37 and 0.63 for the horizon of seven days.
 The variability of changes decreases for the larger horizon for most models; only for the ETS model does it increase.
@@ -729,6 +729,8 @@ For the other models, the reliability diagrams show a fraction of increases that
     \caption[ATC ratios for the forecasts of patient admission to an emergency department.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models with the exclusion of zero-containing points for the horizons 72 hours and seven days in the forecasting of patient admissions to an emergency department.}
     \label{tab:app-eda-atc-ratios}
 \end{table}
+
+% XXX in the figure above: comment on the exclusion area; notation in columns is not consistent to the example anbove (with respect to using an exclusion area a or not), I think; i.e., \mu_q vs \mu
 
 \begin{figure}
     \centering
@@ -815,6 +817,7 @@ It becomes apparent that the systolic measurements have a higher \ac{atc} than t
     \caption[ATC ratios for the different horizons $l$ and the systolic and mean blood pressure measurements.]{\Ac{atc} ratios for the different horizons $l$ and the systolic and mean blood pressure measurements.}
     \label{tab:app-mimic-atc-ratios}
 \end{table}
+% XXX hier wieder die Sache mit der Notation und Exclusion Zone
 
 \begin{figure}
     \centering
@@ -838,6 +841,8 @@ It becomes apparent that the systolic measurements have a higher \ac{atc} than t
 
 
 \subsubsection*{Discussion}
+
+% XXX should we exclude the 1 min horizon, i.e., does it make sense to look at such a small horizon? (especially also because of the large CIs? Though that might be interesting for didactic reasons)? The NBP will take some time, so I am not sure how the exact time of the measurement is chosen
 
 The four-quadrant plots contain a considerable number of extreme points.
 Whether these points are due to measurement errors or extreme values is not distinguishable.
