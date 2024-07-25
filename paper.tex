@@ -685,7 +685,6 @@ More than 8,600 forecasts are available for all models, with changes in the numb
 \end{table}
 
 We start by analyzing the marginal distributions for the predicted and observed changes for the three- and seven-day horizons in Table~\ref{tab:app-eda-marginals}, again.
-% XXX should we delegate that table to the appendix as before?
 The computed difference aligns with Section~\ref{subsec:notation}, that is, the difference between the forecasted mean and true value of three and seven days before, as the actual value is available when issuing the forecast.
 The positive change fraction varies between 0.39 and 0.63 for the horizon of three days and between 0.37 and 0.63 for the horizon of seven days.
 The variability of changes decreases for the larger horizon for most models; only for the ETS model does it increase.
@@ -726,11 +725,10 @@ For the other models, the reliability diagrams show a fraction of increases that
     \centering
     \tiny
     \input{plots/ed_arrival/50_trending_ratio}
-    \caption[ATC ratios for the forecasts of patient admission to an emergency department.]{\Ac{atc} ratio $\acc$, positive \ac{atc} ratio $\accp$, and negative \ac{atc} ratio $\accm$ for the models with the exclusion of zero-containing points for the horizons 72 hours and seven days in the forecasting of patient admissions to an emergency department.}
+    \caption[ATC ratios for the forecasts of patient admission to an emergency department.]{\Ac{atc} ratio $\acc_+$, positive \ac{atc} ratio $\accp_+$, and negative \ac{atc} ratio $\accm_+$ for the models for the horizons 72 hours and seven days in the forecasting of patient admissions to an emergency department with an exclusion zone equal to the axis indicated by the subscript $+$.}
     \label{tab:app-eda-atc-ratios}
 \end{table}
 
-% XXX in the figure above: comment on the exclusion area; notation in columns is not consistent to the example anbove (with respect to using an exclusion area a or not), I think; i.e., \mu_q vs \mu
 
 \begin{figure}
     \centering
@@ -817,7 +815,7 @@ It becomes apparent that the systolic measurements have a higher \ac{atc} than t
     \caption[ATC ratios for the different horizons $l$ and the systolic and mean blood pressure measurements.]{\Ac{atc} ratios for the different horizons $l$ and the systolic and mean blood pressure measurements.}
     \label{tab:app-mimic-atc-ratios}
 \end{table}
-% XXX hier wieder die Sache mit der Notation und Exclusion Zone
+
 
 \begin{figure}
     \centering
@@ -842,7 +840,6 @@ It becomes apparent that the systolic measurements have a higher \ac{atc} than t
 
 \subsubsection*{Discussion}
 
-% XXX should we exclude the 1 min horizon, i.e., does it make sense to look at such a small horizon? (especially also because of the large CIs? Though that might be interesting for didactic reasons)? The NBP will take some time, so I am not sure how the exact time of the measurement is chosen
 
 The four-quadrant plots contain a considerable number of extreme points.
 Whether these points are due to measurement errors or extreme values is not distinguishable.
