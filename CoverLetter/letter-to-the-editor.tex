@@ -1,0 +1,92 @@
+\documentclass[%
+ KITletter, %the letter class option
+ %bwKITlogo, %--- activate to have the KIT logo black/white instead of coloured
+ %officeprintableoutline, %--- activate for a layout printable on office printers
+ %nooutlineframe, %--- activate tp print the letter on the pre-printed form of KIT
+ %class options that do not change the layout can be added here, e.g. twoside,
+fromemail,fromurl, %--- scrlttr2 options; activate as needed
+ USenglish,%UKenglish%,french%,ngerman (already default) ... %--- activate one (or more) language options as needed
+ %helvet, %heros, %--- use one of these to have a fallback font as default
+ %cursor %--- activate to have the fallback typewriter font as default
+  backaddress=off,
+foldmarks=off,
+ ]{scrlttr2}
+\usepackage{hyperref}%for detailed information see: texdoc scrguide
+
+%--- the back address (placed above the adressee)
+%\setkomavar{backaddress}{KIT \textbar{} Dep. of Economics and Management \textbar{} Kaiserstr. 89 \textbar{} Karlsruhe, Germany}
+\setkomavar{backaddress}{}
+
+%--- the possible fields for the sender information (right of the addressee):
+     %-- remove the fields not needed or set them to "{}",
+     %-- use the optional arguments to adapt the respective descriptions or even to divert fields, e.g.
+     %   \setkomavar{myref}[Position]{Project leader}
+\setkomavar{fromname}{Jonas Rieger}
+%\setkomavar{headofOU}{Prof. Vorname Surename}
+\setkomavar{fromaddress}{Karlsruhe Institute of Technology\\Institute of Operations Research\\Chair Prof. Dr. O. Grothe – Analytics and Statistics\\76131 Karlsruhe, Germany}
+%\setkomavar{fromphone}{0721-608-xxxxx}          %(to be activated by class option)
+%\setkomavar{fromfax}{0721-608-xxxxx}            %          "
+\setkomavar{fromemail}[Email:]{jonas.rieger@kit.edu}%          "
+\setkomavar{fromurl}[Web:]{https://as.ior.kit.edu/}      %          "
+%\setkomavar{contact}{Vorname Surename}
+%\setkomavar{myref}{xxxx}
+%\setkomavar{fromlogo}{\includegraphics[width=17mm]{info}}%(to be activated by class option)
+%(the info graphic comes from the standard package "notes"
+% and must in case of need b replaced by your individual logo)
+
+%--- set-up for the main part and the closing of the letter:
+%\setkomavar{title}{Testtitel} %--- rarely needed, placed before the subject line
+\setkomavar{subject}{Submission to BMC Medical Research Methodology} %--- placed before the opening phrase
+%\setkomavar{signature}{\includegraphics[width=2.5cm]{unterschrift}\\Jonas Rieger} %--- used by \closing{...}; overwrites the fromname variable
+\setkomavar{signature}{[signature to be inserted]\\Jonas Rieger} %--- used by \closing{...}; overwrites the fromname variable
+                                             %(you can provide a hand-written signature with \includegraphics)
+\setplength{sigbeforevskip}{\baselineskip} %--- skip between closing phrase and signature
+
+\setkomavar{firstfoot}{}%activate to suppress the footer of the letterhead page
+
+\begin{document}
+
+%\justifying %--- activate to have justified instead of ragged-right text
+
+\def\pagename{} %--- activate to suppress "Page", "Seite" etc.  before the page number on pages 2 onwards
+
+\begin{letter}{%
+To the Editor of \\ BMC Medical Research Methodology
+%\\LAND
+}
+
+\opening{Dear Dr. Lo Monaco,}
+
+We hereby submit our manuscript
+
+\begin{quote}
+\textit{The assessment of the ability of measurements, nowcasts, and forecasts to track changes}
+\end{quote}
+
+by Bolin Liu, Bernd Saugel, Oliver Grothe, and myself for your kind consideration for publication in BMC Medical Research Methodology.
+
+The manuscript introduces novel statistical methods and visualization techniques for assessing the ability of measurements, nowcasts, and forecasts to predict the correct direction of change.
+These methods are exemplified using three distinct medical and healthcare datasets.
+Hence, the manuscript aligns directly with the scope of BMC Medical Research Methodology.
+
+We declare that there are no potential competing interests related to this research or manuscript.
+All authors have reviewed and approved this manuscript for submission.
+We confirm that the content of this manuscript has not been published, nor has it been submitted for publication in another journal.
+This work is original and has not been considered by any other journal.
+Please note that the material is also part of my doctoral thesis.
+
+We respectfully suggest Prof. Dr. Alexander Hapfelmeier (\url{alexander.hapfelmeier@mri.tum.de}) from the Institute of AI and Informatics in Medicine at the Technical University of Munich, and Dr. Simon Vistisen (\url{vistisen@clin.au.dk}), Associate Professor and Business Engagement Partner in the Department of Clinical Medicine at Aarhus University and the Department of Anaesthesia \& Intensive Care at Aarhus University Hospital, as potential reviewers for our manuscript.
+
+We are confident this paper represents a valuable and novel contribution to the evaluation of forecasting, nowcasting, and measurement methods in healthcare research.
+
+
+\closing{\iflanguage{ngerman}{Mit freundlichen Grüßen}{Yours sincerely}}
+%Jonas Rieger
+%another idea for the closing:
+%\setkomavar{signature}{Vorname Nachname\\Position}
+%\setplength{sigbeforevskip}{0mm}
+%\closing{\rule{12em}{0.5bp}}
+
+\end{letter}
+
+\end{document}
