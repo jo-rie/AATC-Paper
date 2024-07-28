@@ -1,4 +1,4 @@
-paper.pdf
+ paper.pdf
 /.DS_Store
 
 ## Core latex/pdflatex auxiliary files:
@@ -611,3 +611,7 @@ TSWLatexianTemp*
 .DS_Store
 /.idea
 /notes/Trending_2024-02-23.pdf
+/CoverLetter/letter-to-the-editor.aux
+/CoverLetter/letter-to-the-editor.log
+/CoverLetter/letter-to-the-editor.pdf
+/CoverLetter/letter-to-the-editor.synctex.gz
