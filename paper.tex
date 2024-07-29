@@ -1,17 +1,7 @@
-%\documentclass[referee,sn-mathphys-ay,pdflatex]{sn-jnl}
-%\documentclass[sn-mathphys-ay,pdflatex]{sn-jnl}
 \documentclass[pdflatex]{sn-jnl}
-% Language setting
-% Replace `englis' with e.g. `spanish' to change the document language
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc} % fuer Umlaute
 \usepackage{fontenc}
-
-% Set page size and margins
-% Replace `letterpaper' with`a4paper' for UK/EU standard size
-%\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
-
-%%%% ---- Useful packages
 
 %%% --- Colors
 \usepackage[dvipsnames]{xcolor}
@@ -25,7 +15,6 @@
 \usepackage{booktabs}
 \usepackage{multirow} % cells over several rows
 \usepackage{tabularx}
-%\usepackage{tabularray}
 \usepackage{floatrow}
 \DeclareFloatFont{tiny}{\tiny}% "scriptsize" is defined by floatrow, "tiny" not
 \floatsetup[table]{font=scriptsize} %https://tex.stackexchange.com/a/27100
@@ -36,39 +25,12 @@
 \usepackage{bbm} % for blackboard 1
 \usepackage[linesnumbered,lined,algo2e,figure,boxed]{algorithm2e}
 \usepackage[short]{optidef} % for aligning linear programs
-%\usepackage{nccmath} % for fleqn environment
 
 %%% --- Other
-%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
-%\usepackage[hidelinks]{hyperref}
 \usepackage[style=authoryear,backend=biber,natbib=true]{biblatex}
-%\usepackage{natbib}
-%\bibliographystyle{
-%\addbibresource{library.bib}
 \addbibresource{library-jonas.bib}
 \usepackage{csquotes}
 \usepackage[shortcuts]{extdash} % For Hyphens in English
-%\usepackage{acro}
-% \DeclareAcronym{pdf}{short=PDF, long={probability distribution function}}
-
-%%% --- Commenting, Todonotes
-%\usepackage[colorinlistoftodos,prependcaption]{todonotes}
-%%\usepackage{comment, soul}
-%%\newcommand{\ar}{$\rightarrow$}
-%\presetkeys{todonotes}{backgroundcolor=yellow!30, bordercolor=yellow!50, linecolor=yellow!50, figwidth=\textwidth}{}
-%\newcommand{\hl}[1]{\textcolor{Aquamarine}{#1}}
-
-%\usepackage{xargs,ifthen} % Use optional arguements in commands
-%\newcommandx{\unsure}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
-%\newcommandx{\discuss}[2][1=]{\todo[linecolor=orange,backgroundcolor=orange!25,bordercolor=orange,#1]{#2}}
-%\newcommandx{\missing}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-%\newcommandx{\change}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-%\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
-%\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
-%\newcommandx{\done}[2][1=]{\todo[linecolor=gray,backgroundcolor=gray!25,bordercolor=gray,#1]{#2}}
-%\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
-%\usepackage{marginnote}
-%\let\marginpar\marginnote
 
 %%% --- Acronyms
 \usepackage{acro}
@@ -128,7 +90,6 @@
 \newcommand{\acc}{\mu}
 \newcommand{\accp}{\acc^+}
 \newcommand{\accm}{\acc^-}
-%\newcommand{\acceps}[1][]{\ifthenelse { \equal {#1} {} }{\acc_{\eps}}{\acc_{#1}}} %https://stackoverflow.com/a/7314951
 \newcommand{\acceps}[1][e]{\acc_{#1}} %https://stackoverflow.com/a/7314951
 \newcommand{\accpeps}[1][e]{\acceps[#1]^+}
 \newcommand{\accmeps}[1][e]{\acceps[#1]^-}
@@ -144,32 +105,9 @@
 %%% --- Other Commands
 \renewcommand{\arraystretch}{1.2}
 
-% Ungefähre Wortanzahl des Hauptteils (von Introduction bis Conclusion): oben links auf 'Menu' und dann 'Word Count'
-% Ungefähre Aufteilung auf Abschnitte (nicht direkt in Overleaf sichtbar):
-% Introduction: 500
-% Assessment of ATC: 2225
-% Application: 3045
-% Discussion and Conclusion: 587
-
-% Abstract: 99
-
-
-
-%%% --- ToDo List
-%\usepackage{enumitem}
-%\newlist{todolist}{itemize}{2}
-%\setlist[todolist]{label=$\square$}
-%\usepackage{pifont}
-%\newcommand{\cmark}{\ding{51}}%
-%\newcommand{\xmark}{\ding{55}}%
-%\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
-%\hspace{-2.5pt}}
-%\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
-
 \begin{document}
 
 \title{On the assessment of the ability of measurements, nowcasts, and forecasts to track changes}
-%\author{Oliver Grothe, Bolin Liu, Jonas Rieger}
 \author*[1]{Jonas Rieger}\email{jonas.rieger@kit.edu}
 \author[1]{Bolin Liu}
 \author[2]{Bernd Saugel}
@@ -177,20 +115,15 @@
 
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 \affil[2]{\orgdiv{Department of Anesthesiology, Center of Anesthesiology and Intensive Care Medicine}, \orgname{University Medical Center Hamburg-Eppendorf}, \orgaddress{\street{Martinistrasse 52}, \city{Hamburg}, \postcode{20246}, \country{Germany}}}
-%TC:ignore
-\abstract{ 
+\abstract{
 Measurements, nowcasts, or forecasts ideally should correctly reflect changes in the values of interest.
 In this article, we focus on how to assess the ability of measurements, nowcasts, or forecasts to correctly predict the direction of changes in values – which we refer to as the ability to track changes. 
 We present visual techniques and quantitative measures to assess the ability to track changes and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
 We exemplarily illustrate the proposed methods to assess the ability to track changes for nowcasting during the COVID-19 pandemic, patient admissions to an emergency department, and non-invasive blood pressure measurements.
 }
-%TC:endignore
 \keywords{}
 
 \maketitle
-% \listoftodos
-
-
 
 \section{Introduction}\label{sec:atc-introduction}
 
@@ -413,13 +346,8 @@ The measures are then estimators for the probability of predicting the correct d
 
 The estimators accept various shapes of the exclusion area (see Figure~\ref{fig:aatc_4q}).
 A rectangular exclusion area, $E = \{(y, x) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \land (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, leaves out points that are small in both components.
-%Points are included if the true value or prediction is unlikely to be noise-driven.
-%In the example graph in Figure~\ref{fig:aatc_basic_4q_excl_box}, only point 1 is excluded.
 An exclusion area along one axis, for example, $E = \{(y, x) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x)\}$ for $\varepsilon_x > 0$, removes points in which one of the components could change sign by a small amount of noise.
-%At least for measurement, nowcast, or forecast, small amounts of noise are inevitable.
 A cross-shaped exclusion area, $E = \{(y, x) \in \R^2: (-\varepsilon_x \leq x \leq \varepsilon_x) \lor (-\varepsilon_y \leq y \leq \varepsilon_y) \}$ for $\varepsilon_x, \varepsilon_y > 0$, along both axes accounts for the sign reversal in both components.
-%A point is only included if no component is likely to be driven by noise.
-%For the latter two methods, points 1 and 7 in Figure~\ref{fig:aatc_basic_4q_excl_axis} or 1, 6, and 7 are excluded in Figure~\ref{fig:aatc_basic_4q_excl_cross}, respectively.
 
 In most applications, the shape and size of the exclusion area can be chosen based on domain knowledge or expert opinions.
 The size determination can also be based on a proportion of the total variance or the total range of the data; for example, the 10\% smallest absolute values in each component determine the exclusion area size.
@@ -573,7 +501,6 @@ For the horizons of one and 14 days, we refer to Table~\ref{tab:app-covid-atc-ra
 
 \begin{figure}
     \centering
-%    \includegraphics{}
     \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/covid_nowcast/40_cond_prob_lag_7}
     \caption{Conditional ATC plot.}\label{fig:app-covid-cond-prob-7}
@@ -892,7 +819,6 @@ Significant differences in the number of observed positive and negative changes 
 However, if the number of positive and negative observed changes differs widely, unbalanced-data-aware measures should be considered.
 There are various adapted measures for unbalanced outcomes, for example, Cohen's $\kappa$ \citep{Cohen1960} or those listed in \citet[Table 3.3]{Jolliffe2012}.
 
-%TC:ignore
 \section*{Declarations}
 \subsection*{Availability of data and materials}
 
@@ -922,7 +848,6 @@ All authors have approved the submitted version and have agreed both to be perso
 Not applicable.
 
 \printbibliography
-%\bibliography{library,library-jonas}
 
 \appendix
 
@@ -1190,7 +1115,6 @@ Information on the models and references are listed in \citet[][Table 1]{Wolffra
 
 \begin{figure}
     \centering
-%    \includegraphics{}
     \begin{subfigure}[t]{.48\textwidth}
     \includegraphics{plots/covid_nowcast/40_cond_prob_lag_1}
     \caption{Conditional \ac{atc} plot for horizon one.}\label{fig:app-covid-cond-prob-1}
@@ -1232,7 +1156,6 @@ Additionally, the count of predicted probabilities for the horizons is shown.
 As the models issue small or large probabilities of increase for the higher horizons, little information on the accuracy of moderate probability predictions is available.}
     \label{fig:app-covid-rel}
 \end{figure}
-%TC:endignore
 
 
 
