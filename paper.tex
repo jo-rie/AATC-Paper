@@ -1,3 +1,4 @@
+% !TeX spellcheck = en_US
 \documentclass[pdflatex]{sn-jnl}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc} % fuer Umlaute
@@ -116,10 +117,20 @@
 \affil[1]{\orgdiv{Institute for Operations Research}, \orgname{Karlsruhe Institute of Technology (KIT)}, \orgaddress{\street{Kaiserstr. 12}, \city{Karlsruhe}, \postcode{76131}, \country{Germany}}}
 \affil[2]{\orgdiv{Department of Anesthesiology, Center of Anesthesiology and Intensive Care Medicine}, \orgname{University Medical Center Hamburg-Eppendorf}, \orgaddress{\street{Martinistrasse 52}, \city{Hamburg}, \postcode{20246}, \country{Germany}}}
 \abstract{
+Background: 
 Measurements, nowcasts, or forecasts ideally should correctly reflect changes in the values of interest.
 In this article, we focus on how to assess the ability of measurements, nowcasts, or forecasts to correctly predict the direction of changes in values – which we refer to as the ability to track changes. 
-We present visual techniques and quantitative measures to assess the ability to track changes and provide extensions for noisy data and estimation uncertainty using bootstrap confidence intervals and exclusion areas.
+
+Methods: We developed visual techniques and quantitative measures to assess ATC. 
+Extensions for noisy data and estimation uncertainty were implemented using bootstrap confidence intervals and exclusion areas. 
+
+Results: 
 We exemplarily illustrate the proposed methods to assess the ability to track changes for nowcasting during the COVID-19 pandemic, patient admissions to an emergency department, and non-invasive blood pressure measurements.
+The proposed methods effectively evaluated ATC across different applications. 
+
+Conclusions: 
+The developed ATC assessment methods offer a comprehensive toolkit for evaluating the ATC of measurements, nowcasts, and forecasts. 
+These techniques provide valuable insights into model performance, complementing traditional accuracy measures and enabling more informed decision-making in various fields, including public health, healthcare management, and medical diagnostics.
 }
 \keywords{}
 
@@ -151,14 +162,15 @@ In this article, we focus on how to assess the ability of measurements, nowcasts
 We introduce the conditional \ac{atc} plot, a new graphical method for assessing the local ability, and review bootstrap methods for calculating confidence intervals.
 We extend the concept of assessment to probabilistic predictions.
 We exemplarily illustrate the proposed methods to assess the \ac{atc} for nowcasting during the COVID-19 pandemic, patient admissions to an emergency department, and non-invasive blood pressure measurements – and thus provide blueprints for future assessments.
-Ready-to-use code is available on [LINK WILL BE INSERTED].
+We discuss practical implementation and interpretation of the measures, thus providing the basis for communicating model limitations to forecasters, nowcasters, and public health officials.
+Ready-to-use code is available on \url{https://github.com/jo-rie/aatc}.
 
 
 \section{Assessment of the ability to track changes (ATC)}\label{sec:aatc}
 
 \subsection{Computing changes and notation}\label{subsec:notation}
 
-The assessment of \ac{atc} is based on the measured/observed/true and the predicted changes in a value of interest over a time horizon $l$.
+We base the assessment of \ac{atc} on the measured/observed/true and the predicted changes in a value of interest over a time horizon $l$.
 The \textit{true} change is straightforward to compute for all types of measurement, nowcast, or forecast.
 Let $\mathbf{y} = (y_t)_{t=0}^T$ denote the actual values for nowcasting or forecasting, or gold standard measurements up to time $T$.
 The sequence of changes is then given by the differences of values in $\mathbf{y}$ with horizon $l$, that is,
@@ -190,6 +202,7 @@ $ \\
 
 The definition of the \textit{predicted} change depends on the context;
 Table~\ref{tab:notation} summarizes the notation for measurements, nowcasts, or forecasts and the computation of the predicted change.
+While the computation for measurements is straightforward and well-established, we develop the framework for nowcasts and forecasts in the following sections.
 For nowcasting, let $x_{t | \tau}$ denote the nowcast for time $t$ computed with the knowledge of time $\tau$.
 We call $t$ the \textit{target time} and $\tau$ the \textit{issue time}.
 The predicted change is computed by
@@ -237,7 +250,7 @@ Formally, the assessment of \ac{atc} is the same for measurements, nowcasts, and
 In the following, we omit the horizon $l$ for ease of notation; $\diffx$ and $\diffy$ refer to $\diffxl$ and $\diffyl$ for a common horizon $l$.
 The \ac{atc} is maximal if all predicted change directions are correct; that is, the sign of all elements of $\diffx$ and $\diffy$ coincide.
 Consequently, when assessing the \ac{atc}, we examine the statistical consistency of $\sign(\diffx)$ and $\sign(\diffy)$.
-A simple yet insightful method is the four-quadrant plot~\citep[see, e.g., ][]{Perrino1998, Saugel2015}.
+A simple yet insightful method is the four-quadrant plot, which is well-established in measurement analysis and can be extended to nowcasts and forecasts~\citep[see, e.g., ][]{Perrino1998, Saugel2015}.
 In a four-quadrant plot, the occured changes and the predicted changes are plotted together, that is, $(\diffyt, \diffxt)$ for $t = l, \dots, T$.
 Thus, the x-axis of a four-quadrant plot shows the true value differences, whereas the y-axis displays the prediction data differences.
 Points in the green upper right and lower left quadrants reflect a correct change direction for the respective time step, whereas points in the remaining red quadrants show incorrectly predicted changes.
@@ -274,7 +287,7 @@ Other visualization techniques, such as polar plots, lack the four-quadrant plot
 
 \subsection{The ATC ratio and other measures}\label{subsec:atc-measures}
 
-Analyzing the number of points in the green versus red quadrants is a standard approach in the \ac{atc} assessment of measurement data~\citep{Critchley2010, Saugel2015}.
+Analyzing the number of points in the green versus red quadrants is a standard approach in the \ac{atc} assessment of measurement data~\citep{Critchley2010, Saugel2015}, which we extend here to forecasts and nowcasts.
 With that, we estimate the probability of a correctly predicted change direction, $P(\diffxrv \diffyrv > 0)$, where $\diffyrv$ and $\diffxrv$ denote random variables for future incremental changes.
 Since $z_1 z_2 > 0$ imposes the same condition as $\sign(z_1) = \sign(z_2)$ ($z_1, z_2 \in \R \setminus \{ 0 \}$), the standard estimator for $P(\diffxrv \diffyrv > 0)$ is
 \begin{equation}
@@ -354,7 +367,7 @@ The size determination can also be based on a proportion of the total variance o
 A third approach is to visualize the \ac{atc} ratio for different sizes of $E$ and thus inspect the effects of the exclusion area size on the estimates.
 For examples of such plots, see Section~\ref{sec:application-covid}.
 
-Confidence intervals can account for the estimation uncertainty of the measures above.
+Confidence intervals can account for the estimation uncertainty of the measures above, an approach not yet applied in the literature.
 Bootstrap confidence intervals are based on resampling and not on parametric assumptions as classical confidence intervals are~\parencite[for introductions see][]{Hesterberg2011, Bittmann2021}.
 Many new samples are drawn with replacement from the dataset, and the statistic of interest is computed for each sample, yielding an estimate for the distribution of the statistic of interest.
 Based on the derived \enquote{new} samples of the statistic, the confidence intervals can be derived through different bootstrapping methods.
@@ -363,7 +376,8 @@ We use the \ac{bca} approach for bootstrapping in the following, as it holds the
 
 \subsection{The conditional ATC plot}\label{subsec:aatc-cond-prob}
 
-The estimators described above give information on the probabilities $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin E)$ and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin E)$.
+The estimators described above provide information on the probabilities $P(\diffxrv \diffyrv > 0 | \diffxrv \diffyrv \notin E)$, $P(\diffxrv \diffyrv > 0 | \diffxrv > 0, \diffxrv \diffyrv \notin E)$, and $P(\diffxrv \diffyrv > 0 | \diffxrv < 0, \diffxrv \diffyrv \notin E)$.
+Notably, the visual analysis of these probabilities has not yet been addressed in the literature.
 A still finer analysis might be gained by considering the conditional distribution $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ to assess the \ac{atc} of a prediction for a specific change $\diffxrv = \xcond$ of the measurement, nowcast, or forecast.
 Thereby, $P(\diffxrv \diffyrv > 0 | \diffxrv = \xcond)$ denotes the probability of a correct direction given a predicted change of $\xcond$.
 Thus, if a change of $\xcond$ is observed in practice, one can directly assess its credibility regarding the direction.
@@ -389,7 +403,7 @@ We refer to the plot as a \textit{conditional ATC plot}.
 \subsection{Probabilistic evaluation}\label{subsec:aatc-probabilistic}
 
 In nowcasting and forecasting, probabilistic predictions have become more prevalent in recent years (see Sections~\ref{sec:application-covid} and~\ref{sec:application-eda}).
-In this section, we develop \ac{atc} assessments for probabilistic measurements and nowcasts.
+In this section, we develop \ac{atc} assessments for probabilistic measurements and nowcasts, an approach not yet explored in the literature.
 Probabilistic predictions issue a probability distribution for the quantity of interest based on their available information and, thus, include a point estimate and information on the prediction uncertainty and quantiles simultaneously.
 Probabilistic predictions thus also contain a probability of a positive or negative change.
 For \ac{atc} assessment, we compare the predicted probability of positive change, denoted by $p_t$, with the occurrence of positive changes.
@@ -454,10 +468,8 @@ We use the data from February 8, 2024, for the true values and focus on nowcasts
 Figure~\ref{fig:app-covid-true-nowcast} in Appendix~\ref{sec:appendix-application-covid} displays the true and nowcast data for the evaluation period.
 The time comprises the fourth wave's end in December 2021 and nearly the entire fifth wave of the pandemic in Germany, lasting until May 28, 2022~\citep{Tolksdorf2022}.
 
-To assess the impact of taken measures and the direction of the curve, the knowledge of whether hospitalization rates rise or fall is essential.
-Thus, the \ac{atc} assessment is particularly relevant for the nowcasts of the seven-day hospitalization rate.
-If hospitalization rates rise, measures should be tightened, while falling rates might allow for loosening measures.
-Asymmetries are especially relevant for assessing whether some models are better at recognizing a fall than a rise or vice versa.
+Traditional methods often focus on point or distributional accuracy of hospitalization rates, but understanding the direction and reliability of changes is crucial for effective decision-making. The \ac{atc} assessment offers easy-to-interpret insights and helps determine not only if rates are rising or falling, but also how confidently we can make this determination.
+For instance, if hospitalization rates are rising, public health measures may need to be tightened. Conversely, falling rates might justify loosening restrictions. The \ac{atc} assessment's ability to reveal asymmetries is especially valuable, as it can show whether certain models are more adept at recognizing decreases than increases, or vice versa. This information, which is not readily apparent from traditional methods, can significantly impact the interpretation of nowcasts and subsequent policy decisions for public health officials.
 
 \subsubsection*{Results}
 
@@ -592,9 +604,7 @@ Every 12 hours, the models issue hourly forecasts for the next 48 hours.
 We use the published mean as a point forecast for the \ac{atc} assessment and evaluate the probabilistic \ac{atc} based on the quantile forecasts subsequently.
 Considering only the forecasts of at least 36 hours ahead, we restrict the evaluation period to March 2, 2018, at noon, to February 28, 2019, at 23:00, comprising 8,724 hours.
 
-In this setup, \ac{atc} assessment is a simple and intuitive way to assess the models' performance.
-The \ac{atc} perspective is easy for the management to understand and implement, as simple comparisons of the expected workload to a recent shift can be made.
-If, for example, the staff was near capacity during the last shift and an increase in the number of patient admissions is expected, management can take measures to adjust the workload.
+While traditional methods provide point estimates, \ac{atc} assessment offers a simple, intuitive way to evaluate model performance and directional accuracy. This approach is particularly valuable for management, as it facilitates easy comparisons between expected workload and recent shifts. For instance, if staff was near capacity during the last shift, \ac{atc} assessment can clearly indicate whether an increase in patient admissions is likely, allowing management to proactively adjust resources. This directional insight, often hidden in conventional methods, enables more informed and timely decision-making.
 
 The number of patient admissions has a strong weekly and daily pattern.
 Thus, we consider the horizons of 72 hours, the last already observed shift of the same hour of day, and seven days, the previous shift of the same hour and day, in \ac{atc} assessment.
@@ -713,6 +723,9 @@ We focus on \acf{abp} and \acf{nbp} measurements and thus limit our analysis to 
 We assess the \ac{atc} of non-invasive blood pressure measurements (test method) compared to intraarterial blood pressure measurements (reference method, gold standard).
 We consider the horizons of one minute, five minutes, and 15 minutes for the \ac{atc} assessment, as those are typical intervals of NBP measurements.
 
+While \ac{atc} assessment is well-established in measurement analysis, our new methods extend its application, revealing insights such as asymmetries. 
+This extension enhances the utility of \ac{atc} assessment beyond its conventional use, offering a more comprehensive evaluation of model performance.
+
 \subsubsection*{Results}
 
 Again, we exclude the smallest 10\% of absolute changes in \ac{atc} assessment.
@@ -808,6 +821,10 @@ The methods of \ac{atc} assessment are applied to COVID-19-nowcasting, forecasti
 While \ac{atc} assessment should not be the only aspect, it is a valuable addition to evaluating nowcasts, forecasts, and measurements.
 Models with highly different accuracies are usually scored similarly in \ac{atc} assessment, but \ac{atc} assessment can differentiate between models with similar accuracies.
 As in the application in Section~\ref{sec:application-covid}, models with medial point forecast evaluation measures can have the most meaningful positive \ac{atc}.
+
+For public health officials and forecasters analyzing methods, we recommend presenting four-quadrant plots, \ac{atc} ratios and the conditional \ac{atc} plots as a fundamental approach. 
+This presentation makes a model's \ac{atc} easily interpretable and and reveals performance asymmetries.
+An exclusion area can be incorporated to address for non-relevant changes. 
 
 We did not expand on two modeling aspects throughout this paper, which we leave for further research.
 In the estimation, we did not consider sequential correlation.
@@ -923,7 +940,7 @@ We examine three methods for bootstrapping for computing confidence intervals fo
 In the \textit{percentile} approach, the confidence interval for the level $\alpha$ is built directly from the empirical distribution of the bootstrap estimators.
 The \textit{basic} approach computes the confidence interval based on the non-bootstrap estimate using the bootstrapped quantile deviations~\citep{Davison1997}.
 The \ac{bca} method modifies the quantiles of the empirical bootstrap distribution by a bias and an acceleration parameter~\citep{Efron1987}.
-Typically, the percentile approach needs larger datasets and provides an easy and fast estimate, while the \ac{bca} is computationally expensive but requires smaller datasets for reasonable confidence intervals.
+Typically, the percentile approach requires larger datasets and provides an easy and fast estimate, while the \ac{bca}, though computationally expensive, can produce reasonable confidence intervals with smaller datasets.
 The basic approach balances these two objectives.
 We compare the approaches in a small synthetic data study on their small-dataset behavior and computation time.
 
