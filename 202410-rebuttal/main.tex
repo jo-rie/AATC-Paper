@@ -1,0 +1,114 @@
+%% journalrebuttal.tex
+%% Copyright 2020 Pranav Hosangadi
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Pranav Hosangadi.
+%
+% This work consists of the file journalrebuttal.cls and the demo
+% file journalrebuttal.tex
+%% 
+%%
+%% journalrebuttal.tex
+%% Example usage for journalrebuttal.cls: 
+%%    A LaTeX class to create rebuttal documents for journal
+%%    reviews
+%% Created: 2020-06-28
+%% Author: Pranav Hosangadi (pranav.hosangadi@gmail.com)
+%% https://github.com/pranavh/JournalRebuttal_LaTeX
+%% Last Modified: 2020-06-29
+%% Version: 1.0
+%%
+\documentclass[12pt]{journalrebuttal}
+\title{On the assessment of the ability of measurements, nowcasts, and forecasts to track changes}
+\author{Jonas Rieger*, Bolin Liu, Bernd Saugel, Oliver Grothe}
+% TODO Authors anpassen
+\journal{BMC Medical Research Methodology}
+\manuscriptid{304c3895-aec8-4c97-867a-23905ca7f85d}
+
+\usepackage{verbatim, csquotes}
+\usepackage{amsmath, amssymb, mathtools,bm}
+
+\definecolor{green}{rgb}{0.0, 0.5, 0.0}
+\definecolor{blue}{rgb}{0.0, 0.5, 1.0}
+
+%% You can define Note commands using the \ColorNote command 
+%% provided in the class. 
+\newcommand{\TODO}[1]{\ColorNote{green}{TODO}{#1}}
+\newcommand{\IDEA}[1]{\ColorNote{blue}{Idea}{#1}}
+
+
+
+
+\begin{document}
+%\pagenumbering{arabic}
+\maketitle
+
+We thank the two reviewers for their comments and ideas for improving the manuscript. 
+Please find our answers to the issues raised by the referees below.
+
+
+\nextreviewer
+
+\begin{revcomment}
+	The reported ATC Ratio results would be improved if you include the raw number of positive and negative concordance pairs in your tables or table captions. You reference were an interested person could look at the raw data, but it would be helpful to have these summaries in the paper.
+\end{revcomment}
+\begin{response}
+Thank you for your helpful suggestion. We have added the raw numbers of positive and negative concordance pairs to the table captions, providing readers with direct access to these important summaries within the paper itself.
+\end{response}
+
+\begin{revcomment}
+I could see this paper being useful for forecasters and public health officials better communicate and understand the limitations of a particular model. I think it would be valuable to expand your discussion on how these metrics can be used in practice, particularly for forecasters and public health officials.
+\end{revcomment}
+\begin{response}
+    Thank you for this valuable insight. We appreciate your perspective on the practical applications of our work. In response, we have expanded the discussion section to include more detailed commentary on how these metrics can be utilized in practice, particularly focusing on their relevance for forecasters and public health officials.
+\end{response}
+
+\begin{revcomment}
+The literature review seems a little thin on references to concordance metrics for forecasts. It seems that references 21, 34, and 35 are the only one, but I am sure there are more out there.
+\end{revcomment}
+\begin{response}
+    Thank you for bringing this to our attention. We agree that a more comprehensive literature review would ease further review for the readers. In response, we have expanded the number of references pertaining to concordance metrics for forecasts, providing a more thorough overview of the current state of research in this area.
+\end{response}
+
+\begin{revcomment}
+    Related to the previous point, you could more clearly identify the new methods you are proposing versus what has already been explored in the literature. I think just changing some of the wording in Section 2 would help differentiate your work from other people's work in this area.
+\end{revcomment}
+\begin{response}
+    We appreciate your suggestion for improving the clarity of our contribution. We have revised the wording in Section 2 to more distinctly highlight our proposed new methods and differentiate them from existing work in the literature.
+\end{response}
+
+\begin{revcomment}
+On page 27, there is the line \enquote{the BCa is computationally expensive but requires smaller datasets for reasonable confidence intervals.} I don't believe this correct. The BCa method does not require smaller sample. It is more robust to small sample size and able to provide reasonable confidence intervals when the sample size is small.
+\end{revcomment}
+\begin{response}
+    Thank you for this important clarification. You are correct, and we appreciate you pointing out this inaccuracy. We have revised the statement to more accurately reflect that the BCa method is more robust to small sample sizes and can provide reasonable confidence intervals even when the sample size is small, rather than requiring smaller datasets. The formulation has been made clearer as you suggested.
+\end{response}
+
+
+\nextreviewer
+
+\begin{revcomment}
+    Secondly, I suggest the authors elaborate on the importance of the ATC ratio, particularly its relevance to the specific data being analyzed. ATC radio is essentially one specific property of a distribution, and having better prediction accuracy for ATC radio does not automatically make it the superior model. The objects of interest could be mean, variance, quantile, expected shortfall, or even the entire distribution. It would be beneficial to explain why ATC is crucial for the three empirical studies. For instance, with Covid data, one could argue that tail performance (high infection rate or death toll) is more important for decision-makers.
+\end{revcomment}
+\begin{response}
+    Thank you for this insightful comment. We agree that the ATC ratio is indeed one specific property of a distribution and not always the most critical measure. As we stated in the paper, we view it as an additional measure of interest that focuses on a particular aspect of performance. To address your suggestion, we have elaborated on why the ATC ratio adds value to the evaluation in each example's introduction, providing clearer context for its relevance alongside other important metrics such as tail performance.
+\end{response}
+
+\begin{revcomment}
+    Finally, I recommend comparing the ATC-based evaluation methods with more traditional methods based on other statistical properties, like the log score, continuous ranked probability score, or quantile scores. It would be useful to discuss what additional insights the ATC-based approaches can offer compared to these traditional ones.
+\end{revcomment}
+\begin{response}
+    We greatly appreciate your thoughtful recommendation. We agree that comparing ATC-based evaluation methods with traditional statistical approaches would provide valuable context. In response, we have added the log score, continuous ranked probability score, and quantile scores to the tables in the appendix, making these traditional metrics more explicit for comparison. While we have not included a theoretical assessment of the differences between these scores and our methods to maintain the practical focus of this paper, we recognize the importance of this point and plan to expand on it in a future, separate publication dedicated to this comparison.
+\end{response}
+
+\end{document}
+
